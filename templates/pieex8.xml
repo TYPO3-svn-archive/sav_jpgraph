@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template pieex8.xml
+<data id="x"></data>                        // x data set
+<marker id="title"></marker>                // title of the graph
+<marker id="backgroundColor"></marker>      // Color of the graph background
+<file id="1"><file>                         // File name where to save the image
+   -->
+   
+  <!-- Define the data -->
+  <data id="default">
+    <setData value="40,60,31,35" />
+  </data>
+  
+	<!-- Create the pie plot  -->
+  <PiePlot id="1" ref="data#default" ref_ref="data#x">
+    <SetSize param="0.4" />
+    <SetCenter x="0.5" y="0.52" />
+    <value>
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+      <SetColor color="darkred" />
+    </value>
+    <SetLabelPos x="0.6" />
+  </PiePlot>
+
+  <!-- Set up the graph -->
+  <PieGraph width="250" height="200" type="auto">
+    <SetShadow />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <title>
+      <Set title="Adjusting the label pos" ref_title="marker#title"/>
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+    </title>
+    <Add ref="PiePlot#1" />
+    <Stroke ref="file#1" />
+  </PieGraph>
+
+</jpgraph>

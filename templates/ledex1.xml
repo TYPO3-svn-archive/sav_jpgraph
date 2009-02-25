@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template ledex8.xml
+<marker id="text"></marker>                 // text to display
+<marker id="color"></marker>                // Color of the leds
+<file id="1"><file>                         // File name where to save the image
+   -->
+   
+  <DigitalLED74>
+    <StrokeNumber text="0123456789. ABCDEFGHIJKLMN" color="LEDC_YELLOW" ref="file#1" ref_text="marker#text" ref_color="marker#color" />
+  </DigitalLED74>
+
+</jpgraph>
+

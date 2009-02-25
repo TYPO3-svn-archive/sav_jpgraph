@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template polarex0.xml
+<data id="userData"></data>                 // data set
+<marker id="color"></marker>                // color inside the polar plot
+<file id="1"><file>                         // File name where to save the image
+   -->
+
+  <!-- Define the default data -->
+  <data id="defaultData">
+0,1,10,2,30,25,40,60,
+50,110,60,160,70,210,75,230,80,260,
+85,270,90,280,
+95,270,100,260,105,230,
+110,210,120,160,130,110,140,60,
+150,25,170,2,180,1
+  </data>
+
+  <!-- Define the plot -->
+  <PolarPlot id="1" ref="data#defaultData" ref_ref="data#userData">
+    <SetFillColor color="lightblue@0.5" ref_color="marker#color" />
+  </PolarPlot>
+
+  <!-- Define the graph -->
+  <PolarGraph width="250" height="250">
+    <SetScale type="lin" />
+    <SetMargin left="35" right="35" top="25" bottom="25" />
+    <Add ref="PolarPlot#1" />
+    <Stroke ref="file#1" />
+  </PolarGraph>
+
+</jpgraph>

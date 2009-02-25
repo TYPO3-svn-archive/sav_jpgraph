@@ -1,0 +1,105 @@
+<T3DataStructure>
+  <meta>
+    <langDisable>1</langDisable>
+  </meta>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.sheetTitle.sDEF</sheetTitle>
+					<cshFile>LLL:EXT:sav_jpgraph/res/locallang_csh_flexform.xml</cshFile>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <help>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.help</label>
+              <config>
+                <type>user</type>
+                <userFunc>user_helpIcon_savlibrary</userFunc>
+                <filter>1</filter>
+              </config>
+            </TCEforms>
+          </help>
+          
+          <allowQueries>
+            <TCEforms>
+              <exclude>1</exclude>
+              <displayCond>HIDE_FOR_NON_ADMINS</displayCond>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.allowQueries</label>
+              <config>
+                <type>check</type>
+                <default>0</default>
+              </config>
+            </TCEforms>
+          </allowQueries>
+          
+          <xmlMarkersConfig>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlMarkersConfig</label>
+              <config>
+                <type>text</type>
+                <cols>48</cols>
+                <rows>5</rows>
+                <default>&lt;marker id="1"&gt;
+
+&lt;/marker&gt;
+                </default>
+               </config>
+            </TCEforms>
+          </xmlMarkersConfig>
+          
+          <xmlQueriesConfig>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlQueriesConfig</label>
+              <config>
+                <type>text</type>
+                <cols>48</cols>
+                <rows>5</rows>
+                <default>&lt;query id="1"&gt;
+
+&lt;/query&gt;
+                </default>
+              </config>
+            </TCEforms>
+          </xmlQueriesConfig>
+          
+          <xmlDataConfig>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlDataConfig</label>
+              <config>
+                <type>text</type>
+                <cols>48</cols>
+                <rows>5</rows>
+                <default>&lt;data id="1"&gt;
+
+&lt;/data&gt;
+                </default>
+               </config>
+            </TCEforms>
+          </xmlDataConfig>
+
+          <xmlTemplatesConfig>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlTemplatesConfig</label>
+              <config>
+                <type>text</type>
+                <cols>48</cols>
+                <rows>5</rows>
+                <default>&lt;template id="1"&gt;
+
+&lt;/template&gt;
+                </default>
+               </config>
+            </TCEforms>
+          </xmlTemplatesConfig>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>

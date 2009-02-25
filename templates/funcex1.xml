@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template pieex8.xml
+<marker id="title"></marker>                // title of the graph
+<marker id="subtitle"></marker>             // subtitle of the graph
+<marker id="function1"></marker>            // Function 1 expression
+<marker id="x1_min"></marker>               // x1_min
+<marker id="x1_max"></marker>               // x1_max
+<marker id="function2"></marker>            // Function 2 expression
+<marker id="x2_min"></marker>               // x2_min
+<marker id="x2_max"></marker>               // x2_max
+<file id="1"><file>                         // File name where to save the image
+   -->
+  
+  <FuncGenerator id="1" func="cos($x)*$x" ref_func="marker#function1" >
+    <E xmin="-4" xmax="4" return="data#1" ref_xmin="marker#x1_min" ref_xmax="marker#x1_max" />
+  </FuncGenerator>
+  
+  <FuncGenerator id="2" func="$x*$x" ref_func="marker#function2" >
+    <E xmin="-2" xmax="2" return="data#2" ref_xmin="marker#x2_min" ref_xmax="marker#x2_max" />
+  </FuncGenerator>
+
+  <data id='x1'>
+    <setDataFromArray ref="data#1" index="0" />
+  </data>
+  <data id='y1'>
+    <setDataFromArray ref="data#1" index="1" />
+  </data>
+  <data id='x2'>
+    <setDataFromArray ref="data#2" index="0" />
+  </data>
+  <data id='y2'>
+    <setDataFromArray ref="data#2" index="1" />
+  </data>
+
+  <LinePlot id="1" ref_y="data#y1" ref_x="data#x1" >
+    <SetColor color="blue" />
+    <SetWeight value="2" />
+  </LinePlot>
+
+  <LinePlot id="2" ref_y="data#y2" ref_x="data#x2">
+    <SetColor color="red" />
+    <SetWeight value="2" />
+  </LinePlot>
+  
+  <!-- Set up the graph -->
+  <Graph width="450" height="350" type="auto">
+    <SetScale type="linlin" />
+    <SetShadow />
+    <img>
+      <SetMargin left="50" right="50" top="60" bottom="40" />
+    </img>
+    <SetBox p1="true" color="black" p2="2" />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <SetColor color="lightyellow" />
+    <title>
+      <Set title="Example of Function plot" ref_title="marker#title" />
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+    </title>
+    <subtitle>
+      <Set title="(With some more advanced axis formatting\nHiding first and last label)" ref_title="marker#subtitle" />
+      <SetFont family="FF_FONT1" style="FS_NORMAL" />
+    </subtitle>
+    <xgrid>
+      <Show />
+    </xgrid>
+    
+    <yaxis>
+      <SetPos value="0" />
+      <SetWeight value="2" />
+      <HideZeroLabel />
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+      <SetColor color1="black" color2="darkblue" />
+      <HideTicks p1="true" p2="false" />
+      <HideFirstLastLabel />
+    </yaxis>
+
+    <xaxis>
+      <SetWeight value="2" />
+      <HideZeroLabel />
+      <HideFirstLastLabel />
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+      <SetColor color1="black" color2="darkblue" />
+    </xaxis>
+
+    <Add ref="LinePlot#1" />
+    <Add ref="LinePlot#2" />
+    <Stroke ref="file#1" />
+  </Graph>
+
+</jpgraph>

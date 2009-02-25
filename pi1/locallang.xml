@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_savjpgraph_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+		  <label index="error.incorrectPluginConfiguration_1">Incorrect configuration of the plugin: </label>
+      <label index="error.incorrectPluginConfiguration_2">Edit and save the plugin configuration to take the flexform parameters into consideration </label>
+			<label index="pi_flexform.sheetTitle.sDEF">General</label>
+			<label index="pi_flexform.help">Help</label>
+			<label index="pi_flexform.allowQueries">Allow queries (Admin)</label>
+			<label index="pi_flexform.xmlMarkersConfig">Markers</label>
+			<label index="pi_flexform.xmlDataConfig">Data</label>
+			<label index="pi_flexform.xmlQueriesConfig">Queries</label>
+			<label index="pi_flexform.xmlTemplatesConfig">Templates</label>
+		</languageKey>
+
+		<languageKey index="fr" type="array">
+      <label index="error.incorrectPluginConfiguration_1">Congiguration incorrecte du plugin : </label>
+      <label index="error.incorrectPluginConfiguration_2">Editer et sauvegarder la configuration pour prendre les paramètres en considération </label>
+			<label index="pi_flexform.sheetTitle.sDEF">Général</label>
+			<label index="pi_flexform.help">Aide</label>
+			<label index="pi_flexform.allowQueries">Autoriser les requêtes (Admin)</label>
+			<label index="pi_flexform.xmlMarkersConfig">Marquers</label>
+			<label index="pi_flexform.xmlDataConfig">Données</label>
+			<label index="pi_flexform.xmlQueriesConfig">Requêtes</label>
+			<label index="pi_flexform.xmlTemplatesConfig">Templates</label>
+		</languageKey>
+
+	</data>
+</T3locallang>

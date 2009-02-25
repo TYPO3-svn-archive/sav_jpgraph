@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template bargradex1.xml
+<data id="x"></data>                        // x data set
+<data id="y"></data>                        // y data set
+<marker id="title"></marker>                // title of the graph
+<marker id="backgroundColor"></marker>      // Color of the graph background
+<file id="1"><file>                         // File name where to save the image
+   -->
+
+  <!-- Define the data -->
+  <data id="y_default">
+    <setData value="0.13,0.25,0.21,0.35,0.31,0.06" />
+  </data>
+  <data id="x_default">
+    <setData value="Jan,Feb,Mar,Apr,May,June" />
+  </data>
+
+	<!-- Create the bar plot  -->
+  <BarPlot id="1" ref="data#y_default" ref_ref="data#y">
+    <SetWidth coeff="0.6" />
+    <SetFillGradient fromColor="navy" toColor="#EEEEEE" style="GRAD_LEFT_REFLECTION" />
+    <SetColor color="white" />
+  </BarPlot>
+
+  <!-- Set up the graph -->
+  <Graph width="400" height="200" type="auto">
+    <img>
+      <SetMargin left="60" right="20" top="30" bottom="50" />
+    </img>
+    <SetScale type="textlin" />
+    <SetMarginColor color="lightblue" ref_color="marker#backgroundColor" />
+    <SetShadow />
+    <title>
+      <Set title="Bar gradient (Left reflection)" ref_title="marker#title" />
+      <SetFont family="FF_VERDANA" style="FS_NORMAL" size="12" />
+      <SetColor color="darkred" />
+    </title>
+    <xaxis>
+      <SetFont family="FF_VERDANA" style="FS_NORMAL" size="10" />
+      <SetTickLabels ref="data#x_default" ref_ref="data#x" />
+      <SetLabelAngle angle="50" />
+    </xaxis>
+    <yaxis>
+      <SetFont family="FF_VERDANA" style="FS_NORMAL" size="10" />
+    </yaxis>
+    <yscale>
+      <ticks>
+        <SupressZeroLabel flag="false" />
+      </ticks>
+    </yscale>
+    <Add ref="BarPlot#1" />
+    <Stroke ref="file#1" />
+  </Graph>
+
+</jpgraph>
