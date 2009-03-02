@@ -42,6 +42,7 @@ class data {
   private $referenceId = 0;
   private $reference = NULL;
   private $data = '';
+  private $firstArray = true;
   
 	/**
 	 * Construtor
@@ -125,7 +126,38 @@ class data {
     );
   }
 
+	/**
+	 * Set an array of data
+	 *
+	 * @param $data string comma-separated string
+	 * @param $index string index to set the data
+	 *
+	 * @return none
+	 */
+  public function setArray($data = '', $index = '') {
+
+    // Clear the element with index 0 at the first call
+    if ($this->firstArray) {
+      $this->reference->unsetReferenceArray(
+        'data',
+        $this->referenceId,
+        0
+      );
+      $this->firstArray = false;
+    }
+    
+    // Set the data in the reference array
+    $this->reference->setReferenceArray(
+      'data',
+      $this->referenceId,
+      explode(',', $data),
+      $index
+    );
+  }
+  
 }
+
+
 
 /**
  * Class file
@@ -163,6 +195,8 @@ class file {
     $this->setFile($this->fileName);
   }
 
+
+
 	/**
 	 * Set the file directory
 	 *
@@ -192,6 +226,8 @@ class file {
   }
 
 }
+
+
 
 /**
  * Class marker
@@ -244,6 +280,7 @@ class marker {
     );
   }
 }
+
 
 
 /**
@@ -368,6 +405,7 @@ class query {
 }
 
 
+
 /**
  * Class template
  *
@@ -449,6 +487,8 @@ class template {
   }
   
 }
+
+
 
 /**
  * Class xmlGraph
@@ -621,8 +661,27 @@ class xmlGraph extends Graph {
 	 *
 	 * @return none
 	 */
-  public function setReferenceArray($name, $id, $value) {
-    $this->referenceArray[$name][$id] = $value;
+  public function setReferenceArray($name, $id, $value, $index = false) {
+    if ($index === false ) {
+      $this->referenceArray[$name][$id] = $value;
+    } elseif ($index) {
+      $this->referenceArray[$name][$id][$index] = $value;
+    } else {
+      $index = count($this->referenceArray[$name][$id]);
+      $this->referenceArray[$name][$id][$index] = $value;
+    }
+  }
+
+	/**
+	 * Unset the reference array
+	 *
+	 * @param $name string tag name
+	 * @param $id string id
+	 *
+	 * @return none
+	 */
+  public function unsetReferenceArray($name, $id, $index) {
+    unset ($this->referenceArray[$name][$id][$index]);
   }
 
 	/**
@@ -666,6 +725,17 @@ class xmlGraph extends Graph {
   }
 
 	/**
+	 * Process constant
+	 *
+	 * @param $value string
+	 *
+	 * @return string
+	 */
+  protected function processConstant($value) {
+    return (defined($value) ? constant($value) : $value);
+  }
+
+	/**
 	 * Process attributes
 	 *
 	 * @param $element object
@@ -680,7 +750,18 @@ class xmlGraph extends Graph {
           $this->referenceArray['return'][0] = (string) $value;
           break;
         case 'ref':
-          $temp[$name] = $this->processReference($value);
+          if ($this->referenceIndex !== false) {
+            $referenceArray = $this->processReference($value);
+            $reference = $referenceArray[$this->referenceIndex];
+
+            if (is_array($reference)) {
+              $temp = $reference;
+            } else {
+              $temp[$name] = $reference;
+            }
+          } else {
+            $temp[$name] = $this->processReference($value);
+          }
           break;
         case 'id':
           // It an id. Set the reference id
@@ -695,17 +776,23 @@ class xmlGraph extends Graph {
               // Replace the attribute by its reference
               $temp[$matches[1]] = $referenceValue;
             }
+          } elseif (preg_match_all('/([^\|]*)?\|([^\|]*)/', (string) $value, $matches)) {
+
+            // Check if the expression contains an operator |
+            for($i=0; $i<count($matches[0]); $i++) {
+              if ($matches[1][$i]) {
+                $result = $this->processConstant(trim((string) $matches[1][$i]));
+              }
+              $result = $result | $this->processConstant(trim((string) $matches[2][$i]));
+            }
+            $temp[$name] = $result;
           } else {
-            $temp[$name] = (
-              defined((string) $value) ?
-              constant((string) $value) :
-              (string) $value
-            );
+            $temp[$name] = $this->processConstant((string) $value);
           }
           break;
       }
     }
-    
+
     return array_values($temp);
   }
 
@@ -819,7 +906,9 @@ class xmlGraph extends Graph {
 	 * @return none
 	 */
    protected function processElement($element, &$JpGraphObject) {
+
     foreach($element->children() as $child) {
+//t3lib_div::debug((string) $child->getName(), '$childName in processElement');
       // Check if the child has children
       if (! count($child->children())) {
         // Unset return
@@ -830,6 +919,7 @@ class xmlGraph extends Graph {
         } else {
           $attributes = $this->processAttributes($child);
         }
+//t3lib_div::debug($attributes, '$attributes in processElement');
 
         // Build the method array (classname, method)
         $method = array(&$JpGraphObject, (string) $child->getName());
@@ -858,12 +948,96 @@ class xmlGraph extends Graph {
           }
         }
       } else {
-        // Call recursively with the child element
+        // Call recursively with the child element if not foreach
         $childJpGraphObject = (string)$child->getName();
-        $this->processElement($child, $JpGraphObject->$childJpGraphObject);
+        if ($childJpGraphObject == 'foreach') {
+          // Process attributes
+          $attributes = $this->processAttributes($child);
+//t3lib_div::debug($attributes, '$attributes in processElement');
+
+          // Save the reference index
+          $referenceIndex = $this->referenceIndex;
+          
+          // Process the attributes
+          foreach ($attributes[0] as $key => $attribute) {
+            $this->setReferenceArray($childJpGraphObject, $this->referenceId, $attribute);
+            $this->referenceIndex = $key;
+            $this->processElement($child, $JpGraphObject);
+          }
+          
+          //Reset the reference index
+          $this->referenceIndex = $referenceIndex;
+
+        } else {
+          $this->processElement($child, $JpGraphObject->$childJpGraphObject);
+        }
       }
     }
   }
+
+	/**
+	 * Process child
+	 *
+	 * @param $child object
+	 *
+	 * @return none
+	 */
+	public function processChild($child) {
+
+    // Reset the reference id
+    $this->referenceId = 0;
+
+    // Get the child name
+    $childName = (string)$child->getName();
+//t3lib_div::debug($childName, '$childName in processChild');
+    // Process the attributes
+    $attributes = $this->processAttributes($child);
+//t3lib_div::debug($attributes, '$$attributes in processChild');
+
+    // If there is a child string, it is passed as the first parameter
+    // for allowed tags
+    if ((string)$child) {
+      switch($childName) {
+        case 'marker':
+        case 'data':
+        case 'file':
+          $attributes = array_merge(array((string)$child), $attributes);
+          break;
+        case 'foreach':
+          // Save the reference index
+          $referenceIndex = $this->referenceIndex;
+          
+          // Process the attributes
+          foreach ($attributes[0] as $key => $attribute) {
+            $this->setreferenceArray($childName, $this->referenceId, $attribute);
+            $this->referenceIndex = $key;
+            $this->processChild($child->children());
+          }
+          
+          // Reset the reference index
+          $this->referenceIndex = $referenceIndex;
+
+          return;
+
+      }
+    }
+
+    // include required file if any
+    if (array_key_exists($childName, $this->requireArray)) {
+      require_once(JP_maindir . $this->requireArray[$childName]);
+    }
+    $newObject = $this->createObject($childName, $attributes);
+    $this->setReferenceArray($childName, $this->referenceId, $newObject, $this->referenceIndex);
+
+    // Call the method setReferenceId if any
+    if (method_exists($newObject, 'setReference')) {
+      $newObject->setReference($this->referenceId, $this);
+    }
+    // process the child
+    $this->processElement($child, $newObject);
+  }
+
+
 
 	/**
 	 * Process xml graph
@@ -875,41 +1049,10 @@ class xmlGraph extends Graph {
 	public function processXmlGraph() {
 
 		foreach ($this->xml->children() as $child) {
-      // Reset the reference id
-      $this->referenceId = 0;
-      
-      // Get the child name
-      $childName = (string)$child->getName();
-      
-      // Process the attributes
-      $attributes = $this->processAttributes($child);
-      
-      // If there is a child string, it is passed as the first parameter
-      // for allowed tags
-      if ((string)$child) {
-        switch($childName) {
-          case 'marker':
-          case 'data':
-          case 'file':
-            $attributes = array_merge(array((string)$child), $attributes);
-            break;
-        }
-      }
-      
-      // include required file if any
-      if (array_key_exists($childName, $this->requireArray)) {
-        require_once(JP_maindir . $this->requireArray[$childName]);
-      }
-      $newObject = $this->createObject($childName, $attributes);
-      $this->referenceArray[$childName][$this->referenceId] = $newObject;
-
-      // Call the method setReferenceId if any
-      if (method_exists($newObject, 'setReference')) {
-        $newObject->setReference($this->referenceId, $this);
-      }
-      // process the child
-      $this->processElement($child, $newObject);
+      $this->referenceIndex = false;
+      $this->processChild($child);
 		}
+
   }
 
 	/**

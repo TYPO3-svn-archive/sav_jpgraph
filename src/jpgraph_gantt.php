@@ -2481,7 +2481,7 @@ class GanttScale {
 	    $doback = !($this->hour->iShowLabels || $this->minute->iShowLabels);
 
 	    setlocale(LC_TIME,$this->iDateLocale->iLocale);
-	    
+
 	    for($i=0; $i < $this->GetNumberOfDays(); ++$i, $x+=$daywidth, $day += 1,$day %= 7) {
 		if( $day==6 || $day==0 ) {
 		    $img->SetColor($this->day->iWeekendBackgroundColor);

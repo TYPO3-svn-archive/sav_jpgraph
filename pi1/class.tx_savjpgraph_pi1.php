@@ -67,6 +67,9 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 
+    // define the constant LOCALE for the use in the template
+    define(LOCALE, $GLOBALS['TSFE']->config['config']['locale_all']);
+    
     // Init FlexForm configuration for plugin and get the configuration fields
     $this->loadFlexform();
 
@@ -84,9 +87,6 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // Create the xlmgraph
     $xmlGraph = new xmlGraph();
-
-    // Set the image
-//    $xmlGraph->setReferenceArray('file', 1, PATH_site . $imageFileName);
 
     // Set the image and oad the xml markers configuration and process it
     $xmlGraph->loadXmlString(

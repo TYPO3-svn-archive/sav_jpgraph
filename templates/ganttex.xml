@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template polarex0.xml
+<data id="userBarConfig"></data>            // Gantt bar configuration
+<data id="userBarColorConfig"></data>       // Gantt bar color configuration
+<marker id="color"></marker>                // color for the pattern
+<file id="1"><file>                         // File name where to save the image
+   -->
+
+
+  <!-- Define the default data -->
+  <data id="defaultBarConfig">
+    <setArray value="0, Group 1, 2009-01-01, 2009-01-31" />
+    <setArray value="1,  Label 1, 2009-01-10, 2009-01-20" />
+    <setArray value="2,  Label 2, 2009-01-13, 2009-01-17" />
+    <setArray value="4, Group 2, 2009-02-10, 2009-02-28" />
+    <setArray value="5,  Label 3, 2009-01-29, 2009-02-16" />
+    <setArray value="6,  Label 4, 2009-02-01, 2009-02-17" />
+    <setArray value="0,, 2009-02-15, 2009-03-31" />
+  </data>
+  
+  <data id="defaultBarColorConfig">
+    red,magenta,blue,cyan,black,green,red
+  </data>
+
+  <!-- Define the Gantt bars -->
+  <foreach ref="data#defaultBarConfig">
+    <GanttBar id="1" ref="data#defaultBarConfig" ref_ref="data#userBarConfig">
+      <SetPattern type="BAND_RDIAG" color="yellow" ref_color="marker#color" />
+      <SetFillColor ref="data#defaultBarColorConfig" ref_ref="data#userBarColorConfig"/>
+    </GanttBar>
+  </foreach>
+
+  <!-- Define the graph -->
+  <GanttGraph width="0" height="0" cache="auto">
+    <SetShadow />
+    <SetBox />
+    <ShowHeaders param="GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK" />
+    <title>
+      <Set title="Example of Gantt Plot" />
+      <SetFont family="FF_ARIAL" style="FS_BOLD" size="12" />
+    </title>
+    <scale>
+      <setDatelocale locale="LOCALE" />
+      <week>
+        <SetStyle param="WEEKSTYLE_FIRSTDAY" />
+        <SetFont family="FF_FONT0" />
+      </week>
+      <year>
+        <SetFont family="FF_ARIAL" style="FS_BOLD" size="12" />
+      </year>
+    </scale>
+
+    <foreach ref="GanttBar#1">
+      <Add ref="GanttBar#1" />
+    </foreach>
+
+    <Stroke ref="file#1" />
+  </GanttGraph>
+
+</jpgraph>
