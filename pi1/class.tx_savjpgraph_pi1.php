@@ -37,11 +37,8 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
  * @package	TYPO3
  * @subpackage	tx_savjpgraph
  */
-define('JP_maindir', t3lib_extMgm::extPath('sav_jpgraph') . 'src/');
 
 require_once(PATH_tslib . 'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
-
 /**
  * Plugin 'SAV JpGraph' for the 'sav_jpgraph' extension.
  *
@@ -70,6 +67,18 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     // define the constant LOCALE for the use in the template
     define(LOCALE, $GLOBALS['TSFE']->config['config']['locale_all']);
     
+    // Redefine the constant for TTF directory if necessary
+    $temp = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+    if ($temp['plugin.'][$this->extKey . '.']['ttfDir']) {
+      define('TTF_DIR', $temp['plugin.'][$this->extKey . '.']['ttfDir']);
+    }
+    
+    // Define the main directory
+    define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'src/');
+
+    // Require the xml class
+    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
+
     // Init FlexForm configuration for plugin and get the configuration fields
     $this->loadFlexform();
 
