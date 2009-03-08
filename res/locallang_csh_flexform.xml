@@ -13,6 +13,117 @@
 			<label index="help.description">SAV JpGraph</label>
 			<label index="help.details">
 
+        &lt;b&gt;&lt; data [attributes] &gt; ... &lt; /data &gt;&lt;/b&gt;
+        Creates a data object.
+        Attribute:
+         .  id="myData".  Optional attribute but it is requested when using reference to this object. The reference will be "myData".
+
+        - &lt; setData attribute /&gt;
+        Defines the data.
+        Attribute:
+         . value="5,6,7". Use a comma-separated list of values.
+
+        - &lt; setDataFromQuery attribute1 attribute2 /&gt;
+        Defines the data from a query.
+        Attributes:
+         . ref="query#1". An array is expected, in general it is the reference to a query.
+         . field="date". Field which will be used as the index of the array to get the data.
+
+        - &lt; SetDataFromArray attribute1 attribute2 /&gt;
+        Defines the data from an array.
+        Attributes:
+         . ref="data#result". An array is expected, in general it is the reference to a another data set.
+         . index="2". Index which will be used to get the data.
+
+        - &lt; setArray attribute1 attribute2 /&gt;
+        Defines an array of data.
+        Attributes:
+         . value="5,6,7". Use a comma-separated list of values.
+         . index="2". Optional index which will be used to set the data otherwise data are inserted in the array starting with the index equal to 0.
+
+        - &lt; setArrayFromQuery attribute1 /&gt;
+        Defines an array of data from a query.
+        Attribute:
+         . ref="query#1". An array is expected, in general it is the reference to a query.
+         
+        &lt;b&gt;&lt; file [attributes] &gt; ... &lt; /file &gt;&lt;/b&gt;
+        Creates a file object.
+        Attributes:
+         . id="myFile".  Optional attribute but it is requested when using reference to this object. The reference will be "myFile".
+        Note: id="1" defines the file used by default for saving the resulting image in the "typo3temp/sav_jpgraph" folder. The file name is "img_xxx" where "xxx" is the id of the content object.
+
+        - &lt; setFile attribute /&gt;
+        Defines the fileName.
+        Attribute:
+         . value="fileadmin/test.png".
+         
+        - &lt; setFileDir attribute /&gt;
+        Defines the root directory.
+        Attribute:
+         . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
+   
+        &lt;b&gt;&lt; foreach [attributes] ref="myData" &gt; ... &lt; /foreach &gt;&lt;/b&gt;
+        The tag &lt; foreach &gt; is not related with a class. It is a special tag which was introduced to process arrays. It makes it possible to repeat the sequence inside the tag. The number of repetitions is the size of the reference attribute.
+
+        &lt;b&gt;&lt; marker [attributes] &gt; ...  &lt; /marker &gt;&lt;/b&gt;
+        Creates a marker object.
+        Attribute:
+         . id="myMarker".  Optional attribute but it is requested when using reference to this object. The reference will be "myMarker".
+         
+        - &lt; setMarker attribute /&gt;
+        Defines the marker.
+        Attribute:
+         . value="Number of pages created per year".
+   
+        &lt;b&gt;&lt; query [attributes]&gt; ... &lt; /query &gt;&lt;/b&gt;
+        Creates a query object.
+        Attributes:
+           .  id="myQuery".  Optional attribute but it is requested when using reference to this object. The reference will be "myQuery".
+           
+        - &lt; select &gt;... &lt; /select &gt;
+        Defines the SELECT clause. See the tutorial for an example.
+        
+        - &lt; from &gt; ...  &lt; /from &gt;
+        Defines the FROM clause. See the tutorial for an example.
+        
+        - &lt; where &gt; ...  &lt; /where &gt;
+        Defines the WHERE clause. See the tutorial for an example.
+        
+        - &lt; groupby &gt; ... &lt; /groupby &gt;
+        Defines the GROUP BY clause. See the tutorial for an example.
+        
+        - &lt; orderby &gt; ... &lt; /orderby &gt;
+        Defines the ORDER BY clause.
+        
+        - &lt; limit &gt; ... &lt; /limit &gt;
+        Defines the LIMIT clause.
+
+        &lt;b&gt;&lt; template [attributes] &gt; ... &lt; /template &gt;&lt;/b&gt;
+        Creates a template object.
+        Attributes:
+         .  id="myTemplate".  Optional attribute but it is requested when using reference to this object. The reference will be "myTemplate".
+         
+        - &lt; setTemplateDir attribute /&gt;
+        Defines the root directory for the template.
+        Attribute:
+         . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
+         
+        - &lt; loadTemplate attribute /&gt;
+        Loads the template file name.
+        Attribute:
+         . file="typo3conf/ext/sav_jpgraph/templates/polarex0.xml".
+         
+        - &lt; setCopyImageDir attribute /&gt;
+        Defines the root directory for the copy of the image.
+        Attribute:
+        . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
+        
+        - &lt; copyImageInFile attribute /&gt;
+        Copies the resulting image in a given file.
+        Attributes:
+         . ref="file#1". Sets the root directory. A string is expected, in general it is the reference to a file.
+         . file="fileadmin/test.png". Destination file.
+
       </label>
     </languageKey>
 		

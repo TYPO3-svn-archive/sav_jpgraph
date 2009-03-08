@@ -128,6 +128,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
           $xmlGraph->getReferenceArray('queryOrderby', $id),
           $xmlGraph->getReferenceArray('queryLimit', $id)
         );
+
         // Check for errors
         if (!is_array($rows)) {
           $lastBuiltQuery = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;

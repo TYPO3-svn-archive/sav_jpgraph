@@ -8,6 +8,117 @@
 			<label index="help.description">Extension SAV JpGraph</label>
 			<label index="help.details">
 
+        &lt;b&gt;&lt; data [attributes] &gt; ... &lt; /data &gt;&lt;/b&gt;
+        Crée un object data.
+        Attribut :
+         .  id="myData".  Attribut optionnel, nécessaire quand une référence à cet objet est utilisée. La référence sera "myData".
+
+        - &lt; setData attribute /&gt;
+        Définit les données.
+        Attribut :
+         . value="5,6,7". Utiliser une liste de données séparées par une virgule.
+
+        - &lt; setDataFromQuery attribute1 attribute2 /&gt;
+        Définit les données à partir d'une requête.
+        Attributs :
+         . ref="query#1". Un tableau (array php) est attendu, en général il s'agit d'une référence à une requête.
+         . field="date". Champ qui sera utilisé comme index du tableau pour rechercher les données.
+
+        - &lt; SetDataFromArray attribute1 attribute2 /&gt;
+        Définit les données à partir d'un tableau.
+        Attributs :
+         . ref="data#result". Un tableau (array php) est attendu, en général il s'agit de la référence vers d'autres données.
+         . index="2". index qui sera utilisé pour rechercher les données.
+
+        - &lt; setArray attribute1 attribute2 /&gt;
+        Définit un tableau de données.
+        Attribut :
+         . value="5,6,7". Utiliser une liste de données séparées par une virgule.
+         . index="2". Index optionnel qui sera utilisé pour insérer les données. Sans index, les données sont insérées dans le tableau en commençant à l'index 0.
+
+        - &lt; setArrayFromQuery attribute1 /&gt;
+        Définit un tabeau de données à partir d'une requête.
+        Attribut :
+         . ref="query#1". Un tableau (array php) est attendu, en général il s'agit d'une référence à une requête.
+
+        &lt;b&gt;&lt; file [attributes] &gt; ... &lt; /file &gt;&lt;/b&gt;
+        Crée un objet "file".
+        Attributs :
+         . id="myFile".  attribut optionnel, nécessaire quand une référence à cet objet est utilisée. La référence sera  "myFile".
+        Note: id="1" définit le fichier utilisé par défaut pour sauvegarder l'image résultat dans le répertoiree "typo3temp/sav_jpgraph". Le nom d fichier est "img_xxx" où "xxx" est l'id de l'objet contenu (cObj).
+
+        - &lt; setFile attribute /&gt;
+        Définit le nom du fichier.
+        Attribut :
+         . value="fileadmin/test.png".
+
+        - &lt; setFileDir attribute /&gt;
+        Définit le répertoire racine.
+        Attribut :
+         . dir="PATH_site". Définit le répertoire racine. Toute constante php définie, en particulier les constantes TYPO3 de répertoire, sera interprétée.
+
+        &lt;b&gt;&lt; foreach [attributes] ref="myData" &gt; ... &lt; /foreach &gt;&lt;/b&gt;
+        Le tag &lt; foreach &gt; n'est pas relatif à une classe. C'est un tag spécial qui a été introduit pour traiter les tableaux. Il permet de répéter des séquences à l'intéieur de ce tag. Le nombre de répétitions est la taille des données associées à l'attribut "ref".
+
+        &lt;b&gt;&lt; marker [attributes] &gt; ...  &lt; /marker &gt;&lt;/b&gt;
+        Crée un objet "marker".
+        Attribut :
+         . id="myMarker".  Attribut optionnel, nécessaire quand une référence à cet objet est utilisée. La référence sera "myMarker".
+
+        - &lt; setMarker attribute /&gt;
+        Définit le "marker".
+        Attribut :
+         . value="Nombre de pages créées par année".
+
+        &lt;b&gt;&lt; query [attributes]&gt; ... &lt; /query &gt;&lt;/b&gt;
+        Crée un objet "query".
+        Attributs :
+         . id="myQuery".  Attribut optionnel, nécessaire quand une référence à cet objet est utilisée. La référence sera "myQuery".
+
+        - &lt; select &gt;... &lt; /select &gt;
+        Définit la clause SELECT. Voir le tutoriel pour exemple.
+
+        - &lt; from &gt; ...  &lt; /from &gt;
+        Définit la clause FROM. Voir le tutoriel pour exemple.
+
+        - &lt; where &gt; ...  &lt; /where &gt;
+        Définit la clause WHERE. Voir le tutoriel pour exemple.
+
+        - &lt; groupby &gt; ... &lt; /groupby &gt;
+        Définit la clause GROUP BY. Voir le tutoriel pour exemple.
+
+        - &lt; orderby &gt; ... &lt; /orderby &gt;
+        Définit la clause ORDER BY.
+
+        - &lt; limit &gt; ... &lt; /limit &gt;
+        Définit la clause LIMIT.
+
+        &lt;b&gt;&lt; template [attributes] &gt; ... &lt; /template &gt;&lt;/b&gt;
+        Crée un objet "template".
+        Attributs :
+         . id="myTemplate".  Attribut optionnel, nécessaire quand une référence à cet objet est utilisée. La référence sera "myTemplate".
+
+        - &lt; setTemplateDir attribute /&gt;
+        Définit le répertoire racine pour le "template".
+        Attribut :
+         . dir="PATH_site". Définit le répertoire racine. Toute constante php définie, en particulier les constantes TYPO3 de répertoire, sera interprétée.
+
+        - &lt; loadTemplate attribute /&gt;
+        Charge le template à partir du fichier.
+        Attribut :
+         . file="typo3conf/ext/sav_jpgraph/templates/polarex0.xml".
+
+        - &lt; setCopyImageDir attribute /&gt;
+        Définit le répertoire racine pour la copie de l'image.
+        Attribut :
+        . dir="PATH_site". Définit le répertoire racine. Toute constante php définie, en particulier les constantes TYPO3 de répertoire, sera interprétée.
+
+        - &lt; copyImageInFile attribute /&gt;
+        Copie l'image résultat dans un fichier.
+        Attributs :
+         . ref="file#1". Définit le répertoire racine. Une chaîne est attendue, en général il s'agit d'une référence à un fichier.
+         . file="fileadmin/test.png". Fichier destination.
+
       </label>
 		</languageKey>
 	</data>

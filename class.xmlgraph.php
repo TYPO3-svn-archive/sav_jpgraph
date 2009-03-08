@@ -100,6 +100,7 @@ class data {
     foreach($rows as $row) {
       $data[] = $row[$field];
     }
+
     // Set the data in the reference array
     $this->reference->setReferenceArray(
       'data',
@@ -154,6 +155,23 @@ class data {
       $index
     );
   }
+  
+	/**
+	 * Set the data array from a query
+	 * Data are in an array
+	 *
+	 * @param $rows array of fields
+	 *
+	 * @return none
+	 */
+  public function setArrayFromQuery($rows) {
+  
+    // Get all data for the field
+    foreach($rows as $row) {
+      $this->setArray(implode(',', $row));
+    }
+  }
+
   
 }
 
@@ -770,14 +788,31 @@ class xmlGraph extends Graph {
         default:
           // Check if the attribute name starts with ref_
           if (preg_match('/^ref_(.*)$/', $name, $matches)) {
-            // Get the reference tag and id
-            $referenceValue = $this->processReference($value);
-            if ($referenceValue !== false) {
-              // Replace the attribute by its reference
-              $temp[$matches[1]] = $referenceValue;
+            // Check if it's in a foreach
+            if ($this->referenceIndex !== false) {
+              $referenceArray = $this->processReference($value);
+              $reference = (
+                $referenceArray !== false ?
+                $referenceArray[$this->referenceIndex] :
+                false
+              );
+              if (is_array($reference)) {
+                $temp = $reference;
+              } else {
+                if ($reference !== false) {
+                  // Replace the attribute by its reference
+                  $temp[$matches[1]] = $reference;
+                }
+              }
+            } else {
+              // Get the reference tag and id
+              $referenceValue = $this->processReference($value);
+              if ($referenceValue !== false) {
+                // Replace the attribute by its reference
+                $temp[$matches[1]] = $referenceValue;
+              }
             }
           } elseif (preg_match_all('/([^\|]*)?\|([^\|]*)/', (string) $value, $matches)) {
-
             // Check if the expression contains an operator |
             for($i=0; $i<count($matches[0]); $i++) {
               if ($matches[1][$i]) {
@@ -908,7 +943,6 @@ class xmlGraph extends Graph {
    protected function processElement($element, &$JpGraphObject) {
 
     foreach($element->children() as $child) {
-//t3lib_div::debug((string) $child->getName(), '$childName in processElement');
       // Check if the child has children
       if (! count($child->children())) {
         // Unset return
@@ -919,7 +953,6 @@ class xmlGraph extends Graph {
         } else {
           $attributes = $this->processAttributes($child);
         }
-//t3lib_div::debug($attributes, '$attributes in processElement');
 
         // Build the method array (classname, method)
         $method = array(&$JpGraphObject, (string) $child->getName());
@@ -949,11 +982,11 @@ class xmlGraph extends Graph {
         }
       } else {
         // Call recursively with the child element if not foreach
+        // Else call recursively each child
         $childJpGraphObject = (string)$child->getName();
         if ($childJpGraphObject == 'foreach') {
           // Process attributes
           $attributes = $this->processAttributes($child);
-//t3lib_div::debug($attributes, '$attributes in processElement');
 
           // Save the reference index
           $referenceIndex = $this->referenceIndex;
@@ -989,10 +1022,9 @@ class xmlGraph extends Graph {
 
     // Get the child name
     $childName = (string)$child->getName();
-//t3lib_div::debug($childName, '$childName in processChild');
+
     // Process the attributes
     $attributes = $this->processAttributes($child);
-//t3lib_div::debug($attributes, '$$attributes in processChild');
 
     // If there is a child string, it is passed as the first parameter
     // for allowed tags
@@ -1018,7 +1050,6 @@ class xmlGraph extends Graph {
           $this->referenceIndex = $referenceIndex;
 
           return;
-
       }
     }
 

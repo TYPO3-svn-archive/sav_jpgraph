@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template polarex0.xml
+  <!-- External tags that can be used for the template ganttex.xml
 <data id="userBarConfig"></data>            // Gantt bar configuration
 <data id="userBarColorConfig"></data>       // Gantt bar color configuration
 <marker id="color"></marker>                // color for the pattern
@@ -25,7 +25,7 @@
   </data>
 
   <!-- Define the Gantt bars -->
-  <foreach ref="data#defaultBarConfig">
+  <foreach ref="data#defaultBarConfig" ref_ref="data#userBarColorConfig">
     <GanttBar id="1" ref="data#defaultBarConfig" ref_ref="data#userBarConfig">
       <SetPattern type="BAND_RDIAG" color="yellow" ref_color="marker#color" />
       <SetFillColor ref="data#defaultBarColorConfig" ref_ref="data#userBarColorConfig"/>
