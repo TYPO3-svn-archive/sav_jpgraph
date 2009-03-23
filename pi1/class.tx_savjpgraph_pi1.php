@@ -51,6 +51,10 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 	var $scriptRelPath = 'pi1/class.tx_savjpgraph_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'sav_jpgraph';	// The extension key.
 
+  // Session variables from SAV Filter
+  protected $sessionFilter;
+  protected $sessionFilterSelected;
+  
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -66,17 +70,25 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // define the constant LOCALE for the use in the template
     define(LOCALE, $GLOBALS['TSFE']->config['config']['locale_all']);
+
+    // define the constant CURRENT_PID for the use in the template
+    define(CURRENT_PID, $GLOBALS['TSFE']->page['uid']);
+
+    // define the constant STORAGE_PID for the use in the template
+    $temp = $GLOBALS['TSFE']->getStorageSiterootPids();
+    define(STORAGE_PID, $temp['_STORAGE_PID']);
     
     // Redefine the constant for TTF directory if necessary
-    $temp = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
-    if ($temp['plugin.'][$this->extKey . '.']['ttfDir']) {
-      define('TTF_DIR', $temp['plugin.'][$this->extKey . '.']['ttfDir']);
+    $temp = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sav_jpgraph']);
+    if ($temp['plugin.']['sav_jpgraph.']['ttfDir']) {
+      define('TTF_DIR', $temp['plugin.']['sav_jpgraph.']['ttfDir']);
     }
-    
+      
     // Define the main directory
     define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'src/');
 
     // Require the xml class
+    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.typo3.php');
     require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
 
     // Init FlexForm configuration for plugin and get the configuration fields
@@ -96,53 +108,52 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // Create the xlmgraph
     $xmlGraph = new xmlGraph();
+    
+    // Set the filter if any
+    $this->sessionFilterSelected = $GLOBALS['TSFE']->fe_user->getKey('ses','filterSelected');
+    $this->sessionFilter = $GLOBALS['TSFE']->fe_user->getKey('ses','filter');
 
-    // Set the image and oad the xml markers configuration and process it
+    if ($this->sessionFilterSelected) {
+      foreach($this->sessionFilter[$this->sessionFilterSelected] as $key => $filter) {
+        $xmlGraph->setReferenceArray('filter', $key, $filter);
+      }
+    } else {
+      $xmlGraph->setReferenceArray('filter', 'addWhere', '1');
+    }
+
+    //
+    if ($this->conf['allowQueries']) {
+      $processQueries = '
+        <typo3>
+          <processQueries />
+        </typo3>
+      ';
+    } else {
+      $processQueries = '';
+    }
+
+    // Set the image and add the xml markers configuration and process it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
-        '<file id="1">
+        '
+        <file id="1">
           <setFileDir dir="PATH_site" />
           <setFile file="' . $imageFileName . '" />
         </file>' .
-        $this->conf['xmlMarkersConfig'])
+        $this->conf['xmlMarkersConfig'] . 
+        $processQueries
+      )
     );
     $xmlGraph->processXmlGraph();
 
     // Load the xml queries configuration and process it
     $xmlGraph->loadXmlString(
-      $xmlGraph->addXmlPrologue($this->conf['xmlQueriesConfig'])
+      $xmlGraph->addXmlPrologue(
+        $this->conf['xmlQueriesConfig'] .
+        $processQueries
+        )
     );
     $xmlGraph->processXmlGraph();
-
-    // Exec all the queries if allowed
-    if ($this->conf['allowQueries']) {
-
-      $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-
-      foreach($xmlGraph->getReferenceArray('querySelect') as $id => $value) {
-        $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-          $xmlGraph->getReferenceArray('querySelect', $id),
-          $xmlGraph->getReferenceArray('queryFrom', $id),
-          $xmlGraph->getReferenceArray('queryWhere', $id),
-          $xmlGraph->getReferenceArray('queryGroupby', $id),
-          $xmlGraph->getReferenceArray('queryOrderby', $id),
-          $xmlGraph->getReferenceArray('queryLimit', $id)
-        );
-
-        // Check for errors
-        if (!is_array($rows)) {
-          $lastBuiltQuery = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
-			    $lastBuiltQuery = str_replace(chr(9), '', $lastBuiltQuery);
-			    $lastBuiltQuery = str_replace('  ', '', $lastBuiltQuery);
-          JpGraphError::Raise(
-            'SQL error: ' . $GLOBALS['TYPO3_DB']->sql_error() . chr(10) .
-            'In query: '. $lastBuiltQuery
-          );
-        } else {
-          $xmlGraph->setReferenceArray('query', $id, $rows);
-        }
-      }
-    }
 
     // Load the xml data configuration and process it
     $xmlGraph->loadXmlString(
@@ -158,8 +169,25 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     $content = '<img class="jpgraph" src="' . $imageFileName . '" alt="" />';
 
+    // Include the default style sheet if none was provided
+		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$this->extKey])) {
+		  if (!$this->conf['fileCSS']) {
+		    if (file_exists(t3lib_extMgm::siteRelPath($this->extKey) . 'res/' . $this->extKey . '.css')) {
+          $css = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::siteRelPath($this->extKey) . 'res/' . $this->extKey . '.css" />';
+        }
+      } elseif (file_exists($this->conf['fileCSS'])) {
+        $css = '<link rel="stylesheet" type="text/css" href="' . $this->conf['fileCSS'] . '" />';
+		  } else {
+        $this->addError('error.incorrectCSS');
+        return false;
+      }
+
+      $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = $css;
+		}
+
 		return $this->pi_wrapInBaseClass($content);
 	}
+
 
   private function loadFlexform() {
     // Init FlexForm configuration for plugin and get the configuration fields

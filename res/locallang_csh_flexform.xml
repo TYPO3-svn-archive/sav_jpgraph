@@ -88,6 +88,7 @@
         
         - &lt; where &gt; ...  &lt; /where &gt;
         Defines the WHERE clause. See the tutorial for an example.
+        You can use reference in &lt; where &gt;. For example, ###marker#myMarker### will be replaced by the marker whose "id" is "myMarker".
         
         - &lt; groupby &gt; ... &lt; /groupby &gt;
         Defines the GROUP BY clause. See the tutorial for an example.

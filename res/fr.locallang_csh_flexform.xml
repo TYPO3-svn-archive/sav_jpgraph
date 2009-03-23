@@ -83,6 +83,7 @@
 
         - &lt; where &gt; ...  &lt; /where &gt;
         Définit la clause WHERE. Voir le tutoriel pour exemple.
+        Des références peuvent être utilisées dans &lt; where &gt;. Par exemple, ###marker#myMarker### sera remplacé par le marqueur dont l'"id" est "myMarker".
 
         - &lt; groupby &gt; ... &lt; /groupby &gt;
         Définit la clause GROUP BY. Voir le tutoriel pour exemple.

@@ -371,7 +371,7 @@ class query {
     $this->reference->setReferenceArray(
       'queryWhere',
       $this->referenceId,
-      $queryWhere
+      $this->replaceTags($queryWhere)
     );
   }
 
@@ -399,7 +399,7 @@ class query {
 	 */
   public function orderby($queryOrderby = '') {
     $this->reference->setReferenceArray(
-      'queryGroupby',
+      'queryOrderby',
       $this->referenceId,
       $queryOrderby
     );
@@ -420,6 +420,29 @@ class query {
     );
   }
 
+	/**
+	 * Replace tags in a string
+	 *    .
+	 * @param $string string
+	 *
+	 * @return string
+	 */
+  private function replaceTags($string = '') {
+
+    $out = $string;
+    
+    preg_match_all('/###([A-Za-z]+)#([0-9A-Za-z_]*)###/', $out, $matches);
+    foreach($matches[0] as $key => $match) {
+      $out = str_replace(
+        $matches[0][$key],
+        $this->reference->getReferenceArray($matches[1][$key], $matches[2][$key]),
+        $out
+      );
+    }
+    
+    return $out;
+  }
+
 }
 
 
@@ -434,9 +457,20 @@ class template {
   private $referenceId = 0;
   private $reference = NULL;
   private $templateDir = '';
+  private $fileName = '';
   private $imageDir = '';
   
-
+	/**
+	 * Construtor
+	 *
+	 * @param $markerValue string
+	 *
+	 * @return none
+	 */
+  public function __construct($fileName = '') {
+    $this->fileName = trim($fileName);
+  }
+  
 	/**
 	 * Set Reference to the calling object
 	 *
@@ -449,6 +483,10 @@ class template {
     $this->referenceId = $referenceId;
     $this->reference = &$reference;
     $this->setTemplateDir();
+
+    if ($this->fileName) {
+      $this->loadTemplate($this->fileName);
+    }
   }
   
 	/**
@@ -698,8 +736,12 @@ class xmlGraph extends Graph {
 	 *
 	 * @return none
 	 */
-  public function unsetReferenceArray($name, $id, $index) {
-    unset ($this->referenceArray[$name][$id][$index]);
+  public function unsetReferenceArray($name, $id, $index = false) {
+    if ($index === false) {
+      unset ($this->referenceArray[$name][$id]);
+    } else {
+      unset ($this->referenceArray[$name][$id][$index]);
+    }
   }
 
 	/**
@@ -716,6 +758,25 @@ class xmlGraph extends Graph {
       return $this->referenceArray[$name];
     } else {
       return $this->referenceArray[$name][$id];
+    }
+  }
+  
+	/**
+	 * Replace SQL variables in reference array
+	 *
+	 * @param $name string tag name
+	 * @param $variable string variable which must e replaced
+	 * @param $value string value used for replacement
+	 *
+	 * @return none
+	 */
+  public function replaceVariableInReferenceArray($name, $variable, $value) {
+    foreach($this->referenceArray[$name] as $id => $reference) {
+      $this->setReferenceArray(
+        $name,
+        $id,
+        str_replace($variable, $value, $reference)
+      );
     }
   }
 
@@ -992,10 +1053,12 @@ class xmlGraph extends Graph {
           $referenceIndex = $this->referenceIndex;
           
           // Process the attributes
-          foreach ($attributes[0] as $key => $attribute) {
-            $this->setReferenceArray($childJpGraphObject, $this->referenceId, $attribute);
-            $this->referenceIndex = $key;
-            $this->processElement($child, $JpGraphObject);
+          if (is_array($attributes[0])) {
+            foreach ($attributes[0] as $key => $attribute) {
+              $this->setReferenceArray($childJpGraphObject, $this->referenceId, $attribute);
+              $this->referenceIndex = $key;
+              $this->processElement($child, $JpGraphObject);
+            }
           }
           
           //Reset the reference index
@@ -1033,6 +1096,7 @@ class xmlGraph extends Graph {
         case 'marker':
         case 'data':
         case 'file':
+        case 'template':
           $attributes = array_merge(array((string)$child), $attributes);
           break;
         case 'foreach':
@@ -1040,10 +1104,12 @@ class xmlGraph extends Graph {
           $referenceIndex = $this->referenceIndex;
           
           // Process the attributes
-          foreach ($attributes[0] as $key => $attribute) {
-            $this->setreferenceArray($childName, $this->referenceId, $attribute);
-            $this->referenceIndex = $key;
-            $this->processChild($child->children());
+          if (is_array($attributes[0])) {
+            foreach ($attributes[0] as $key => $attribute) {
+              $this->setreferenceArray($childName, $this->referenceId, $attribute);
+              $this->referenceIndex = $key;
+              $this->processChild($child->children());
+            }
           }
           
           // Reset the reference index
@@ -1083,7 +1149,6 @@ class xmlGraph extends Graph {
       $this->referenceIndex = false;
       $this->processChild($child);
 		}
-
   }
 
 	/**
