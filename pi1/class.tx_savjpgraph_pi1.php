@@ -83,7 +83,6 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     if ($temp['plugin.']['sav_jpgraph.']['ttfDir']) {
       define('TTF_DIR', $temp['plugin.']['sav_jpgraph.']['ttfDir']);
     }
-      
     // Define the main directory
     define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'src/');
 
@@ -140,7 +139,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
           <setFileDir dir="PATH_site" />
           <setFile file="' . $imageFileName . '" />
         </file>' .
-        $this->conf['xmlMarkersConfig'] . 
+        utf8_encode($this->conf['xmlMarkersConfig']) .
         $processQueries
       )
     );

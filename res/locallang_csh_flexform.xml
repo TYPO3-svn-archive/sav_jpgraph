@@ -8,7 +8,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index=".description">SAV JpGraph</label>
-      <label index=".details">
+			<label index=".details">
       </label>
 			<label index="help.description">SAV JpGraph</label>
 			<label index="help.details">
@@ -16,69 +16,69 @@
         &lt;b&gt;&lt; data [attributes] &gt; ... &lt; /data &gt;&lt;/b&gt;
         Creates a data object.
         Attribute:
-         .  id="myData".  Optional attribute but it is requested when using reference to this object. The reference will be "myData".
+         .  id=&quot;myData&quot;.  Optional attribute but it is requested when using reference to this object. The reference will be &quot;myData&quot;.
 
         - &lt; setData attribute /&gt;
         Defines the data.
         Attribute:
-         . value="5,6,7". Use a comma-separated list of values.
+         . value=&quot;5,6,7&quot;. Use a comma-separated list of values.
 
         - &lt; setDataFromQuery attribute1 attribute2 /&gt;
         Defines the data from a query.
         Attributes:
-         . ref="query#1". An array is expected, in general it is the reference to a query.
-         . field="date". Field which will be used as the index of the array to get the data.
+         . ref=&quot;query#1&quot;. An array is expected, in general it is the reference to a query.
+         . field=&quot;date&quot;. Field which will be used as the index of the array to get the data.
 
         - &lt; SetDataFromArray attribute1 attribute2 /&gt;
         Defines the data from an array.
         Attributes:
-         . ref="data#result". An array is expected, in general it is the reference to a another data set.
-         . index="2". Index which will be used to get the data.
+         . ref=&quot;data#result&quot;. An array is expected, in general it is the reference to a another data set.
+         . index=&quot;2&quot;. Index which will be used to get the data.
 
         - &lt; setArray attribute1 attribute2 /&gt;
         Defines an array of data.
         Attributes:
-         . value="5,6,7". Use a comma-separated list of values.
-         . index="2". Optional index which will be used to set the data otherwise data are inserted in the array starting with the index equal to 0.
+         . value=&quot;5,6,7&quot;. Use a comma-separated list of values.
+         . index=&quot;2&quot;. Optional index which will be used to set the data otherwise data are inserted in the array starting with the index equal to 0.
 
         - &lt; setArrayFromQuery attribute1 /&gt;
         Defines an array of data from a query.
         Attribute:
-         . ref="query#1". An array is expected, in general it is the reference to a query.
+         . ref=&quot;query#1&quot;. An array is expected, in general it is the reference to a query.
          
         &lt;b&gt;&lt; file [attributes] &gt; ... &lt; /file &gt;&lt;/b&gt;
         Creates a file object.
         Attributes:
-         . id="myFile".  Optional attribute but it is requested when using reference to this object. The reference will be "myFile".
-        Note: id="1" defines the file used by default for saving the resulting image in the "typo3temp/sav_jpgraph" folder. The file name is "img_xxx" where "xxx" is the id of the content object.
+         . id=&quot;myFile&quot;.  Optional attribute but it is requested when using reference to this object. The reference will be &quot;myFile&quot;.
+        Note: id=&quot;1&quot; defines the file used by default for saving the resulting image in the &quot;typo3temp/sav_jpgraph&quot; folder. The file name is &quot;img_xxx&quot; where &quot;xxx&quot; is the id of the content object.
 
         - &lt; setFile attribute /&gt;
         Defines the fileName.
         Attribute:
-         . value="fileadmin/test.png".
+         . value=&quot;fileadmin/test.png&quot;.
          
         - &lt; setFileDir attribute /&gt;
         Defines the root directory.
         Attribute:
-         . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
+         . dir=&quot;PATH_site&quot;. Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
    
-        &lt;b&gt;&lt; foreach [attributes] ref="myData" &gt; ... &lt; /foreach &gt;&lt;/b&gt;
+        &lt;b&gt;&lt; foreach [attributes] ref=&quot;myData&quot; &gt; ... &lt; /foreach &gt;&lt;/b&gt;
         The tag &lt; foreach &gt; is not related with a class. It is a special tag which was introduced to process arrays. It makes it possible to repeat the sequence inside the tag. The number of repetitions is the size of the reference attribute.
 
         &lt;b&gt;&lt; marker [attributes] &gt; ...  &lt; /marker &gt;&lt;/b&gt;
         Creates a marker object.
         Attribute:
-         . id="myMarker".  Optional attribute but it is requested when using reference to this object. The reference will be "myMarker".
+         . id=&quot;myMarker&quot;.  Optional attribute but it is requested when using reference to this object. The reference will be &quot;myMarker&quot;.
          
         - &lt; setMarker attribute /&gt;
         Defines the marker.
         Attribute:
-         . value="Number of pages created per year".
+         . value=&quot;Number of pages created per year&quot;.
    
         &lt;b&gt;&lt; query [attributes]&gt; ... &lt; /query &gt;&lt;/b&gt;
         Creates a query object.
         Attributes:
-           .  id="myQuery".  Optional attribute but it is requested when using reference to this object. The reference will be "myQuery".
+           .  id=&quot;myQuery&quot;.  Optional attribute but it is requested when using reference to this object. The reference will be &quot;myQuery&quot;.
            
         - &lt; select &gt;... &lt; /select &gt;
         Defines the SELECT clause. See the tutorial for an example.
@@ -88,7 +88,7 @@
         
         - &lt; where &gt; ...  &lt; /where &gt;
         Defines the WHERE clause. See the tutorial for an example.
-        You can use reference in &lt; where &gt;. For example, ###marker#myMarker### will be replaced by the marker whose "id" is "myMarker".
+        You can use reference in &lt; where &gt;. For example, ###marker#myMarker### will be replaced by the marker whose &quot;id&quot; is &quot;myMarker&quot;.
         
         - &lt; groupby &gt; ... &lt; /groupby &gt;
         Defines the GROUP BY clause. See the tutorial for an example.
@@ -102,33 +102,34 @@
         &lt;b&gt;&lt; template [attributes] &gt; ... &lt; /template &gt;&lt;/b&gt;
         Creates a template object.
         Attributes:
-         .  id="myTemplate".  Optional attribute but it is requested when using reference to this object. The reference will be "myTemplate".
+         .  id=&quot;myTemplate&quot;.  Optional attribute but it is requested when using reference to this object. The reference will be &quot;myTemplate&quot;.
          
         - &lt; setTemplateDir attribute /&gt;
         Defines the root directory for the template.
         Attribute:
-         . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
+         . dir=&quot;PATH_site&quot;. Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
          
         - &lt; loadTemplate attribute /&gt;
         Loads the template file name.
         Attribute:
-         . file="typo3conf/ext/sav_jpgraph/templates/polarex0.xml".
+         . file=&quot;typo3conf/ext/sav_jpgraph/templates/polarex0.xml&quot;.
          
         - &lt; setCopyImageDir attribute /&gt;
         Defines the root directory for the copy of the image.
         Attribute:
-        . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
+        . dir=&quot;PATH_site&quot;. Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
         
         - &lt; copyImageInFile attribute /&gt;
         Copies the resulting image in a given file.
         Attributes:
-         . ref="file#1". Sets the root directory. A string is expected, in general it is the reference to a file.
-         . file="fileadmin/test.png". Destination file.
+         . ref=&quot;file#1&quot;. Sets the root directory. A string is expected, in general it is the reference to a file.
+         . file=&quot;fileadmin/test.png&quot;. Destination file.
 
       </label>
-    </languageKey>
-		
-		<languageKey index="fr">EXT:sav_jpgraph/res/fr.locallang_csh_flexform.xml</languageKey>
-
+		</languageKey>
 	</data>
+	<orig_hash type="array">
+	</orig_hash>
+	<orig_text type="array">
+	</orig_text>
 </T3locallang>

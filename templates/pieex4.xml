@@ -3,39 +3,43 @@
 
   <!-- External tags that can be used for the template pieex4.xml
 <data id="x"></data>                        // x data set
-<data id="legend"></data>                        // Legend data set
+<data id="legend"></data>                   // Legend data set
 <marker id="title"></marker>                // title of the graph
 <marker id="backgroundColor"></marker>      // Color of the graph background
+<marker id="xCenter"></marker>              // x coord for the center
+<marker id="yCenter"></marker>              // y coord for the center
+<marker id="width"></marker>                // Graph width
+<marker id="height"></marker>               // Graph height
 <file id="1"><file>                         // File name where to save the image
    -->
    
 
   <!-- Define the data -->
   <data id="default">
-    <setData value="40,60,21,33" />
+    40,60,21,33
   </data>
   <data id="defaultLegend">
-    <setData value="Jan,Feb,Mar,Apr,May" />
+    Jan,Feb,Mar,Apr,May
   </data>
 
 	<!-- Create the pie plot  -->
   <PiePlot id="1" ref="data#default" ref_ref="data#x">
     <SetSize param="0.3" />
-    <SetCenter x="0.4" />
+    <SetCenter xCenter="0.4" ref_xCenter="marker#xCenter" yCenter="0.5" ref_yCenter="marker#yCenter"/>
     <value>
-      <SetFont family="FF_FONT1" style="FS_BOLD" />
+      <SetFont family="FF_ARIAL" style="FS_BOLD" />
       <SetColor color="darkred" />
     </value>
     <SetLegends ref="data#defaultLegend" ref_ref="data#legend" />
   </PiePlot>
 
   <!-- Set up the graph -->
-  <PieGraph width="300" height="200" type="auto">
+  <PieGraph width="300" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <SetShadow />
     <SetMarginColor color="white" ref_color="marker#backgroundColor" />
     <title>
       <Set title="Example 4 of pie plot" ref_title="marker#title"/>
-      <SetFont family="FF_FONT1" style="FS_BOLD" />
+      <SetFont family="FF_ARIAL" style="FS_BOLD" />
     </title>
     <Add ref="PiePlot#1" />
     <Stroke ref="file#1" />
