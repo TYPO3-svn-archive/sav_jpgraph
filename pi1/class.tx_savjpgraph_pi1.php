@@ -54,7 +54,8 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
   // Session variables from SAV Filter
   protected $sessionFilter;
   protected $sessionFilterSelected;
-  
+  protected $errors;                                   // Errors list
+
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -177,8 +178,8 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       } elseif (file_exists($this->conf['fileCSS'])) {
         $css = '<link rel="stylesheet" type="text/css" href="' . $this->conf['fileCSS'] . '" />';
 		  } else {
-        $this->addError('error.incorrectCSS');
-        return false;
+        $this->addError('error.incorrectCSS', $this->conf['fileCSS']);
+        return $this->pi_wrapInBaseClass($this->showErrors());
       }
 
       $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = $css;
@@ -203,6 +204,36 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     // Merge the flexform configuration with the plugin configuration
     $this->conf = array_merge($this->conf, $flexConf);
   }
+
+	/**
+	 * Add an error to the error list
+	 *
+	 * @errorLabel string (error label)
+	 * @addMessage string (additional message)
+	 *
+	 * @return void
+	 */
+	protected function addError($errorLabel, $addMessage='') {
+    $this->errors[] = sprintf($this->pi_getLL($errorLabel), $addMessage);
+  }
+
+	/**
+	 * Return the error list
+	 *
+	 * @return string (the error content result)
+	 */
+	protected function showErrors() {
+		if(!$this->errors) {
+			return '';
+		} else {
+			$errorList = '';
+			foreach($this->errors as $error) {
+        $errorList .= '<li class="error">' . $error . '</li>';
+      }
+			return  '<ul>' . $errorList . '</ul>';
+		}
+	}
+
 
 }
 

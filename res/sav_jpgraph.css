@@ -8,3 +8,8 @@
     .tx-savjpgraph-pi1 {
       margin-bottom: 10px;
     }      
+
+    .tx-savjpgraph-pi1 .error{
+      background-color:inherit;
+      color:red;
+    }
