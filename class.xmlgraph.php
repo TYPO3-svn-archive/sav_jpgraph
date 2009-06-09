@@ -614,7 +614,7 @@ class xmlGraph extends Graph {
     // Mgraph
     'MGraph' => 'jpgraph_mgraph.php',
     // Pie3d
-    'PiePlot3D' => 'jpgraph_pie3d.php',
+    'PiePlot3D' => 'jpgraph_pie.php,jpgraph_pie3d.php',
     // Pie
     'PiePlot' => 'jpgraph_pie.php',
     'PiePlotC' => 'jpgraph_pie.php',
@@ -789,7 +789,7 @@ class xmlGraph extends Graph {
 	 */
   protected function processReference($reference) {
     // Get the tag and the id
-    if (preg_match('/^([A-Za-z]+)#([0-9A-Za-z_]*)$/', $reference, $matches)) {
+    if (preg_match('/^([0-9A-Za-z]+)#([0-9A-Za-z_]*)$/', $reference, $matches)) {
       if (isset($this->referenceArray[$matches[1]][$matches[2]])) {
         return $this->referenceArray[$matches[1]][$matches[2]];
       } else {
@@ -1121,7 +1121,10 @@ class xmlGraph extends Graph {
 
     // include required file if any
     if (array_key_exists($childName, $this->requireArray)) {
-      require_once(JP_maindir . $this->requireArray[$childName]);
+      $requiredFiles = explode(',', $this->requireArray[$childName]);
+      foreach($requiredFiles as $requiredFile) {
+        require_once(JP_maindir . $requiredFile);
+      }
     }
     $newObject = $this->createObject($childName, $attributes);
     $this->setReferenceArray($childName, $this->referenceId, $newObject, $this->referenceIndex);

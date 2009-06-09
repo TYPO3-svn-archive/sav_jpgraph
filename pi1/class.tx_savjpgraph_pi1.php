@@ -50,6 +50,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_savjpgraph_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_savjpgraph_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'sav_jpgraph';	// The extension key.
+  var $pi_checkCHash = true;
 
   // Session variables from SAV Filter
   protected $sessionFilter;
@@ -67,7 +68,6 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 
     // define the constant LOCALE for the use in the template
     define(LOCALE, $GLOBALS['TSFE']->config['config']['locale_all']);
@@ -121,8 +121,16 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       $xmlGraph->setReferenceArray('filter', 'addWhere', '1');
     }
 
-    //
+    // Check if queries are allowed
     if ($this->conf['allowQueries']) {
+      // Change the plugin as a USER INT
+    	if ($this->cObj->getUserObjectType() == ux_tslib_cObj::OBJECTTYPE_USER) {
+  			$this->cObj->convertToUserIntObject();
+      }
+      $this->pi_checkCHash = false;
+  		$this->pi_USER_INT_obj = 1;
+
+      // Prepare the queries processing
       $processQueries = '
         <typo3>
           <processQueries />
@@ -234,10 +242,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 		}
 	}
 
-
 }
-
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/pi1/class.tx_savjpgraph_pi1.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/pi1/class.tx_savjpgraph_pi1.php']);

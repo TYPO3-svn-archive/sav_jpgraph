@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template pieex8.xml
+<data id="data"></data>                     // data set
+<data id="legend"></data>                   // legend for datad
+<marker id="title"></marker>                // title of the graph
+<marker id="backgroundColor"></marker>      // Color of the graph background
+<file id="1"><file>                         // File name where to save the image
+   -->
+   
+  <!-- Define the data -->
+  <data id="defaultData">
+    <setData value="40,60,21,33" />
+  </data>
+  <data id="defaultLegend">
+    Jan,Feb,Mar,Apr
+  </data>
+  
+	<!-- Create the pie plot  -->
+  <PiePlot3D id="1" ref="data#defaultData" ref_ref="data#data">
+    <SetAngle param="20" />
+    <SetSize param="0.5" />
+    <SetCenter param="0.45" />
+    <SetLegends ref="data#defaultLegend" ref_ref="data#legend" />
+  </PiePlot3D>
+
+  <!-- Set up the graph -->
+  <PieGraph width="300" height="200" type="auto">
+    <SetShadow />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <title>
+      <Set title="A simple 3D Pie plot" ref_title="marker#title"/>
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+    </title>
+    <Add ref="PiePlot3D#1" />
+    <Stroke ref="file#1" />
+  </PieGraph>
+
+</jpgraph>
+
+
