@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template pieex8.xml
+<data id="dataSet1"></data>                 // data for set 1
+<data id="dataSet2"></data>                 // data for set 2
+<data id="dataTitles"></data>               // Titles for the data
+<marker id="legendSet1"></marker>           // legend for set 1
+<marker id="legendSet2"></marker>           // legend for set 2
+<marker id="title"></marker>                // title of the graph
+<file id="1"><file>                         // File name where to save the image
+   -->
+   
+  <!-- Define the data -->
+  <data id="defaultDataSet1">
+    <setData value="30,80,60,40,71,81,47" />
+  </data>
+  <data id="defaultDataSet2">
+    <setData value="70,40,30,80,31,51,14" />
+  </data>
+  <data id="defaultDataTitles">
+    <setData value="One,Two,Three,Four,Five,Six,Seven" />
+  </data>
+
+	<!-- Create the data radar plots  -->
+  <RadarPlot id="1" ref="data#defaultDataSet1" ref_ref="data#dataSet1">
+    <SetLegend legend="Goal" ref_legend="marker#legendSet1" />
+    <SetColor color="red" fillColor="lightred" />
+    <SetFill value="false" />
+    <SetLineWeight weight="2" />
+  </RadarPlot>
+
+  <RadarPlot id="2" ref="data#defaultDataSet2" ref_ref="data#dataSet2">
+    <SetLegend legend="Actual" ref_legend="marker#legendSet2" />
+    <SetColor color="blue" fillColor="lightred" />
+  </RadarPlot>
+
+  <!-- Create the basic radar graph -->
+  <RadarGraph width="350" height="200" type="auto">
+    <SetColor color="white" />
+    <SetShadow />
+    <SetCenter x="0.4" y="0.55" />
+    <axis>
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+      <SetWeight value="2" />
+    </axis>
+    <grid>
+      <SetLineStyle style="longdashed" />
+      <SetColor color="navy" />
+      <Show />
+    </grid>
+    <HideTickMarks />
+    <title>
+      <Set title="Quality result"  ref_title="marker#title" />
+      <SetFont family="FF_FONT1" style="FS_BOLD" />
+    </title>
+    <SetTitles ref="data#defaultDataTitles" ref_ref="data#dataTitles" />
+
+    <Add ref="RadarPlot#1" />
+    <Add ref="RadarPlot#2" />
+    <Stroke ref="file#1" />
+  </RadarGraph>
+</jpgraph>

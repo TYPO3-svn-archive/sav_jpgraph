@@ -791,7 +791,12 @@ class xmlGraph extends Graph {
     // Get the tag and the id
     if (preg_match('/^([0-9A-Za-z]+)#([0-9A-Za-z_]*)$/', $reference, $matches)) {
       if (isset($this->referenceArray[$matches[1]][$matches[2]])) {
-        return $this->referenceArray[$matches[1]][$matches[2]];
+        $referenceValue = $this->referenceArray[$matches[1]][$matches[2]];
+        if(is_scalar($referenceValue)) {
+          return $this->processConstant((string) $referenceValue);
+        } else {
+          return $referenceValue;
+        }
       } else {
         return false;
       }
