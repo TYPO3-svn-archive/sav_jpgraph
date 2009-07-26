@@ -1,12 +1,12 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_utils.inc.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_utils.inc.php");
 
 $f = new FuncGenerator('cos($i)','$i*$i*$i');
 list($xdata,$ydata) = $f->E(-M_PI,M_PI,25);
 
-$graph = new Graph(300,200,"auto");
+$graph = new Graph(300,200);
 $graph->SetScale("linlin");
 $graph->SetMargin(50,50,20,30);	
 $graph->SetFrame(false);

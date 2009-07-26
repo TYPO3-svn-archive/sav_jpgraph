@@ -1,7 +1,8 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_scatter.php");
-include ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_scatter.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_plotline.php");
 
 $numpoints=50;
 $k=0.05;
@@ -20,7 +21,7 @@ for($i=0; $i<$numpoints; ++$i) {
 }
 
 // Setup the basic parameters for the graph
-$graph = new Graph(500,250,"auto");
+$graph = new Graph(500,250);
 $graph->SetScale("intlin");
 
 $graph->SetShadow();

@@ -1,11 +1,11 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $datay=array(12,8,19,3,10,5);
 
 // Create the graph. These two calls are always required
-$graph = new Graph(300,200,"auto");	
+$graph = new Graph(300,200);	
 $graph->SetScale("textlin");
 
 // Add a drop shadow

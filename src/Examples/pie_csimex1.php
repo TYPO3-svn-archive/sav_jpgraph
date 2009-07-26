@@ -1,6 +1,6 @@
-<?php
-include_once ("../jpgraph.php");
-include_once ("../jpgraph_pie.php");
+<?php // content="text/plain; charset=utf-8"
+include_once ("jpgraph/jpgraph.php");
+include_once ("jpgraph/jpgraph_pie.php");
 
 // Some data
 $data = array(40,21,17,14,23);

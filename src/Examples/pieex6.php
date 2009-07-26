@@ -1,12 +1,12 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_pie.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_pie.php");
 
 // Some data
 $data = array(27,23,47,17);
 
 // A new graph
-$graph = new PieGraph(350,200,"auto");
+$graph = new PieGraph(350,200);
 $graph->SetShadow();
 
 // Setup title

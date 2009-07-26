@@ -1,10 +1,10 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include("../jpgraph.php");
-include("../jpgraph_line.php");
+include("jpgraph/jpgraph.php");
+include("jpgraph/jpgraph_line.php");
 
 // create the graph
-$graph= new Graph(400,250,"auto");
+$graph= new Graph(400,250);
 
 $ydata = array(5,10,15,20,15,10);
 

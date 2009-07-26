@@ -1,8 +1,8 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_log.php");
-include ("../jpgraph_error.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_log.php");
+require_once ("jpgraph/jpgraph_error.php");
 
 $xdata = array( 2.0,  2.5,  3.0,  4.0,  5.0,  6.0,  8.0, 10.0,
                12.0, 15.0, 20.0, 25.0, 30.0, 40.0, 50.0, 60.0,
@@ -44,7 +44,7 @@ $ydata = array(270.,  280., // 2 m
                  8.,   10.  // 2500 m
                );
 
-$graph = new Graph(500,300,"auto");
+$graph = new Graph(500,300);
 $graph->SetScale("linlog");
 $graph->img->SetMargin(40,20,20,40);
 $graph->title->SetFont(FF_FONT1,FS_BOLD);

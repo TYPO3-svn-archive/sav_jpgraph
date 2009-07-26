@@ -1,11 +1,11 @@
-<?php
-include ("../jpgraph.php"); 
-include ("../jpgraph_radar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php"); 
+require_once ("jpgraph/jpgraph_radar.php");
 
 $titles=array("N", '', "NW", '', "W", '', "SW", '', 'S', '', "SE", '', "E", '', "NE", '');
 $data=array(0, 0, 8, 10, 70, 90, 42, 0, 70, 60, 50, 40, 30, 40, 37.8, 72);
 
-$graph = new RadarGraph (250,270,"auto"); 
+$graph = new RadarGraph (250,270); 
 
 $graph->title->Set("Accumulated PPM");
 $graph->title->SetFont(FF_VERDANA,FS_NORMAL,12);

@@ -1,15 +1,15 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_error.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_error.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $l1datay = array(11,9,2,4,3,13,17);
 $l2datay = array(23,12,5,19,17,10,15);
 $datax=array("Jan","Feb","Mar","Apr","May","Jun","Jul");
 
 // Create the graph. 
-$graph = new Graph(350,200,"auto");	
+$graph = new Graph(350,200);	
 $graph->img->SetMargin(40,70,20,40);
 $graph->SetScale("textlin");
 $graph->SetShadow();

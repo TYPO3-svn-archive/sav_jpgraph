@@ -1,6 +1,6 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_scatter.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_scatter.php");
 
 
 // Make a circle with a scatterplot
@@ -12,7 +12,7 @@ for($i=0; $i<$steps; ++$i) {
 }
 
 
-$graph = new Graph(300,200,"auto");
+$graph = new Graph(300,200);
 $graph->SetScale("linlin");
 
 $graph->img->SetMargin(40,40,40,40);		

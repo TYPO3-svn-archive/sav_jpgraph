@@ -1,7 +1,7 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_scatter.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_scatter.php");
 
 $datay1 = array(4,26,15,44);
 

@@ -1,13 +1,14 @@
-<?php
-// $Id: listfontsex1.php,v 1.3 2002/10/25 22:44:15 aditus Exp $
-include "../jpgraph.php";
-include "../jpgraph_canvas.php";
-include "../jpgraph_canvtools.php";
+<?php // content="text/plain; charset=utf-8"
 
+include "jpgraph/jpgraph.php";
+include "jpgraph/jpgraph_canvas.php";
+include "jpgraph/jpgraph_canvtools.php";
 
-$g = new CanvasGraph(550,450,'auto');
+$width = 700;
+$height = 800;
+$g = new CanvasGraph($width,$height);
 $scale = new CanvasScale($g);
-$scale->Set(0,27,0,53);
+$scale->Set(0,27,0,85);
 $g->SetMargin(5,6,5,6);
 $g->SetColor('white');
 $g->SetMarginColor("teal");
@@ -15,21 +16,25 @@ $g->InitFrame();
 
 
 $t = new CanvasRectangleText();
-$t->SetFillColor('lightgreen');
-$t->SetFontColor('navy');
 $t->SetFont(FF_ARIAL,FS_NORMAL,16);
-$t->Set("\n\n\n\n\n\n\n\n\n\n\nTTF Fonts",0.5,19,26,32);
+$t->SetFillColor('lemonchiffon2');
+$t->SetFontColor('black');
+$t->Set("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTTF Fonts (11pt)",0.5,19.5,26,64.5);
+$t->Stroke($g->img,$scale);
+
+$t->SetFillColor('lemonchiffon3');
+$t->Set("\n\n\n\nBitmap Fonts",0.5,5,26,13.5);
 $t->Stroke($g->img,$scale);
 
 
 $t = new CanvasRectangleText();
-
 $t->SetFillColor('');
 $t->SetFontColor('black');
 $t->SetColor('');
 $t->SetShadow('');
+
 $t->SetFont(FF_ARIAL,FS_BOLD,18);
-$t->Set('Family',1,1,8);
+$t->Set('Normal',1,1,8);
 $t->Stroke($g->img,$scale);
 
 $t->Set('Italic style',9,1,8);
@@ -84,10 +89,42 @@ $fonts=array(
     array("Courier italic",FF_COURIER,FS_ITALIC),
     array("Courier bold",FF_COURIER,FS_BOLD),
 
-
     array("Times normal",FF_TIMES,FS_NORMAL),
     array("Times italic",FF_TIMES,FS_ITALIC),
-    array("Times bold italic",FF_TIMES,FS_BOLDITALIC),
+    array("Times bold",FF_TIMES,FS_BOLD),
+
+    array("Vera normal",FF_VERA,FS_NORMAL),
+    array("Vera italic",FF_VERA,FS_ITALIC),
+    array("Vera bold",FF_VERA,FS_BOLD),    
+    
+    array("Vera mono normal",FF_VERAMONO,FS_NORMAL),
+    array("Vera mono italic",FF_VERAMONO,FS_ITALIC),
+    array("Vera mono bold",FF_VERAMONO,FS_BOLD),    
+
+    array("Vera serif normal",FF_VERASERIF,FS_NORMAL),
+    array("",FF_VERASERIF,FS_ITALIC),
+    array("Vera serif bold",FF_VERASERIF,FS_BOLD),    
+            
+    array("DejaVu sans serif",FF_DV_SANSSERIF,FS_NORMAL),
+    array("DejaVu sans serif",FF_DV_SANSSERIF,FS_ITALIC),
+    array("DejaVu sans serif",FF_DV_SANSSERIF,FS_BOLD),
+
+    array("DejaVu serif",FF_DV_SERIF,FS_NORMAL),
+    array("DejaVu serif",FF_DV_SERIF,FS_ITALIC),
+    array("DejaVu serif",FF_DV_SERIF,FS_BOLD),
+
+    array("DejaVuMono sans serif",FF_DV_SANSSERIFMONO,FS_NORMAL),
+    array("DejaVuMono sans serif",FF_DV_SANSSERIFMONO,FS_ITALIC),
+    array("DejaVuMono sans serif",FF_DV_SANSSERIFMONO,FS_BOLD),
+
+    array("DejaVuCond serif",FF_DV_SERIFCOND,FS_NORMAL),
+    array("DejaVuCond serif",FF_DV_SERIFCOND,FS_ITALIC),
+    array("DejaVuCond serif",FF_DV_SERIFCOND,FS_BOLD),
+
+    array("DejaVuCond sans serif",FF_DV_SANSSERIFCOND,FS_NORMAL),
+    array("DejaVuCond sans serif",FF_DV_SANSSERIFCOND,FS_ITALIC),
+    array("DejaVuCond sans serif",FF_DV_SANSSERIFCOND,FS_BOLD),
+    
     );
 
 
@@ -98,16 +135,16 @@ for( $i=0; $i < $n; ++$i ) {
     if( $i==9 ) $r += 3;
 
     if( $fonts[$i][0] ) {
-	$t->SetTxt($fonts[$i][0]);
-	$t->SetPos($c,$r,$w,$h);
-	$t->SetFont($fonts[$i][1],$fonts[$i][2],13);
-	$t->Stroke($g->img,$scale);
+    $t->SetTxt($fonts[$i][0]);
+    $t->SetPos($c,$r,$w,$h);
+    $t->SetFont($fonts[$i][1],$fonts[$i][2],11);
+    $t->Stroke($g->img,$scale);
     }
 
     $c += $w+1;
     if( $c > 30-$w-2 ) {
-	$c = 1;
-	$r += 4;
+    $c = 1;
+    $r += 4;
     }
 
 }

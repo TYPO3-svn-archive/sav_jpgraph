@@ -1,18 +1,26 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_line.php');
 
-$ydata = array(11,3,8,10,5,1,9,13,5,7);
+// Some (random) data
+$ydata = array(11,3,8,12,5,1,9,13,5,7);
 
-// Create the graph. These two calls are always required
-$graph = new Graph(300,200,"auto");	
-$graph->SetScale("textlin");
+// Size of the overall graph
+$width=350;
+$height=250;
+
+// Create the graph and set a scale.
+// These two calls are always required
+$graph = new Graph($width,$height);
+$graph->SetScale('intlin');
 
 // Setup margin and titles
-$graph->img->SetMargin(40,20,20,40);
-$graph->title->Set("Example 2");
-$graph->xaxis->title->Set("X-title");
-$graph->yaxis->title->Set("Y-title");
+$graph->SetMargin(40,20,20,40);
+$graph->title->Set('Calls per operator');
+$graph->subtitle->Set('(March 12, 2008)');
+$graph->xaxis->title->Set('Operator');
+$graph->yaxis->title->Set('# of calls');
+
 
 // Create the linear plot
 $lineplot=new LinePlot($ydata);

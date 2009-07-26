@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 // Some data
 $datay1=array(140,110,50,60);

@@ -1,8 +1,8 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_log.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_scatter.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_log.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_scatter.php");
 
 
 $ab2  = array( 1.5,  2.0,  2.5,  3.0,  4.0,  5.0,  6.0,  8.0, 10.0,
@@ -16,7 +16,7 @@ $rhos = array(30.0, 31.0, 32.0, 34.0, 35.5, 37.5, 38.0, 39.5, 41.5,
               75.0, 81.0, 89.0);
 
 // Create the graph.
-$graph = new Graph(500,300,"auto");     
+$graph = new Graph(500,300);     
 $graph->SetScale("loglog");              
 $graph->SetY2Scale("lin");               
 $graph->y2axis->SetColor("blue","blue"); 

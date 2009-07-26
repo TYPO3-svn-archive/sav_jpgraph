@@ -1,8 +1,8 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_gantt.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_gantt.php");
 
-$graph = new GanttGraph(0,0,"auto");
+$graph = new GanttGraph(0,0);
 $graph->SetBox();
 $graph->SetShadow();
 
@@ -19,7 +19,7 @@ $graph->scale->tableTitle->Set("(Rev: 1.22)");
 $graph->scale->tableTitle->SetFont(FF_FONT1,FS_BOLD);
 $graph->scale->SetTableTitleBackground("silver");
 
-// Modify the appearance of the dividing lines 
+// Modify the appearance of the dividing lines
 $graph->scale->divider->SetWeight(3);
 $graph->scale->divider->SetColor("navy");
 $graph->scale->dividerh->SetWeight(3);

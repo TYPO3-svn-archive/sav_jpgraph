@@ -1,20 +1,20 @@
-<?php
-include ("../jpgraph.php"); 
-include ("../jpgraph_radar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_radar.php');
 
 $titles=array('Planning','Quality','Time','RR','CR','DR');
 $data=array(18, 40, 70, 90, 42,66);
 
-$graph = new RadarGraph (300,280,"auto"); 
+$graph = new RadarGraph (300,280);
 
-$graph->title->Set("Radar with marks");
+$graph->title->Set('Radar with marks');
 $graph->title->SetFont(FF_VERDANA,FS_NORMAL,12);
 
 $graph->SetTitles($titles);
 $graph->SetCenter(0.5,0.55);
-$graph->HideTickMarks(); 
+$graph->HideTickMarks();
 $graph->SetColor('lightgreen@0.7');
-$graph->axis->SetColor('darkgray'); 
+$graph->axis->SetColor('darkgray');
 $graph->grid->SetColor('darkgray');
 $graph->grid->Show();
 

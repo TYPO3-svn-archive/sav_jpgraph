@@ -1,6 +1,6 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
 
 // Callback to negate the argument
 function _cb_negate($aVal) {
@@ -24,7 +24,7 @@ for($i=0; $i<$n; ++$i) {
 }
 
 // Basic graph setup
-$graph = new Graph(400,300,"auto");
+$graph = new Graph(400,300);
 $graph->SetScale("linlin");
 $graph->SetY2Scale("lin");
 $graph->SetMargin(50,50,60,40);	

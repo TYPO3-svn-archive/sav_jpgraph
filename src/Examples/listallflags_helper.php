@@ -1,6 +1,6 @@
-<?php
-require_once '../jpgraph.php';
-require_once '../jpgraph_flags.php';
+<?php // content="text/plain; charset=utf-8"
+require_once 'jpgraph/jpgraph.php';
+require_once 'jpgraph/jpgraph_flags.php';
 
 if( empty($_GET['size']) ) {
     $size = FLAGSIZE2;

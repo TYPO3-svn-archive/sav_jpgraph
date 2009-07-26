@@ -1,13 +1,13 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 //$Id: pieex7.php,v 1.1 2002/06/17 13:53:43 aditus Exp $
-include ("../jpgraph.php");
-include ("../jpgraph_pie.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_pie.php");
 
 // Some data
 $data = array(27,23,0,17);
 
 // A new graph
-$graph = new PieGraph(350,200,"auto");
+$graph = new PieGraph(350,200);
 $graph->SetShadow();
 
 // Setup title

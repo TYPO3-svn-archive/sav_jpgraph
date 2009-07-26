@@ -1,13 +1,13 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 // We need some data
 $datay=array(4,8,6);
 
 // Setup the graph. 
-$graph = new Graph(200,150,"auto");	
+$graph = new Graph(200,150);	
 $graph->SetScale("textlin");
 $graph->img->SetMargin(25,15,25,25);
 

@@ -27,16 +27,6 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-
-
-/**
- * Plugin 'SAV JpGraph' for the 'sav_jpgraph' extension.
- *
- * @author	Yolf (Laurent Foulloy) <yolf.typo3@orange.fr>
- * @package	TYPO3
- * @subpackage	tx_savjpgraph
- */
 
 require_once(PATH_tslib . 'class.tslib_pibase.php');
 /**
@@ -46,6 +36,7 @@ require_once(PATH_tslib . 'class.tslib_pibase.php');
  * @package	TYPO3
  * @subpackage	tx_savjpgraph
  */
+ 
 class tx_savjpgraph_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_savjpgraph_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_savjpgraph_pi1.php';	// Path to this script relative to the extension dir.

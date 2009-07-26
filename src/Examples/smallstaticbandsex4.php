@@ -1,13 +1,13 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // Illustration of the different patterns for bands
 // $Id: smallstaticbandsex4.php,v 1.1 2002/09/01 21:51:08 aditus Exp $
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $datay=array(10,29,3,6);
 
 // Create the graph. 
-$graph = new Graph(200,150,"auto");	
+$graph = new Graph(200,150);	
 $graph->SetScale("textlin");
 $graph->SetMargin(25,10,20,20);
 
@@ -28,9 +28,9 @@ $graph->Add($bplot);
 
 // Add band
 $band = new PlotBand(HORIZONTAL,BAND_3DPLANE,15,35,'khaki4');
-$band->SetDensity(60);
+$band->SetDensity(80);
 $band->ShowFrame(true);
-$graph->AddBand($band);
+$graph->Add($band);
 
 // Set title
 $graph->title->SetFont(FF_ARIAL,FS_BOLD,10);

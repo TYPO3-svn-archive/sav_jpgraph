@@ -1,8 +1,8 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
-include ("../jpgraph_flags.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
+require_once ("jpgraph/jpgraph_flags.php");
 
 // Some data
 $datay1=array(140,110,50);
@@ -11,12 +11,11 @@ $datay3=array(20,60,70);
 
 // Create the basic graph
 $graph = new Graph(300,200);	
-$graph->SetScale("textlin");
+$graph->SetScale('textlin');
 $graph->SetMargin(40,20,20,40);
 $graph->SetMarginColor('white:0.9');
 $graph->SetColor('white');
 $graph->SetShadow();
-
 
 // Adjust the position of the legend box
 $graph->legend->Pos(0.03,0.10);
@@ -28,7 +27,6 @@ $graph->legend->Hide();
 
 // Get localised version of the month names
 $graph->xaxis->SetTickLabels($gDateLocale->GetShortMonth());
-
 $graph->SetBackgroundCountryFlag('mais',BGIMG_COPY,50);
 
 // Set axis titles and fonts

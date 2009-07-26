@@ -1,17 +1,17 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // $Id: horizbarex4.php,v 1.4 2002/11/17 23:59:27 aditus Exp $
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $datay=array(1992,1993,1995,1996,1997,1998,2001);
 
 // Size of graph
-$width=400; 
+$width=400;
 $height=500;
 
-// Set the basic parameters of the graph 
-$graph = new Graph($width,$height,'auto');
-$graph->SetScale("textlin");
+// Set the basic parameters of the graph
+$graph = new Graph($width,$height);
+$graph->SetScale('textlin');
 
 $top = 60;
 $bottom = 30;
@@ -34,11 +34,11 @@ $graph->xaxis->SetLabelAlign('right','center','right');
 $graph->yaxis->SetLabelAlign('center','bottom');
 
 // Titles
-$graph->title->Set('Year Married');
+$graph->title->Set('Number of incidents');
 
 // Create a bar pot
 $bplot = new BarPlot($datay);
-$bplot->SetFillColor("orange");
+$bplot->SetFillColor('orange');
 $bplot->SetWidth(0.5);
 $bplot->SetYMin(1990);
 

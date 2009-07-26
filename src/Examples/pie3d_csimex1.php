@@ -1,7 +1,7 @@
-<?php
-include_once ("../jpgraph.php");
-include_once ("../jpgraph_pie.php");
-include_once ("../jpgraph_pie3d.php");
+<?php // content="text/plain; charset=utf-8"
+include_once ("jpgraph/jpgraph.php");
+include_once ("jpgraph/jpgraph_pie.php");
+include_once ("jpgraph/jpgraph_pie3d.php");
 
 //$gJpgBrandTiming=true;
 

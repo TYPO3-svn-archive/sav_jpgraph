@@ -1,12 +1,12 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
 
 $ydata = array(11,3,8,12,5,1,9,13,5,7);
 $y2data = array(354,200,265,99,111,91,198,225,293,251);
 
 // Create the graph and specify the scale for both Y-axis
-$graph = new Graph(300,240,"auto");	
+$graph = new Graph(300,240);	
 $graph->SetScale("textlin");
 $graph->SetY2Scale("lin");
 $graph->SetShadow();

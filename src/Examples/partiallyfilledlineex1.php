@@ -1,13 +1,13 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include("../jpgraph.php");
-include("../jpgraph_line.php");
+include("jpgraph/jpgraph.php");
+include("jpgraph/jpgraph_line.php");
 
 // Some data
 $ydata = array(5,10,15,20,15,10,8,7,4,10,5);
 
 // Create the graph
-$graph= new Graph(400,300,"auto");
+$graph= new Graph(400,300);
 $graph->SetScale("textlin");
 $graph->SetShadow(true);
 $graph->SetMarginColor("lightblue");

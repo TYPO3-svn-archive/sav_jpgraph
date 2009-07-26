@@ -1,8 +1,8 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // $Id: canvasex04.php,v 1.1 2002/08/27 20:08:57 aditus Exp $
-include "../jpgraph.php";
-include "../jpgraph_canvas.php";
-include "../jpgraph_canvtools.php";
+include "jpgraph/jpgraph.php";
+include "jpgraph/jpgraph_canvas.php";
+include "jpgraph/jpgraph_canvtools.php";
 
 // Define work space
 $xmax=20;

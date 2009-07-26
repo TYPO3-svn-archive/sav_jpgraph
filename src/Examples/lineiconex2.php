@@ -1,8 +1,8 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_flags.php");
-include ("../jpgraph_iconplot.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_flags.php");
+require_once ("jpgraph/jpgraph_iconplot.php");
 
 $datay = array(30,25,33,25,27,45,32);
 

@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // Example of a stock chart
-include ("../jpgraph.php");
-include ("../jpgraph_stock.php");
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_stock.php');
 
 // Data must be in the format : open,close,min,max,median
 $datay = array(
@@ -13,7 +13,7 @@ $datay = array(
 
 // Setup a simple graph
 $graph = new Graph(300,200);
-$graph->SetScale("textlin");
+$graph->SetScale('textlin');
 $graph->SetMarginColor('lightblue');
 $graph->title->Set('Box Stock chart example');
 

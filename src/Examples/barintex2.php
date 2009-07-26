@@ -1,13 +1,12 @@
-<?php
-// $Id: barintex2.php,v 1.2 2002/07/11 23:27:28 aditus Exp $
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 // Some data
-$datay=array(3,1,7,5,12,11,9,4,17);
+$datay=array(3,7,19,11,4,20);
 
 // Create the graph and setup the basic parameters 
-$graph = new Graph(460,200,'auto');	
+$graph = new Graph(350,200,'auto');	
 $graph->img->SetMargin(40,30,40,40);
 $graph->SetScale("textint");
 $graph->SetFrame(true,'blue',1); 
@@ -16,7 +15,7 @@ $graph->SetMarginColor('lightblue');
 
 // Add some grace to the top so that the scale doesn't
 // end exactly at the max value. 
-$graph->yaxis->scale->SetGrace(20);
+//$graph->yaxis->scale->SetGrace(20);
 
 // Setup X-axis labels
 $a = $gDateLocale->GetShortMonth();

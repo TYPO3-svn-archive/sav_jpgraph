@@ -1,7 +1,7 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $month=array(
 "Jan","Feb","Mar","Apr","Maj","Jun","Jul","Aug","Sep","Okt","Nov","Dec");
@@ -24,7 +24,7 @@ for($i=0; $i<$steps; ++$i) {
 
 
 // New graph with a background image and drop shadow
-$graph = new Graph(450,300,"auto");
+$graph = new Graph(450,300);
 $graph->SetBackgroundImage("tiger_bkg.png",BGIMG_FILLFRAME);
 $graph->SetShadow();
 

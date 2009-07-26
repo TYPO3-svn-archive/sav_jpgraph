@@ -1,11 +1,12 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
+require_once ("jpgraph/jpgraph_plotline.php");
 
 $datay=array(12,0,-19,-7,17,-6);
 
 // Create the graph. 
-$graph = new Graph(400,300,"auto");	
+$graph = new Graph(400,300);	
 $graph->img->SetMargin(60,30,50,40);
 $graph->SetScale("textlin");
 $graph->SetShadow();
@@ -57,7 +58,7 @@ $band[4]->SetOrder(DEPTH_FRONT);
 $band[5]=new PlotBand(HORIZONTAL,BAND_SOLID,20,"max","lightgreen");
 $band[6]=new PlotBand(HORIZONTAL,BAND_3DPLANE,-10,0,"blue");
 $band[6]->SetDensity(70);
-$graph->AddBand($band);
+$graph->Add($band);
 
 $graph->AddLine(new PlotLine(HORIZONTAL,0,"black",2));
 
@@ -70,3 +71,4 @@ $graph->xaxis->title->SetFont(FF_ARIAL,FS_BOLD,11);
 
 $graph->Stroke();
 ?>
+

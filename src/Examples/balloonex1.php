@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // $Id: balloonex1.php,v 1.5 2002/12/15 16:08:51 aditus Exp $
-include ("../jpgraph.php");
-include ("../jpgraph_scatter.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_scatter.php");
 
 // Some data
 $datax = array(1,2,3,4,5,6,7,8);

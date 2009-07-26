@@ -1,4 +1,4 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 //=======================================================================
 // File:	TESTSUIT.PHP
 // Description:	Run all the example script in current directory

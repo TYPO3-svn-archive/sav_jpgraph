@@ -1,11 +1,11 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $datay=array(12,0,-19,-7,17,-6);
 
 // Create the graph. 
-$graph = new Graph(400,300,"auto");	
+$graph = new Graph(400,300);	
 $graph->img->SetMargin(60,30,50,40);
 $graph->SetScale("textlin");
 $graph->SetShadow();
@@ -39,7 +39,7 @@ $graph->xaxis->SetPos("min");
 $graph->Add($bplot);
 
 // Add band
-$graph->AddBand(new PlotBand(HORIZONTAL,BAND_RDIAG,0,"max","red",2));
+$graph->Add(new PlotBand(HORIZONTAL,BAND_RDIAG,0,"max","red",2));
 
 //$graph->title->Set("Test of bar gradient fill");
 $graph->xaxis->title->Set("X-title");

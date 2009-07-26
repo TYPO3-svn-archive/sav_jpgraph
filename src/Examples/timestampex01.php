@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // Example on how to treat and format timestamp as human readable labels
-require_once("../jpgraph.php");
-require_once("../jpgraph_line.php");
+require_once("jpgraph/jpgraph.php");
+require_once("jpgraph/jpgraph_line.php");
 
 // Number of "fake" data points
 DEFINE('NDATAPOINTS',500);

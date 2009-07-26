@@ -1,6 +1,6 @@
-<?php
-include_once ("../jpgraph.php");
-include_once ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+include_once ("jpgraph/jpgraph.php");
+include_once ("jpgraph/jpgraph_bar.php");
 
 // Some random data to plot
 $datay=array(12,26,9,17,31);

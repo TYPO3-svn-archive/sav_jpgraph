@@ -2,7 +2,7 @@
 <jpgraph>
 
   <!-- External tags that can be used for the template pieex4.xml
-<data id="x"></data>                        // x data set
+<data id="data"></data>                     // data set
 <data id="legend"></data>                   // Legend data set
 <marker id="title"></marker>                // title of the graph
 <marker id="backgroundColor"></marker>      // Color of the graph background
@@ -23,7 +23,7 @@
   </data>
 
 	<!-- Create the pie plot  -->
-  <PiePlot id="1" ref="data#default" ref_ref="data#x">
+  <PiePlot id="1" ref="data#default" ref_ref="data#data">
     <SetSize param="0.3" />
     <SetCenter xCenter="0.4" ref_xCenter="marker#xCenter" yCenter="0.5" ref_yCenter="marker#yCenter"/>
     <value>

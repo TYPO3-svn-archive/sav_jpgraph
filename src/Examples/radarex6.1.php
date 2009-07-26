@@ -1,13 +1,13 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_radar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_radar.php");
 	
 // Some data to plot
 $data = array(55,80,26,31,95);
 $data2 = array(15,50,46,39,25);
 	
 // Create the graph and the plot
-$graph = new RadarGraph(250,200,"auto");
+$graph = new RadarGraph(250,200);
 
 // Add a drop shadow to the graph
 $graph->SetShadow();

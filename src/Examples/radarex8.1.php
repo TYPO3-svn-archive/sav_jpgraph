@@ -1,9 +1,9 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_radar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_radar.php");
 
 // Create the basic radar graph
-$graph = new RadarGraph(300,200,"auto");
+$graph = new RadarGraph(300,200);
 $graph->img->SetAntiAliasing();
 
 // Set background color and shadow

@@ -1,13 +1,13 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_log.php");
-include ("../jpgraph_radar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_log.php");
+require_once ("jpgraph/jpgraph_radar.php");
 
 // Some data to plot
 $data = array(242,58,500,12,397,810,373);
 
 // Create the graph
-$graph = new RadarGraph(200,200,"auto");
+$graph = new RadarGraph(200,200);
 
 // Uncomment the following line to use anti-aliasing 
 // Note: Enabling this results in a very noticable slow

@@ -1,13 +1,13 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 $data1y=array(-8,8,9,3,5,6);
 $data2y=array(18,2,1,7,5,4);
 
 // Create the graph. These two calls are always required
-$graph = new Graph(500,400,"auto"); 
+$graph = new Graph(500,400); 
 $graph->SetScale("textlin");
 
 $graph->SetShadow();

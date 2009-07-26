@@ -1,6 +1,6 @@
-<?php
-include_once ("../jpgraph.php");
-include_once ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+include_once ("jpgraph/jpgraph.php");
+include_once ("jpgraph/jpgraph_line.php");
 
 
 // Setup some dummy targets for the CSIM

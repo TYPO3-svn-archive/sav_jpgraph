@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // $Id: canvasex01.php,v 1.3 2002/10/23 08:17:23 aditus Exp $
-include "../jpgraph.php";
-include "../jpgraph_canvas.php";
+include "jpgraph/jpgraph.php";
+include "jpgraph/jpgraph_canvas.php";
 
 // Setup a basic canvas we can work 
 $g = new CanvasGraph(400,300,'auto');

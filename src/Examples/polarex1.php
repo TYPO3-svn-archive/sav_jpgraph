@@ -1,8 +1,8 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // A simple Polar graph, example 1
 
-include "../jpgraph.php";
-include "../jpgraph_polar.php";
+include "jpgraph/jpgraph.php";
+include "jpgraph/jpgraph_polar.php";
 
 
 $data = array(0,1,10,2,30,25,40,60,

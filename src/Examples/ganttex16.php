@@ -1,8 +1,8 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_gantt.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_gantt.php");
 
-$graph = new GanttGraph(0,0,"auto");
+$graph = new GanttGraph();
 $graph->SetBox();
 $graph->SetShadow();
 

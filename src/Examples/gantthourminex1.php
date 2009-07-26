@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // Gantt hour + minute example
-include ("../jpgraph.php");
-include ("../jpgraph_gantt.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_gantt.php");
 
 // Some sample Gantt data
 $data = array(
@@ -71,15 +71,18 @@ $graph->title->SetFont(FF_VERDANA,FS_BOLD,14);
 for($i=0; $i<count($data); ++$i) {
     $bar = new GanttBar($data[$i][0],$data[$i][1],$data[$i][2],$data[$i][3]);
     if( count($data[$i])>4 )
-	$bar->title->SetFont($data[$i][4],$data[$i][5],$data[$i][6]);
+        $bar->title->SetFont($data[$i][4],$data[$i][5],$data[$i][6]);
     $bar->SetPattern(BAND_RDIAG,"yellow");
     $bar->SetFillColor("gray");
     $graph->Add($bar);
 }
 
 
-$vline = new GanttVLine("2001-11-27 13:00");
-$vline->title->Set("27/11 13:00");
+//$vline = new GanttVLine("2001-11-27");//d=1006858800,
+$vline = new GanttVLine("2001-11-27 9:00");//d=1006858800,
+$vline->SetWeight(5);
+$vline->SetDayOffset(0);
+$vline->title->Set("27/11 9:00");
 $vline->title->SetFont(FF_FONT1,FS_BOLD,10);
 $graph->Add($vline);
 

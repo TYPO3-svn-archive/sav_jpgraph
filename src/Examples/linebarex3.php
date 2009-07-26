@@ -1,8 +1,8 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 // Some data
 
@@ -16,7 +16,7 @@ $steps=100;for($i=0; $i<$steps; ++$i) {
 }
 
 // New graph with a background image and drop shadow
-$graph = new Graph(450,300,"auto");
+$graph = new Graph(450,300);
 $graph->img->SetMargin(40,180,40,40);	
 $graph->SetBackgroundImage("tiger_bkg.png",BGIMG_FILLFRAME);
 

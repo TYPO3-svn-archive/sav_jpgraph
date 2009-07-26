@@ -1,11 +1,11 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
 
 $ydata = array(11,3,8,12,5,1,9,15,5,7);
 
 // Create the graph. These two calls are always required
-$graph = new Graph(300,200,"auto");	
+$graph = new Graph(300,200);	
 $graph->SetScale("textlin");
 
 // Create the linear plot

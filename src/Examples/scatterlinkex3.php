@@ -1,6 +1,6 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_scatter.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_scatter.php');
 
 
 // Make a circle with a scatterplot
@@ -11,16 +11,16 @@ for($i=0; $i<$steps; ++$i) {
 	$datay[$i]=sin($a);
 }
 
-$graph = new Graph(350,230,"auto");
-$graph->SetScale("linlin");
+$graph = new Graph(350,230);
+$graph->SetScale('linlin');
 $graph->SetShadow();
 $graph->SetAxisStyle(AXSTYLE_BOXOUT);
 
-$graph->img->SetMargin(50,50,60,40);		
+$graph->img->SetMargin(50,50,60,40);
 
-$graph->title->Set("Linked scatter plot");
+$graph->title->Set('Linked scatter plot');
 $graph->title->SetFont(FF_FONT1,FS_BOLD);
-$graph->subtitle->Set("(BOXOUT Axis style)");
+$graph->subtitle->Set('(BOXOUT Axis style)');
 $graph->subtitle->SetFont(FF_FONT1,FS_NORMAL);
 
 
@@ -30,15 +30,14 @@ $graph->xscale->SetGrace(1,1);
 
 $sp1 = new ScatterPlot($datay,$datax);
 $sp1->mark->SetType(MARK_FILLEDCIRCLE);
-$sp1->mark->SetFillColor("red");
-$sp1->SetColor("blue");
+$sp1->mark->SetFillColor('red');
+$sp1->SetColor('blue');
 
-//$sp1->SetWeight(3);
 $sp1->mark->SetWidth(4);
-$sp1->SetLinkPoints();
+$sp1->link->Show();
+$sp1->link->SetStyle('dotted');
 
 $graph->Add($sp1);
-
 $graph->Stroke();
 
 ?>

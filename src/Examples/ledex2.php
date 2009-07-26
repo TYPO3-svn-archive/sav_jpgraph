@@ -1,7 +1,7 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include "../jpgraph.php";
-include "../jpgraph_led.php";
+include "jpgraph/jpgraph.php";
+include "jpgraph/jpgraph_led.php";
 
 // By default each "LED" circle has a radius of 3 pixels
 $led = new DigitalLED74();

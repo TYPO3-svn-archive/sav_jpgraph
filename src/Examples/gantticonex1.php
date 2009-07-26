@@ -1,22 +1,23 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // Gantt example
-include ("../jpgraph.php");
-include ("../jpgraph_gantt.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_gantt.php");
 
 // Basic Gantt graph
 $graph = new GanttGraph();
-$graph->title->Set("Using the builtin icons");
+$graph->title->Set("Gantt chart with title columns and icons");
+$graph->title->SetFont(FF_ARIAL, FS_BOLD,12);
+$graph->title->SetMargin(10);
 
-// Explicitely set the date range 
+// Explicitely set the date range
 // (Autoscaling will of course also work)
 $graph->SetDateRange('2001-10-06','2002-4-10');
-
 
 // 1.5 line spacing to make more room
 $graph->SetVMarginFactor(1.5);
 
 // Setup some nonstandard colors
-$graph->SetMarginColor('lightgreen@0.8');
+$graph->SetMarginColor('darkgreen@0.95');
 $graph->SetBox(true,'yellow:0.6',2);
 $graph->SetFrame(true,'darkgreen',4);
 $graph->scale->divider->SetColor('yellow:0.6');
@@ -54,7 +55,7 @@ $data = array(
 	array(2,array($endconicon,"Report","12 days","1 Mar '02","13 Mar '02"),
 	      "2002-03-01","2002-03-13",FF_ARIAL,FS_NORMAL,8)
 );
-	
+
 // Create the bars and add them to the gantt chart
 for($i=0; $i<count($data); ++$i) {
 	$bar = new GanttBar($data[$i][0],$data[$i][1],$data[$i][2],$data[$i][3],"[50%]",10);

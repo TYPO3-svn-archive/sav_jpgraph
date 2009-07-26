@@ -1,15 +1,15 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 // Example for use of JpGraph, 
 // ljp, 01/03/01 20:32
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 // We need some data
 $datay=array(-0.13,0.25,-0.21,0.35,0.31,0.04);
 $datax=array("Jan","Feb","Mar","Apr","May","June");
 
 // Setup the graph. 
-$graph = new Graph(500,200,"auto");	
+$graph = new Graph(500,200);	
 $graph->img->SetMargin(60,150,30,50);
 $graph->SetScale("textlin");
 $graph->SetMarginColor("silver");

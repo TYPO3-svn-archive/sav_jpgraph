@@ -1,6 +1,6 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_scatter.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_scatter.php");
 
 $numpoints=50;
 $k=0.05;
@@ -16,7 +16,7 @@ function mycallback($l) {
 }
 
 // Setup the basic parameters for the graph
-$graph = new Graph(400,200,"auto");
+$graph = new Graph(400,200);
 $graph->SetScale("intlin");
 $graph->SetShadow();
 $graph->SetBox();

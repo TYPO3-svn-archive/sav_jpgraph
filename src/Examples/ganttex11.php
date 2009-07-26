@@ -1,8 +1,8 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_gantt.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_gantt.php");
 
-$graph = new GanttGraph(0,0,"auto");
+$graph = new GanttGraph();
 $graph->SetShadow();
 
 // Add title and subtitle
@@ -35,7 +35,7 @@ $activity->SetPattern(BAND_RDIAG,"yellow");
 $activity->SetFillColor("red");
 
 // Add a right marker
-$activity->rightMark->Show();	
+$activity->rightMark->Show();
 $activity->rightMark->SetType(MARK_FILLEDCIRCLE);
 $activity->rightMark->SetWidth(13);
 $activity->rightMark->SetColor("red");
@@ -57,7 +57,7 @@ $activity2->SetPattern(BAND_RDIAG,"yellow");
 $activity2->SetFillColor("red");
 
 // Add a right marker
-$activity2->rightMark->Show();	
+$activity2->rightMark->Show();
 $activity2->rightMark->SetType(MARK_FILLEDCIRCLE);
 $activity2->rightMark->SetWidth(13);
 $activity2->rightMark->SetColor("red");

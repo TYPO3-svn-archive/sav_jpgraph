@@ -1,12 +1,12 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_bar.php');
 
 // Some data
 $databary=array(12,7,16,5,7,14,9,3);
 
 // New graph with a drop shadow
-$graph = new Graph(300,200,'auto');
+$graph = new Graph(300,200);
 $graph->SetShadow();
 
 // Use a "text" X-scale

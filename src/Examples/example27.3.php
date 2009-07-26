@@ -1,11 +1,11 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_pie.php");
-include ("../jpgraph_pie3d.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_pie.php");
+require_once ("jpgraph/jpgraph_pie3d.php");
 
 $data = array(40,60,21,33);
 
-$graph = new PieGraph(330,200,"auto");
+$graph = new PieGraph(330,200);
 $graph->SetShadow();
 
 $graph->title->Set("A simple 3D Pie plot");

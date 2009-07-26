@@ -1,8 +1,8 @@
-<?php
+<?php // content="text/plain; charset=utf-8"
 
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
-include ("../jpgraph_line.php");
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
+require_once ("jpgraph/jpgraph_line.php");
 
 
 $ydata = array(12,15,22,19,5);

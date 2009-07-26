@@ -1,9 +1,9 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
-include ("../jpgraph_bar.php");
-include ("../jpgraph_utils.inc.php");
-include ("../jpgraph_mgraph.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
+require_once ("jpgraph/jpgraph_bar.php");
+require_once ("jpgraph/jpgraph_utils.inc.php");
+require_once ("jpgraph/jpgraph_mgraph.php");
 
 //------------------------------------------------------------------
 // Create some random data for the plot. We use the current time for the

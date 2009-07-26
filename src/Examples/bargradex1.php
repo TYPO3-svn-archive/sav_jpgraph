@@ -1,23 +1,23 @@
-<?php
-// Example for use of JpGraph, 
-// ljp, 01/03/01 20:32
-include ("../jpgraph.php");
-include ("../jpgraph_bar.php");
+<?php // content="text/plain; charset=utf-8"
+// Example for use of JpGraph,
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_bar.php");
 
 // We need some data
 $datay=array(0.13,0.25,0.21,0.35,0.31,0.06);
-$datax=array("Jan","Feb","Mar","Apr","May","June");
+$datax=array("January","February","March","April","May","June");
 
-// Setup the graph. 
-$graph = new Graph(400,200,"auto");	
-$graph->img->SetMargin(60,20,30,50);
+// Setup the graph.
+$graph = new Graph(400,240);
+$graph->img->SetMargin(60,20,35,75);
 $graph->SetScale("textlin");
-$graph->SetMarginColor("lightblue");
+$graph->SetMarginColor("lightblue:1.1");
 $graph->SetShadow();
 
 // Set up the title for the graph
-$graph->title->Set("Bar gradient (Left reflection)");
-$graph->title->SetFont(FF_VERDANA,FS_NORMAL,12);
+$graph->title->Set("Bar gradient with left reflection");
+$graph->title->SetMargin(8);
+$graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
 $graph->title->SetColor("darkred");
 
 // Setup font for axis
@@ -35,8 +35,8 @@ $graph->xaxis->SetLabelAngle(50);
 $bplot = new BarPlot($datay);
 $bplot->SetWidth(0.6);
 
-// Setup color for gradient fill style 
-$bplot->SetFillGradient("navy","#EEEEEE",GRAD_LEFT_REFLECTION);
+// Setup color for gradient fill style
+$bplot->SetFillGradient("navy:0.9","navy:1.85",GRAD_LEFT_REFLECTION);
 
 // Set color for the frame of each bar
 $bplot->SetColor("white");

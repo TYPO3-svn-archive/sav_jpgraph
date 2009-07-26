@@ -172,7 +172,6 @@ class data {
     }
   }
 
-  
 }
 
 
@@ -294,9 +293,26 @@ class marker {
     $this->reference->setReferenceArray(
       'marker',
       $this->referenceId,
-      $markerValue
+      $this->replaceSpecialChars($markerValue)
     );
   }
+  
+	/**
+	 * Replace special characters
+	 *
+	 * @param $data string
+	 *
+	 * @return string
+	 */
+  public function replaceSpecialChars($data) {
+    $data = str_replace('\r', chr(13), $data);
+    $data = str_replace('\n', chr(10), $data);
+    $data = str_replace('\t', chr(9), $data);
+
+    return $data;
+  }
+
+
 }
 
 

@@ -1,8 +1,8 @@
-<?php
-include ('../jpgraph.php');
-include ('../jpgraph_line.php');
-include ('../jpgraph_scatter.php');
-include ('../jpgraph_regstat.php');
+<?php // content="text/plain; charset=utf-8"
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_line.php');
+require_once ('jpgraph/jpgraph_scatter.php');
+require_once ('jpgraph/jpgraph_regstat.php');
 
 // Original data points
 $xdata = array(1,3,12,15);

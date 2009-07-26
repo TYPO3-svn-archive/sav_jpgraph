@@ -1,6 +1,6 @@
-<?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
+<?php // content="text/plain; charset=utf-8"
+require_once ("jpgraph/jpgraph.php");
+require_once ("jpgraph/jpgraph_line.php");
 
 // Some data
 $datax = array("2001-04-01","2001-04-02","2001-04-03","2001-04-04","2001-04-05","2001-04-06");
@@ -8,7 +8,7 @@ $datay = array(28,13,24,"",90,11);
 $data2y = array(11,41,"-",33,"-",63);
 
 // Setup graph
-$graph = new Graph(400,250,"auto");
+$graph = new Graph(400,250);
 $graph->img->SetMargin(40,150,40,80);	
 $graph->SetScale("textlin");
 $graph->SetShadow();
