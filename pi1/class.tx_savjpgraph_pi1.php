@@ -104,7 +104,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     $this->sessionFilterSelected = $GLOBALS['TSFE']->fe_user->getKey('ses','filterSelected');
     $this->sessionFilter = $GLOBALS['TSFE']->fe_user->getKey('ses','filter');
 
-    if ($this->sessionFilterSelected) {
+    if ($this->sessionFilterSelected && is_array($this->sessionFilter[$this->sessionFilterSelected])) {
       foreach($this->sessionFilter[$this->sessionFilterSelected] as $key => $filter) {
         $xmlGraph->setReferenceArray('filter', $key, $filter);
       }
