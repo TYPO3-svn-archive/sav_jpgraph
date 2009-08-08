@@ -6,7 +6,7 @@
 //              this to a color in the chosen color map
 //
 // Created:     2009-07-10
-// Ver:         $Id: jpgraph_colormap.inc.php 1587 2009-07-14 00:29:27Z ljp $
+// Ver:         $Id: jpgraph_colormap.inc.php 1709 2009-07-30 08:00:08Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //

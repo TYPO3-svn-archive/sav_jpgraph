@@ -3,7 +3,7 @@
 // File:        JPG-CONFIG.INC
 // Description: Configuration file for JpGraph library
 // Created:     2004-03-27
-// Ver:         $Id: jpg-config.inc.php 1546 2009-07-10 22:18:57Z ljp $
+// Ver:         $Id: jpg-config.inc.php 1749 2009-07-31 10:58:41Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -74,7 +74,7 @@ define('DEFAULT_GFORMAT','auto');
 // false will still create the image in the cache directory
 // just not use it. By setting USE_CACHE=false no files will even
 // be generated in the cache directory.
-define('USE_CACHE',false);
+define('USE_CACHE',true);
 
 // Should we try to find an image in the cache before generating it?
 // Set this define to false to bypass the reading of the cache and always

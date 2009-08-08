@@ -5,7 +5,7 @@
 // Created:     2006-03-06
 // Author:      Timo Leopold (timo@leopold-hh.de)
 //              Johan Persson (ljp@localhost.nil)
-// Ver:         $Id: de.inc.php 1578 2009-07-13 11:05:48Z ljp $
+// Ver:         $Id: de.inc.php 1709 2009-07-30 08:00:08Z ljp $
 //
 // Copyright (c)
 //========================================================================
@@ -402,6 +402,15 @@ HTTP header wurden bereits gesendet.<br>Fehler in der Datei <b>%s</b> in der Zei
 25128 => array('The function imageantialias() is not available in your PHP installation. Use the GD version that comes with PHP and not the standalone version.',0),
 25129 => array('Anti-alias can not be used with dashed lines. Please disable anti-alias or use solid lines.',0),
 25130 => array('Too small plot area. (%d x %d). With the given image size and margins there is to little space left for the plot. Increase the plot size or reduce the margins.',2),
+
+
+/*
+**  jpgraph_led
+*/
+
+25500 => array('Multibyte strings must be enabled in the PHP installation in order to run the LED module so that the function mb_strlen() is available. See PHP documentation for more information.',0),
+
+
 /*
 **---------------------------------------------------------------------------------------------
 ** Pro-version strings
@@ -480,6 +489,7 @@ HTTP header wurden bereits gesendet.<br>Fehler in der Datei <b>%s</b> in der Zei
 ** PDF417
 */
 
+26000 => array('PDF417: The PDF417 module requires that the PHP installation must support the function bcmod(). This is normally enabled at compile time. See documentation for more information.',0),
 26001 => array('PDF417: Die Anzahl der Spalten muss zwischen 1 und 30 sein.',0),
 26002 => array('PDF417: Der Fehler-Level muss zwischen 0 und 8 sein.',0),
 26003 => array('PDF417: Ungültiges Format für Eingabedaten, um sie mit PDF417 zu kodieren.',0),
@@ -508,7 +518,7 @@ HTTP header wurden bereits gesendet.<br>Fehler in der Datei <b>%s</b> in der Zei
 28004 => array('ContourPlot Interner Fehler: isobarHCrossing: Reihe index ist zu hoch (%d)',1),
 28005 => array('ContourPlot Interner Fehler: isobarVCrossing: Reihe index ist zu hoch (%d)',1),
 28006 => array('ContourPlot Interner Fehler: isobarVCrossing: Spalten index ist zu hoch (%d)',1),
-28007 => array('ContourPlot. Interpolation faktor ist zu hoch (>5)',0)
+28007 => array('ContourPlot. Interpolation faktor ist zu hoch (>5)',0),
 
 
 /*

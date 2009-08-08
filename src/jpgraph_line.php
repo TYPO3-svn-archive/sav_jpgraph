@@ -3,7 +3,7 @@
  // File:  		 JPGRAPH_LINE.PHP
  // Description: Line plot extension for JpGraph
  // Created:  	 2001-01-08
- // Ver:  		 $Id: jpgraph_line.php 1613 2009-07-16 08:41:32Z ljp $
+ // Ver:  		 $Id: jpgraph_line.php 1741 2009-07-30 22:55:19Z ljp $
  //
  // Copyright (c) Aditus Consulting. All rights reserved.
  //========================================================================
@@ -29,7 +29,7 @@ class LinePlot extends Plot{
     protected $line_style=1; // Default to solid
     protected $filledAreas = array(); // array of arrays(with min,max,col,filled in them)
     public $barcenter=false;  // When we mix line and bar. Should we center the line in the bar.
-    protected $fillFromMin = false ;
+    protected $fillFromMin = false, $fillFromMax = false;
     protected $fillgrad=false,$fillgrad_fromcolor='navy',$fillgrad_tocolor='silver',$fillgrad_numcolors=100;
     protected $iFastStroke=false;
 
@@ -66,6 +66,10 @@ class LinePlot extends Plot{
 
     function SetFillFromYMin($f=true) {
         $this->fillFromMin = $f ;
+    }
+
+    function SetFillFromYMax($f=true) {
+        $this->fillFromMax = $f ;
     }
 
     function SetFillColor($aColor,$aFilled=true) {
@@ -225,16 +229,23 @@ class LinePlot extends Plot{
         $yscale->Translate($this->coords[0][$startpoint]));
 
         if( $this->filled ) {
-            $min = $yscale->GetMinVal();
-            if( $min > 0 || $this->fillFromMin ) {
-                $fillmin = $yscale->scale_abs[0];//Translate($min);
+            if( $this->fillFromMax ) {
+                //$max = $yscale->GetMaxVal();
+                $cord[$idx++] = $xscale->Translate($xs);
+                $cord[$idx++] = $yscale->scale_abs[1];
             }
             else {
-                $fillmin = $yscale->Translate(0);
-            }
+                $min = $yscale->GetMinVal();
+                if( $min > 0 || $this->fillFromMin ) {
+                    $fillmin = $yscale->scale_abs[0];//Translate($min);
+                }
+                else {
+                    $fillmin = $yscale->Translate(0);
+                }
 
-            $cord[$idx++] = $xscale->Translate($xs);
-            $cord[$idx++] = $fillmin;
+                $cord[$idx++] = $xscale->Translate($xs);
+                $cord[$idx++] = $fillmin;
+            }
         }
         $xt = $xscale->Translate($xs);
         $yt = $yscale->Translate($this->coords[0][$startpoint]);
@@ -342,11 +353,16 @@ class LinePlot extends Plot{
 
         if( $this->filled  ) {
             $cord[$idx++] = $xt;
-            if( $min > 0 || $this->fillFromMin ) {
-                $cord[$idx++] = $yscale->Translate($min);
+            if( $this->fillFromMax ) {
+                $cord[$idx++] = $yscale->scale_abs[1];
             }
             else {
-                $cord[$idx++] = $yscale->Translate(0);
+                if( $min > 0 || $this->fillFromMin ) {
+                    $cord[$idx++] = $yscale->Translate($min);
+                }
+                else {
+                    $cord[$idx++] = $yscale->Translate(0);
+                }
             }
             if( $this->fillgrad ) {
                 $img->SetLineWeight(1);

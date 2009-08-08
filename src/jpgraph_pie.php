@@ -3,7 +3,7 @@
  // File:        JPGRAPH_PIE.PHP
  // Description: Pie plot extension for JpGraph
  // Created:     2001-02-14
- // Ver:         $Id: jpgraph_pie.php 1398 2009-06-27 21:35:18Z ljp $
+ // Ver:         $Id: jpgraph_pie.php 1739 2009-07-30 21:21:15Z ljp $
  //
  // Copyright (c) Aditus Consulting. All rights reserved.
  //========================================================================
@@ -276,7 +276,7 @@ class PiePlot {
 
         $sum=0;
         for($i=0; $i < $n; ++$i)
-        $sum += $this->data[$i];
+            $sum += $this->data[$i];
 
         // Bail out with error if the sum is 0
         if( $sum==0 )
@@ -1296,6 +1296,12 @@ class PieGraph extends Graph {
         // a best we can. Therefor you will see a lot of tests !$_csim in the
         // code below.
         $_csim = ($aStrokeFileName===_CSIM_SPECIALFILE);
+
+        // If we are called the second time (perhaps the user has called GetHTMLImageMap()
+        // himself then the legends have alsready been populated once in order to get the
+        // CSIM coordinats. Since we do not want the legends to be populated a second time
+        // we clear the legends
+        $this->legend->Clear();
 
         // We need to know if we have stroked the plot in the
         // GetCSIMareas. Otherwise the CSIM hasn't been generated

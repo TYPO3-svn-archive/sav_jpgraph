@@ -3,7 +3,7 @@
 // File:        GD_IMAGE.INC.PHP
 // Description: PHP Graph Plotting library. Low level image drawing routines
 // Created:     2001-01-08, refactored 2008-03-29
-// Ver:         $Id: gd_image.inc.php 1551 2009-07-11 12:00:53Z ljp $
+// Ver:         $Id: gd_image.inc.php 1759 2009-08-01 05:07:12Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -85,6 +85,10 @@ class Image {
         else {
             JpGraphError::RaiseL(25128);//('The function imageantialias() is not available in your PHP installation. Use the GD version that comes with PHP and not the standalone version.')
         }
+    }
+
+    function GetAntiAliasing() {
+        return $this->use_anti_aliasing ;
     }
 
     function CreateRawCanvas($aWidth=0,$aHeight=0) {
@@ -961,22 +965,36 @@ class Image {
         // Add error check since dashed line will only work if anti-alias is disabled
         // this is a limitation in GD
 
-        switch( $aStyle ) {
-            case 1:// Solid
-                $this->Line($x1,$y1,$x2,$y2);
-                break;
-            case 2: // Dotted
-                $this->DashedLine($x1,$y1,$x2,$y2,2,6);
-                break;
-            case 3: // Dashed
-                $this->DashedLine($x1,$y1,$x2,$y2,5,9);
-                break;
-            case 4: // Longdashes
-                $this->DashedLine($x1,$y1,$x2,$y2,9,13);
-                break;
-            default:
-                JpGraphError::RaiseL(25104,$this->line_style);//(" Unknown line style: $this->line_style ");
-                break;
+        if( $aStyle == 1 ) {
+            // Solid style. We can handle anti-aliasing for this
+            $this->Line($x1,$y1,$x2,$y2);
+        }
+        else {
+            // Since the GD routines doesn't handle AA for styled line
+            // we have no option than to turn it off to get any lines at
+            // all if the weight > 1
+            $oldaa = $this->GetAntiAliasing();
+            if( $oldaa && $this->line_weight > 1 ) {
+                 $this->SetAntiAliasing(false);
+            }
+
+            switch( $aStyle ) {
+                case 2: // Dotted
+                    $this->DashedLine($x1,$y1,$x2,$y2,2,6);
+                    break;
+                case 3: // Dashed
+                    $this->DashedLine($x1,$y1,$x2,$y2,5,9);
+                    break;
+                case 4: // Longdashes
+                    $this->DashedLine($x1,$y1,$x2,$y2,9,13);
+                    break;
+                default:
+                    JpGraphError::RaiseL(25104,$this->line_style);//(" Unknown line style: $this->line_style ");
+                    break;
+            }
+            if( $oldaa ) {
+                $this->SetAntiAliasing(true);
+            }
         }
     }
 
@@ -1514,31 +1532,43 @@ class ImgStreamCache {
     // Output image to browser and also write it to the cache
     function PutAndStream($aImage,$aCacheFileName,$aInline,$aStrokeFileName) {
 
-        // Check if we should stroke the image to an arbitrary file
+        // Check if we should always stroke the image to a file
         if( _FORCE_IMGTOFILE ) {
             $aStrokeFileName = _FORCE_IMGDIR.GenImgName();
         }
 
-        if( $aStrokeFileName!="" ) {
+        if( $aStrokeFileName != '' ) {
 
             if( $aStrokeFileName == 'auto' ) {
                 $aStrokeFileName = GenImgName();
             }
 
             if( file_exists($aStrokeFileName) ) {
-                // Delete the old file
+
+                // Wait for lock (to make sure no readers are trying to access the image)
+                $fd = fopen($aStrokeFileName,'w');
+                $lock = flock($fd, LOCK_EX);
+
+                // Since the image write routines only accepts a filename which must not
+                // exist we need to delete the old file first
                 if( !@unlink($aStrokeFileName) ) {
+                    $lock = flock($fd, LOCK_UN);
                     JpGraphError::RaiseL(25111,$aStrokeFileName);
                     //(" Can't delete cached image $aStrokeFileName. Permission problem?");
                 }
-            }
+                $aImage->Stream($aStrokeFileName);
+                $lock = flock($fd, LOCK_UN);
+                fclose($fd);
 
-            $aImage->Stream($aStrokeFileName);
+            }
+            else {
+                $aImage->Stream($aStrokeFileName);
+            }
 
             return;
         }
 
-        if( $aCacheFileName != "" && USE_CACHE) {
+        if( $aCacheFileName != '' && USE_CACHE) {
 
             $aCacheFileName = $this->cache_dir . $aCacheFileName;
             if( file_exists($aCacheFileName) ) {
@@ -1553,11 +1583,20 @@ class ImgStreamCache {
                     }
                     if( $this->timeout>0 && ($diff <= $this->timeout*60) ) return;
                 }
+
+                // Wait for lock (to make sure no readers are trying to access the image)
+                $fd = fopen($aCacheFileName,'w');
+                $lock = flock($fd, LOCK_EX);
+
                 if( !@unlink($aCacheFileName) ) {
+                    $lock = flock($fd, LOCK_UN);
                     JpGraphError::RaiseL(25113,$aStrokeFileName);
                     //(" Can't delete cached image $aStrokeFileName. Permission problem?");
                 }
                 $aImage->Stream($aCacheFileName);
+                $lock = flock($fd, LOCK_UN);
+                fclose($fd);
+
             }
             else {
                 $this->MakeDirs(dirname($aCacheFileName));
@@ -1605,15 +1644,18 @@ class ImgStreamCache {
     // image file doesn't exist or exists but is to old
     function GetAndStream($aImage,$aCacheFileName) {
         $aCacheFileName = $this->cache_dir.$aCacheFileName;
-        if ( USE_CACHE && file_exists($aCacheFileName) && $this->timeout>=0 ) {
+        if ( USE_CACHE && file_exists($aCacheFileName) && $this->timeout >= 0 ) {
             $diff=time()-filemtime($aCacheFileName);
             if( $this->timeout>0 && ($diff > $this->timeout*60) ) {
                 return false;
             }
             else {
-                if ($fh = @fopen($aCacheFileName, "rb")) {
+                if ($fh = @fopen($aCacheFileName, 'rb')) {
+                    $lock = flock($fh, LOCK_SH);
                     $aImage->Headers();
                     fpassthru($fh);
+                    $lock = flock($fh, LOCK_UN);
+                    fclose($fh);
                     return true;
                 }
                 else {
@@ -1629,8 +1671,10 @@ class ImgStreamCache {
     // Create all necessary directories in a path
     function MakeDirs($aFile) {
         $dirs = array();
-        while ( !(file_exists($aFile)) ) {
-            $dirs[] = $aFile;
+        // In order to better work when open_basedir is enabled
+        // we do not create directories in the root path
+        while ( $aFile != '/' && !(file_exists($aFile)) ) {
+            $dirs[] = $aFile.'/';
             $aFile = dirname($aFile);
         }
         for ($i = sizeof($dirs)-1; $i>=0; $i--) {
@@ -1653,6 +1697,5 @@ class ImgStreamCache {
         return true;
     }
 } // CLASS Cache
-
 
 ?>

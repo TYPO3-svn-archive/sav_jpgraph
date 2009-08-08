@@ -3,7 +3,7 @@
 // File:        JPGRAPH.PHP
 // Description: PHP Graph Plotting library. Base module.
 // Created:     2001-01-08
-// Ver:         $Id: jpgraph.php 1617 2009-07-16 15:24:17Z ljp $
+// Ver:         $Id: jpgraph.php 1762 2009-08-01 08:33:10Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -18,7 +18,7 @@ require_once('jpgraph_legend.inc.php');
 require_once('gd_image.inc.php');
 
 // Version info
-define('JPG_VERSION','3.0.0-rc1');
+define('JPG_VERSION','3.0.2');
 
 // Minimum required PHP version
 define('MIN_PHPVERSION','5.1.0');
@@ -502,7 +502,7 @@ class Graph {
     public $ygrid=null,$y2grid=null; //dito for Y
     public $doframe=true,$frame_color='black', $frame_weight=1; // Frame around graph
     public $boxed=false, $box_color='black', $box_weight=1;  // Box around plot area
-    public $doshadow=false,$shadow_width=4,$shadow_color=array(102,102,102); // Shadow for graph
+    public $doshadow=false,$shadow_width=4,$shadow_color='gray@0.5'; // Shadow for graph
     public $xaxis=null;   // X-axis (instane of Axis class)
     public $yaxis=null, $y2axis=null, $ynaxis=array(); // Y axis (instance of Axis class)
     public $margin_color=array(230,230,230); // Margin color of graph
@@ -986,7 +986,7 @@ class Graph {
     }
 
     // Set the shadow around the whole image
-    function SetShadow($aShowShadow=true,$aShadowWidth=5,$aShadowColor=array(102,102,102)) {
+    function SetShadow($aShowShadow=true,$aShadowWidth=4,$aShadowColor='gray@0.3') {
         $this->doshadow = $aShowShadow;
         $this->shadow_color = $aShadowColor;
         $this->shadow_width = $aShadowWidth;
@@ -1580,6 +1580,13 @@ class Graph {
         // code below.
         $_csim = ($aStrokeFileName===_CSIM_SPECIALFILE);
 
+        // If we are called the second time (perhaps the user has called GetHTMLImageMap()
+        // himself then the legends have alsready been populated once in order to get the
+        // CSIM coordinats. Since we do not want the legends to be populated a second time
+        // we clear the legends
+        $this->legend->Clear();
+
+
         // We need to know if we have stroked the plot in the
         // GetCSIMareas. Otherwise the CSIM hasn't been generated
         // and in the case of GetCSIM called before stroke to generate
@@ -1885,12 +1892,23 @@ class Graph {
                 }
             }
 
-
             if( $this->y2axis != null ) {
                 if( !is_numeric($this->y2axis->pos) && !is_string($this->y2axis->pos) ) {
                     $this->y2axis->SetPos($this->xscale->GetMaxVal());
                 }
                 $this->y2axis->SetTitleSide(SIDE_RIGHT);
+            }
+
+            $n = count($this->ynaxis);
+            $nY2adj = $this->y2axis != null ? $this->iYAxisDeltaPos : 0;
+            for( $i=0; $i < $n; ++$i ) {
+                if( $this->ynaxis[$i] != null ) {
+                    if( !is_numeric($this->ynaxis[$i]->pos) && !is_string($this->ynaxis[$i]->pos) ) {
+                        $this->ynaxis[$i]->SetPos($this->xscale->GetMaxVal());
+                        $this->ynaxis[$i]->SetPosAbsDelta($i*$this->iYAxisDeltaPos + $nY2adj);
+                    }
+                    $this->ynaxis[$i]->SetTitleSide(SIDE_RIGHT);
+                }
             }
 
         }
@@ -2450,17 +2468,17 @@ class Graph {
                     $aa = $this->img->SetAngle(0);
                     $adj = ($this->img->height - $this->img->width)/2;
                     $this->img->CopyMerge($bkgimg,
-                    $this->img->bottom_margin-$adj,$this->img->left_margin+$adj,
-                    0,0,
-                    $this->img->plotheight+1,$this->img->plotwidth,
-                    $bw,$bh,$this->background_image_mix);
+                        $this->img->bottom_margin-$adj,$this->img->left_margin+$adj,
+                        0,0,
+                        $this->img->plotheight+1,$this->img->plotwidth,
+                        $bw,$bh,$this->background_image_mix);
                 }
                 else {
                     $this->FillPlotArea();
                     $this->img->CopyMerge($bkgimg,
-                    $this->img->left_margin,$this->img->top_margin,
-                    0,0,$this->img->plotwidth+1,$this->img->plotheight,
-                    $bw,$bh,$this->background_image_mix);
+                        $this->img->left_margin,$this->img->top_margin+1,
+                        0,0,$this->img->plotwidth+1,$this->img->plotheight,
+                        $bw,$bh,$this->background_image_mix);
                 }
                 break;
             case BGIMG_FILLFRAME: // Fill the whole area from upper left corner, resize to just fit
@@ -4491,7 +4509,7 @@ class LinearScale {
             return 0;
         }
         else {
-            return $this->off+($aCoord - $this->scale[0]) * $this->scale_factor;
+            return round($this->off+($aCoord - $this->scale[0]) * $this->scale_factor);
         }
     }
 

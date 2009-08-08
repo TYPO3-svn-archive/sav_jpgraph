@@ -3,7 +3,7 @@
  // File:        JPGRAPH_BAR.PHP
  // Description: Bar plot extension for JpGraph
  // Created:     2001-01-08
- // Ver:         $Id: jpgraph_bar.php 1632 2009-07-17 21:48:13Z ljp $
+ // Ver:         $Id: jpgraph_bar.php 1763 2009-08-01 08:34:17Z ljp $
  //
  // Copyright (c) Aditus Consulting. All rights reserved.
  //========================================================================
@@ -77,10 +77,10 @@ class BarPlot extends Plot {
     // The method will take the specified pattern anre
     // return a pattern index that corresponds to the original
     // patterm being rotated 90 degreees. This is needed when plottin
-    // Horizontal bars    
+    // Horizontal bars
     function RotatePattern($aPat,$aRotate=true) {
         $rotate = array(1 => 2, 2 => 1, 3 => 3, 4 => 5, 5 => 4, 6 => 6, 7 => 7, 8 => 8);
-        if( $aRotate ) { 
+        if( $aRotate ) {
             return $rotate[$aPat];
         }
         else {
@@ -203,8 +203,14 @@ class BarPlot extends Plot {
     }
 
     function SetFillColor($aColor) {
+        // Do an extra error check if the color is specified as an RG array triple
+        // In that case convert it to a hex string since it will otherwise be
+        // interpretated as an array of colors for each individual bar.
+
+        $aColor = RGB::tryHexConversion($aColor);
         $this->fill = true ;
         $this->fill_color=$aColor;
+
     }
 
     function SetFillGradient($aFromColor,$aToColor=null,$aStyle=null) {
@@ -498,6 +504,7 @@ class BarPlot extends Plot {
                     $prect->Stroke($img);
                 }
             }
+
             // Stroke the outline of the bar
             if( is_array($this->color) ) {
                 $img->SetColor($this->color[$i % count($this->color)]);
@@ -727,6 +734,10 @@ class AccBarPlot extends BarPlot {
             }
         }
 
+        // Use 0 weight by default which means that the individual bar
+        // weights will be used per part n the accumulated bar
+        $this->SetWeight(0);
+
         $this->numpoints = $plots[0]->numpoints;
         $this->value = new DisplayValue();
     }
@@ -908,12 +919,11 @@ class AccBarPlot extends BarPlot {
 
                 if( $this->plots[$j]->grad ) {
                     $grad = new Gradient($img);
-                    $grad->FilledRectangle(
-                    $pts[2],$pts[3],
-                    $pts[6],$pts[7],
-                    $this->plots[$j]->grad_fromcolor,
-                    $this->plots[$j]->grad_tocolor,
-                    $this->plots[$j]->grad_style);
+                    $grad->FilledRectangle( $pts[2],$pts[3],
+                                            $pts[6],$pts[7],
+                                            $this->plots[$j]->grad_fromcolor,
+                                            $this->plots[$j]->grad_tocolor,
+                                            $this->plots[$j]->grad_style);
                 } else {
                     if (is_array($this->plots[$j]->fill_color) ) {
                         $numcolors = count($this->plots[$j]->fill_color);
@@ -932,8 +942,9 @@ class AccBarPlot extends BarPlot {
                     if( $fillcolor !== false ) {
                         $img->FilledPolygon($pts);
                     }
-                    $img->SetColor($this->plots[$j]->color);
                 }
+
+                $img->SetColor($this->plots[$j]->color);
 
                 // Stroke the pattern
                 if( $this->plots[$j]->iPattern > -1 ) {
@@ -986,9 +997,17 @@ class AccBarPlot extends BarPlot {
 
                 $pts[] = $pts[0];
                 $pts[] = $pts[1];
-                $img->SetLineWeight($this->plots[$j]->line_weight);
+                $img->SetLineWeight($this->plots[$j]->weight);
                 $img->Polygon($pts);
                 $img->SetLineWeight(1);
+            }
+
+            // Daw potential bar around the entire accbar bar
+            if( $this->weight > 0 ) {
+                $y=$yscale->Translate(0);
+                $img->SetColor($this->color);
+                $img->SetLineWeight($this->weight);
+                $img->Rectangle($pts[0],$y,$pts[6],$pts[5]);
             }
 
             // Draw labels for each acc.bar

@@ -5,7 +5,7 @@
 //              names on the data series. The number of rows and columns
 //              in the legend are user specifyable.
 // Created:     2001-01-08 (Refactored to separate file 2008-08-01)
-// Ver:         $Id: jpgraph_legend.inc.php 1297 2009-06-14 22:31:40Z ljp $
+// Ver:         $Id: jpgraph_legend.inc.php 1739 2009-07-30 21:21:15Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -26,8 +26,8 @@ class Legend {
     private $shadow=true; // Shadow around legend "box"
     private $shadow_color='darkgray@0.5';
     private $mark_abs_hsize=_DEFAULT_LPM_SIZE,$mark_abs_vsize=_DEFAULT_LPM_SIZE;
-    private $xmargin=10,$ymargin=3,$shadow_width=2;
-    private $xlmargin=2, $ylmargin='';
+    private $xmargin=10,$ymargin=6,$shadow_width=2;
+    private $xlmargin=4, $ylmargin='';
     private $xpos=0.05, $ypos=0.15, $xabspos=-1, $yabspos=-1;
     private $halign="right", $valign="top";
     private $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
@@ -143,6 +143,10 @@ class Legend {
 
     function SetFillColor($aColor) {
         $this->fill_color=$aColor;
+    }
+
+    function Clear() {
+        $this->txtcol = array();
     }
 
     function Add($aTxt,$aColor,$aPlotmark='',$aLinestyle=0,$csimtarget='',$csimalt='',$csimwintarget='') {

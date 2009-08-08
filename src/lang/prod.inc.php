@@ -4,7 +4,7 @@
 // Description: Special localization file with the same error messages
 //              for all errors.
 // Created: 	2006-02-18
-// Ver:		$Id: prod.inc.php 1578 2009-07-13 11:05:48Z ljp $
+// Ver:		$Id: prod.inc.php 1709 2009-07-30 08:00:08Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -276,6 +276,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 25128 => array(DEFAULT_ERROR_MESSAGE.'25128',0),
 25129 => array(DEFAULT_ERROR_MESSAGE.'25129',0),
 25130 => array(DEFAULT_ERROR_MESSAGE.'25130',0),
+25500 => array(DEFAULT_ERROR_MESSAGE.'25500',0),
 24003 => array(DEFAULT_ERROR_MESSAGE.'24003',0),
 24004 => array(DEFAULT_ERROR_MESSAGE.'24004',0),
 24005 => array(DEFAULT_ERROR_MESSAGE.'24005',0),
@@ -321,6 +322,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 1009 => array(DEFAULT_ERROR_MESSAGE.'1009',0),
 1010 => array(DEFAULT_ERROR_MESSAGE.'1010',0),
 1011 => array(DEFAULT_ERROR_MESSAGE.'1011',0),
+26000 => array(DEFAULT_ERROR_MESSAGE.'26000',0),
 26001 => array(DEFAULT_ERROR_MESSAGE.'26001',0),
 26002 => array(DEFAULT_ERROR_MESSAGE.'26002',0),
 26003 => array(DEFAULT_ERROR_MESSAGE.'26003',0),

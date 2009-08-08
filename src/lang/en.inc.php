@@ -3,7 +3,7 @@
 // File:     EN.INC.PHP
 // Description: English language file for error messages
 // Created:     2006-01-25
-// Ver:        $Id: en.inc.php 1578 2009-07-13 11:05:48Z ljp $
+// Ver:        $Id: en.inc.php 1709 2009-07-30 08:00:08Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -401,6 +401,11 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 25129 => array('Anti-alias can not be used with dashed lines. Please disable anti-alias or use solid lines.',0),
 25130 => array('Too small plot area. (%d x %d). With the given image size and margins there is to little space left for the plot. Increase the plot size or reduce the margins.',2),
 
+/*
+**  jpgraph_led
+*/
+
+25500 => array('Multibyte strings must be enabled in the PHP installation in order to run the LED module so that the function mb_strlen() is available. See PHP documentation for more information.',0),
 
 /*
 **---------------------------------------------------------------------------------------------
@@ -478,7 +483,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 /*
 ** PDF417
 */
-
+26000 => array('PDF417: The PDF417 module requires that the PHP installation must support the function bcmod(). This is normally enabled at compile time. See documentation for more information.',0),
 26001 => array('PDF417: Number of Columns must be >= 1 and <= 30',0),
 26002 => array('PDF417: Error level must be between 0 and 8',0),
 26003 => array('PDF417: Invalid format for input data to encode with PDF417',0),

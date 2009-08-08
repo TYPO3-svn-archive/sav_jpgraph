@@ -3,7 +3,7 @@
  // File:        JPGRAPH_GANTT.PHP
  // Description: JpGraph Gantt plot extension
  // Created:     2001-11-12
- // Ver:         $Id: jpgraph_gantt.php 1613 2009-07-16 08:41:32Z ljp $
+ // Ver:         $Id: jpgraph_gantt.php 1749 2009-07-31 10:58:41Z ljp $
  //
  // Copyright (c) Aditus Consulting. All rights reserved.
  //========================================================================
@@ -2267,19 +2267,24 @@ class GanttScale {
     }
 
     // Get screen coordinatesz for the vertical position for a bar
-    function TranslateVertPos($aPos) {
+    function TranslateVertPos($aPos,$atTop=false) {
         $img=$this->iImg;
         if( $aPos > $this->iVertLines )
         	JpGraphError::RaiseL(6015,$aPos);
         // 'Illegal vertical position %d'
         if( $this->iVertLayout == GANTT_EVEN ) {
             // Position the top bar at 1 vert spacing from the scale
-            return round($img->top_margin + $this->iVertHeaderSize +  ($aPos+1)*$this->iVertSpacing);
+            $pos =  round($img->top_margin + $this->iVertHeaderSize +  ($aPos+1)*$this->iVertSpacing);
         }
         else {
             // position the top bar at 1/2 a vert spacing from the scale
-            return round($img->top_margin + $this->iVertHeaderSize  + $this->iTopPlotMargin + ($aPos+1)*$this->iVertSpacing);
+            $pos = round($img->top_margin + $this->iVertHeaderSize  + $this->iTopPlotMargin + ($aPos+1)*$this->iVertSpacing);
         }
+
+        if( $atTop )
+            $pos -= $this->iVertSpacing;
+
+        return $pos;
     }
 
     // What is the vertical spacing?
@@ -2299,9 +2304,9 @@ class GanttScale {
             return $t;
         }
         elseif( is_int($aDate) || is_float($aDate) )
-        return $aDate;
+            return $aDate;
         else
-        JpGraphError::RaiseL(6017,$aDate);
+            JpGraphError::RaiseL(6017,$aDate);
         //Unknown date format in GanttScale ($aDate).");
     }
 
@@ -3567,6 +3572,7 @@ class TextPropertyBelow extends TextProperty {
 class GanttVLine extends GanttPlotObject {
 
     private $iLine,$title_margin=3, $iDayOffset=0.5;
+    private $iStartRow = -1, $iEndRow = -1;
 
     //---------------
     // CONSTRUCTOR
@@ -3583,6 +3589,13 @@ class GanttVLine extends GanttPlotObject {
 
     //---------------
     // PUBLIC METHODS
+
+    // Set start and end rows for the VLine. By default the entire heigh of the
+    // Gantt chart is used
+    function SetRowSpan($aStart, $aEnd=-1) {
+        $this->iStartRow = $aStart;
+        $this->iEndRow = $aEnd;
+    }
 
     function SetDayOffset($aOff=0.5) {
         if( $aOff < 0.0 || $aOff > 1.0 ) {
@@ -3607,8 +3620,20 @@ class GanttVLine extends GanttPlotObject {
         if($this->iDayOffset != 0.0)
             $d += 24*60*60*$this->iDayOffset;
         $x = $aScale->TranslateDate($d);//d=1006858800,
-        $y1 = $aScale->iVertHeaderSize+$aImg->top_margin;
-        $y2 = $aImg->height - $aImg->bottom_margin;
+
+        if( $this->iStartRow > -1 ) {
+            $y1 = $aScale->TranslateVertPos($this->iStartRow,true) ;
+        }
+        else {
+            $y1 = $aScale->iVertHeaderSize+$aImg->top_margin;
+        }
+
+        if( $this->iEndRow > -1 ) {
+            $y2 = $aScale->TranslateVertPos($this->iEndRow);
+        }
+        else {
+            $y2 = $aImg->height - $aImg->bottom_margin;
+        }
 
         $this->iLine->Stroke($aImg,$x,$y1,$x,$y2);
         $this->title->Align("center","top");
