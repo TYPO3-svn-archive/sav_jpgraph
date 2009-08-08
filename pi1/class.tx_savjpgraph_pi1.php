@@ -75,15 +75,9 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     if ($temp['plugin.']['sav_jpgraph.']['ttfDir']) {
       define('TTF_DIR', $temp['plugin.']['sav_jpgraph.']['ttfDir']);
     }
+
     // Define the main directory
     define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'src/');
-
-    // Require the xml class
-    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.typo3.php');
-    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
-
-    // Init FlexForm configuration for plugin and get the configuration fields
-    $this->loadFlexform();
 
     // Define the file name for the resulting image
     if (!is_dir('typo3temp/sav_jpgraph')) {
@@ -96,6 +90,16 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     if (file_exists(PATH_site . $imageFileName)) {
       unlink(PATH_site . $imageFileName);
     }
+
+    // Define the cache dir
+    define('CACHE_DIR', 'typo3temp/sav_jpgraph/');
+    
+    // Require the xml class
+    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.typo3.php');
+    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
+
+    // Init FlexForm configuration for plugin and get the configuration fields
+    $this->loadFlexform();
 
     // Create the xlmgraph
     $xmlGraph = new xmlGraph();
