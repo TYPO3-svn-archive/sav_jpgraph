@@ -118,8 +118,15 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // Check if queries are allowed
     if ($this->conf['allowQueries']) {
+
+      // Get the object type according to the TYPO3 version
+      if (t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
+        $objectTypeUser = ux_tslib_cObj::OBJECTTYPE_USER;
+      } else {
+        $objectTypeUser = tslib_cObj::OBJECTTYPE_USER;
+      }
       // Change the plugin as a USER INT
-    	if ($this->cObj->getUserObjectType() == ux_tslib_cObj::OBJECTTYPE_USER) {
+      if ($this->cObj->getUserObjectType() == $objectTypeUser) {
   			$this->cObj->convertToUserIntObject();
       }
       $this->pi_checkCHash = false;
