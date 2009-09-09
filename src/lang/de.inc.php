@@ -5,7 +5,7 @@
 // Created:     2006-03-06
 // Author:      Timo Leopold (timo@leopold-hh.de)
 //              Johan Persson (ljp@localhost.nil)
-// Ver:         $Id: de.inc.php 1709 2009-07-30 08:00:08Z ljp $
+// Ver:         $Id: de.inc.php 1777 2009-08-23 17:34:36Z ljp $
 //
 // Copyright (c)
 //========================================================================
@@ -103,6 +103,7 @@ HTTP header wurden bereits gesendet.<br>Fehler in der Datei <b>%s</b> in der Zei
 6030 => array('Unbekannte Pfeilrichtung für eine Verbindung.',0),
 6031 => array('Unbekannter Pfeiltyp für eine Verbindung.',0),
 6032 => array('Interner Fehler: Unbekannter Pfadtyp (=%d) für eine Verbindung.',1),
+6033 => array('Array of fonts must contain arrays with 3 elements, i.e. (Family, Style, Size)',0),
 
 /*
 **  jpgraph_gradient
@@ -256,7 +257,7 @@ HTTP header wurden bereits gesendet.<br>Fehler in der Datei <b>%s</b> in der Zei
 24001 => array('FuncGenerator : Keine Funktion definiert. ',0),
 24002 => array('FuncGenerator : Syntax-Fehler in der Funktionsdefinition ',0),
 24003 => array('DateScaleUtils: Unknown tick type specified in call to GetTicks()',0),
-
+24004 => array('ReadCSV2: Die anzahl der spalten fehler in %s reihe %d',2),
 /*
 **  jpgraph
 */

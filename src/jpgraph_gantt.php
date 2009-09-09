@@ -3,7 +3,7 @@
  // File:        JPGRAPH_GANTT.PHP
  // Description: JpGraph Gantt plot extension
  // Created:     2001-11-12
- // Ver:         $Id: jpgraph_gantt.php 1749 2009-07-31 10:58:41Z ljp $
+ // Ver:         $Id: jpgraph_gantt.php 1778 2009-08-23 20:13:08Z ljp $
  //
  // Copyright (c) Aditus Consulting. All rights reserved.
  //========================================================================
@@ -279,8 +279,7 @@ class GanttActivityInfo {
         if( $this->iStyle == 1 ) {
             // Make a 3D effect
             $aImg->SetColor('white');
-            $aImg->Line($aXLeft,$yTop+1,
-            $aXRight,$yTop+1);
+            $aImg->Line($aXLeft,$yTop+1,$aXRight,$yTop+1);
         }
 
         for($i=0; $i < $n; ++$i ) {
@@ -1548,6 +1547,7 @@ class TextProperty {
     public $iShow=true;
     public $csimtarget='',$csimwintarget='',$csimalt='';
     private $iFFamily=FF_FONT1,$iFStyle=FS_NORMAL,$iFSize=10;
+    private $iFontArray=array();
     private $iColor="black";
     private $iText="";
     private $iHAlign="left",$iVAlign="bottom";
@@ -1628,6 +1628,15 @@ class TextProperty {
         $this->iFSize  = $aFSize;
     }
 
+    function SetColumnFonts($aFontArray) {
+        if( !is_array($aFontArray) || count($aFontArray[0]) != 3 ) {
+            JpGraphError::RaiseL(6033);
+            // 'Array of fonts must contain arrays with 3 elements, i.e. (Family, Style, Size)'
+        }
+        $this->iFontArray = $aFontArray;
+    }
+
+
     function IsColumns() {
         return is_array($this->iText) ;
     }
@@ -1663,7 +1672,14 @@ class TextProperty {
             // Must be an array of texts. In this case we return the sum of the
             // length + a fixed margin of 4 pixels on each text string
             $n = count($this->iText);
+            $nf = count($this->iFontArray);
             for( $i=0, $w=0; $i < $n; ++$i ) {
+                if( $i < $nf ) {
+                    $aImg->SetFont($this->iFontArray[$i][0],$this->iFontArray[$i][1],$this->iFontArray[$i][2]);
+                }
+                else {
+                    $aImg->SetFont($this->iFFamily,$this->iFStyle,$this->iFSize);
+                }
                 $tmp = $this->iText[$i];
                 if( is_string($tmp) ) {
                     $w += $aImg->GetTextWidth($tmp)+$extra_margin;
@@ -1689,10 +1705,17 @@ class TextProperty {
         $aImg->SetFont($this->iFFamily,$this->iFStyle,$this->iFSize);
         if( is_array($this->iText) ) {
             $n = count($this->iText);
+            $nf = count($this->iFontArray);
             for( $i=0, $w=array(); $i < $n; ++$i ) {
                 $tmp = $this->iText[$i];
                 if( is_string($tmp) ) {
-                    $w[$i] = $aImg->GetTextWidth($this->iText[$i])+$aMargin;
+                    if( $i < $nf ) {
+                        $aImg->SetFont($this->iFontArray[$i][0],$this->iFontArray[$i][1],$this->iFontArray[$i][2]);
+                    }
+                    else {
+                        $aImg->SetFont($this->iFFamily,$this->iFStyle,$this->iFSize);
+                    }
+                    $w[$i] = $aImg->GetTextWidth($tmp)+$aMargin;
                 }
                 else {
                     if( is_object($tmp) === false ) {
@@ -1710,8 +1733,23 @@ class TextProperty {
 
     // Get total height of text
     function GetHeight($aImg) {
+        $nf = count($this->iFontArray);
+        $maxheight = -1;
+
+        if( $nf > 0 ) {
+            // We have to find out the largest font and take that one as the
+            // height of the row
+            for($i=0; $i < $nf; ++$i ) {
+                $aImg->SetFont($this->iFontArray[$i][0],$this->iFontArray[$i][1],$this->iFontArray[$i][2]);
+                $height = $aImg->GetFontHeight();
+                $maxheight = max($height,$maxheight);
+            }
+        }
+
         $aImg->SetFont($this->iFFamily,$this->iFStyle,$this->iFSize);
-        return $aImg->GetFontHeight();
+        $height = $aImg->GetFontHeight();
+        $maxheight = max($height,$maxheight);
+        return $maxheight;
     }
 
     // Unhide/hide the text
@@ -1757,6 +1795,13 @@ class TextProperty {
                             $tmp->Stroke($aImg,$aX[$i],$aY[$i]);
                         }
                         else {
+                            if( $i < count($this->iFontArray) ) {
+                                $font = $this->iFontArray[$i];
+                                $aImg->SetFont($font[0],$font[1],$font[2]);
+                            }
+                            else {
+                                $aImg->SetFont($this->iFFamily,$this->iFStyle,$this->iFSize);
+                            }
                         	$aImg->StrokeText($aX[$i],$aY[$i],str_replace("\t"," ",$tmp));
                         }
                     }
@@ -1766,6 +1811,13 @@ class TextProperty {
                 $tmp = preg_split('/\t/',$this->iText);
                 $n = min(count($tmp),count($aX));
                 for($i=0; $i < $n; ++$i) {
+                    if( $i < count($this->iFontArray) ) {
+                        $font = $this->iFontArray[$i];
+                        $aImg->SetFont($font[0],$font[1],$font[2]);
+                    }
+                    else {
+                        $aImg->SetFont($this->iFFamily,$this->iFStyle,$this->iFSize);
+                    }
                     $aImg->StrokeText($aX[$i],$aY,$tmp[$i]);
                 }
             }

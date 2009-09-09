@@ -3,7 +3,7 @@
 // File:        JPG-CONFIG.INC
 // Description: Configuration file for JpGraph library
 // Created:     2004-03-27
-// Ver:         $Id: jpg-config.inc.php 1749 2009-07-31 10:58:41Z ljp $
+// Ver:         $Id: jpg-config.inc.php 1776 2009-08-20 11:10:45Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -74,7 +74,7 @@ define('DEFAULT_GFORMAT','auto');
 // false will still create the image in the cache directory
 // just not use it. By setting USE_CACHE=false no files will even
 // be generated in the cache directory.
-define('USE_CACHE',true);
+define('USE_CACHE',false);
 
 // Should we try to find an image in the cache before generating it?
 // Set this define to false to bypass the reading of the cache and always
@@ -119,12 +119,5 @@ define('CACHE_FILE_GROUP','wwwadmin');
 // What permissions should the cached file have
 // (Set to '' will give the default persmissions for the 'PHP-user')
 define('CACHE_FILE_MOD',0664);
-
-// Decide if we should use the bresenham circle algorithm or the
-// built in Arc(). Bresenham gives better visual apperance of circles
-// but is more CPU intensive and slower then the built in Arc() function
-// in GD. Turned off by default for speed
-define('USE_BRESENHAM',false);
-
 
 ?>

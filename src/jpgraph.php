@@ -3,7 +3,7 @@
 // File:        JPGRAPH.PHP
 // Description: PHP Graph Plotting library. Base module.
 // Created:     2001-01-08
-// Ver:         $Id: jpgraph.php 1762 2009-08-01 08:33:10Z ljp $
+// Ver:         $Id: jpgraph.php 1772 2009-08-18 08:09:36Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -4259,7 +4259,12 @@ class LinearTicks extends Ticks {
 
         if( $this->label_formfunc != '' ) {
             $f=$this->label_formfunc;
-            $l = call_user_func($f,$aVal);
+            if( $this->label_formatstr == '' ) {
+                $l = call_user_func($f,$aVal);
+            }
+            else {
+                $l = sprintf($this->label_formatstr, call_user_func($f,$aVal));
+            }
         }
         elseif( $this->label_formatstr != '' || $this->label_dateformatstr != '' ) {
             if( $this->label_usedateformat ) {

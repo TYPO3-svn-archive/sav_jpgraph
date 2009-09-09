@@ -35,11 +35,12 @@
          . ref=&quot;data#result&quot;. An array is expected, in general it is the reference to a another data set.
          . index=&quot;2&quot;. Index which will be used to get the data.
 
-        - &lt; setArray attribute1 attribute2 /&gt;
+        - &lt; setArray attribute1 attribute2 aattribute3/&gt;
         Defines an array of data.
         Attributes:
          . value=&quot;5,6,7&quot;. Use a comma-separated list of values.
          . index=&quot;2&quot;. Optional index which will be used to set the data otherwise data are inserted in the array starting with the index equal to 0.
+         . asAarray=&quot;1&quot;. Optional attribute. If set, the data are put into an array.
 
         - &lt; setArrayFromQuery attribute1 /&gt;
         Defines an array of data from a query.

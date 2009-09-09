@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- External tags that can be used for the template accBarPlot.xml
+<data id="x"></data>                        // x data set
+<data id="y"></data>                        // y array of data set
+<data id="legend"></data>                   // legend  data set
+<marker id="title"></marker>                // title of the graph
+<marker id="backgroundColor"></marker>      // Color of the graph background
+<marker id="width"></marker>                // width of the graph
+<marker id="height"></marker>               // height of the graph
+<marker id="marginLeft"></marker>           // Left margin for the graph
+<marker id="marginRight"></marker>          // Right for the graph
+<file id="1"><file>                         // File name where to save the image
+   -->
+
+
+  <!-- Define the data -->
+  <data id="yDefault">
+    <setArray value="1,2,3,4,5,6" index="" asArray="1"/>
+    <setArray value="9,8,7,6,5,4" index="" asArray="1"/>
+    <setArray value="3,4,5,6,7,8" index="" asArray="1"/>
+    <setArray value="7,8,9,2,1,3" index="" asArray="1"/>
+  </data>
+  <data id="xDefault">
+    Jan,Feb,Mar,Apr,May,June
+  </data>
+  <data id="colorDefault">
+    navy,red,yellow,orange
+  </data>
+  <data id="legendDefault">
+    A,B,C,D
+  </data>
+  
+  <!--  Define the Bar Plots -->
+  <foreach ref="data#yDefault" ref_ref="data#y">
+    <BarPlot id="1" ref="data#yDefault" ref_ref="data#y">
+      <SetWidth coeff="0.6" />
+      <SetFillColor ref="data#colorDefault" ref_ref="data#color"/>
+      <SetLegend ref="data#legendDefault" ref_ref="data#legend" />
+    </BarPlot>
+  </foreach>
+
+  <!--  Define the Acc Bar Plot -->
+  <AccBarPlot id="1" ref="BarPlot#1" />
+
+  <!-- Set up the graph -->
+  <Graph width="400" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
+    <legend>
+      <SetAbsPos x="10" y="10" xpos="right" ypos="top" />
+      <SetFillColor color="white" />
+    </legend>
+    <img>
+      <SetMargin left="40" ref_left="marker#marginLeft" right="80" ref_right="marker#marginRight" top="30" bottom="50" />
+    </img>
+    <SetScale type="textlin" />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <SetShadow />
+    <title>
+      <Set title="Accumulated Bar Plot" ref_title="marker#title" />
+      <SetFont family="FF_VERDANA" style="FS_NORMAL" size="12" />
+      <SetColor color="darkred" />
+    </title>
+    <xaxis>
+      <SetFont family="FF_VERDANA" style="FS_NORMAL" size="10" />
+      <SetTickLabels ref="data#xDefault" ref_ref="data#x" />
+      <SetLabelAngle angle="50" />
+    </xaxis>
+    <yaxis>
+      <SetFont family="FF_VERDANA" style="FS_NORMAL" size="10" />
+    </yaxis>
+    <yscale>
+      <ticks>
+        <SupressZeroLabel flag="false" />
+      </ticks>
+    </yscale>
+
+    <Add ref="AccBarPlot#1" />
+
+    <Stroke ref="file#1" />
+  </Graph>
+
+</jpgraph>

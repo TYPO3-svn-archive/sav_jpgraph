@@ -135,7 +135,7 @@ class data {
 	 *
 	 * @return none
 	 */
-  public function setArray($data = '', $index = '') {
+  public function setArray($data = '', $index = '', $asArray = FALSE) {
 
     // Clear the element with index 0 at the first call
     if ($this->firstArray) {
@@ -151,7 +151,7 @@ class data {
     $this->reference->setReferenceArray(
       'data',
       $this->referenceId,
-      explode(',', $data),
+      ($asArray ? array(0 => explode(',', $data)) : explode(',', $data)),
       $index
     );
   }
@@ -1123,7 +1123,7 @@ class xmlGraph extends Graph {
         case 'foreach':
           // Save the reference index
           $referenceIndex = $this->referenceIndex;
-          
+
           // Process the attributes
           if (is_array($attributes[0])) {
             foreach ($attributes[0] as $key => $attribute) {

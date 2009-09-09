@@ -3,7 +3,7 @@
 // File:     EN.INC.PHP
 // Description: English language file for error messages
 // Created:     2006-01-25
-// Ver:        $Id: en.inc.php 1709 2009-07-30 08:00:08Z ljp $
+// Ver:        $Id: en.inc.php 1777 2009-08-23 17:34:36Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -102,6 +102,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 6030 => array('Unknown arrow direction for link.',0),
 6031 => array('Unknown arrow type for link.',0),
 6032 => array('Internal error: Unknown path type (=%d) specified for link.',1),
+6033 => array('Array of fonts must contain arrays with 3 elements, i.e. (Family, Style, Size)',0),
 
 /*
 **  jpgraph_gradient
@@ -256,6 +257,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 24001 => array('FuncGenerator : No function specified. ',0),
 24002 => array('FuncGenerator : Syntax error in function specification ',0),
 24003 => array('DateScaleUtils: Unknown tick type specified in call to GetTicks()',0),
+24004 => array('ReadCSV2: Column count mismatch in %s line %d',2),
 /*
 **  jpgraph
 */
