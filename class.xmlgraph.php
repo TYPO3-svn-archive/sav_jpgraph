@@ -1114,6 +1114,8 @@ class xmlGraph extends Graph {
     // for allowed tags
     if ((string)$child) {
       switch($childName) {
+        case 'comments':
+          return;
         case 'marker':
         case 'data':
         case 'file':

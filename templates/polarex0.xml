@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template polarex0.xml
-<data id="userData"></data>                 // data set
-<marker id="color"></marker>                // color inside the polar plot
-<file id="1"><file>                         // File name where to save the image
-   -->
-
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#userData">Data set</label>
+      <label index="marker#color">Color inside the polar plot</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+    </languageKey>
+  </comments>
+  
   <!-- Define the default data -->
   <data id="defaultData">
 0,1,10,2,30,25,40,60,
@@ -23,7 +27,7 @@
   </PolarPlot>
 
   <!-- Define the graph -->
-  <PolarGraph width="250" height="250">
+  <PolarGraph width="250" ref_width="marker#width" height="250" ref_height="marker#height">
     <SetScale type="lin" />
     <SetMargin left="35" right="35" top="25" bottom="25" />
     <Add ref="PolarPlot#1" />

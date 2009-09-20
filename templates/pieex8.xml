@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template pieex8.xml
-<data id="x"></data>                        // x data set
-<marker id="title"></marker>                // title of the graph
-<marker id="backgroundColor"></marker>      // Color of the graph background
-<file id="1"><file>                         // File name where to save the image
-   -->
-   
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#data">Data set</label>
+      <label index="data#legend">Legend data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#xCenter">x coordinate for the center</label>
+      <label index="marker#yCenter">y coordinate for the center</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+    </languageKey>
+  </comments>
+
   <!-- Define the data -->
   <data id="default">
     <setData value="40,60,31,35" />
@@ -16,7 +23,7 @@
 	<!-- Create the pie plot  -->
   <PiePlot id="1" ref="data#default" ref_ref="data#x">
     <SetSize param="0.4" />
-    <SetCenter x="0.5" y="0.52" />
+    <SetCenter x="0.5" ref_xCenter="marker#xCenter" y="0.52" ref_yCenter="marker#yCenter"/>
     <value>
       <SetFont family="FF_FONT1" style="FS_BOLD" />
       <SetColor color="darkred" />
@@ -25,7 +32,7 @@
   </PiePlot>
 
   <!-- Set up the graph -->
-  <PieGraph width="250" height="200" type="auto">
+  <PieGraph width="250" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <SetShadow />
     <SetMarginColor color="white" ref_color="marker#backgroundColor" />
     <title>

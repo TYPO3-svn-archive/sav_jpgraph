@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template pieex8.xml
-<marker id="title"></marker>                // title of the graph
-<marker id="subtitle"></marker>             // subtitle of the graph
-<marker id="function1"></marker>            // Function 1 expression
-<marker id="x1_min"></marker>               // x1_min
-<marker id="x1_max"></marker>               // x1_max
-<marker id="function2"></marker>            // Function 2 expression
-<marker id="x2_min"></marker>               // x2_min
-<marker id="x2_max"></marker>               // x2_max
-<file id="1"><file>                         // File name where to save the image
-   -->
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#subtitle">Subtitle of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#function1">Function 1 expression</label>
+      <label index="marker#x1_min">x1 minimum</label>
+      <label index="marker#x1_max">x1 maximum</label>
+      <label index="marker#function2">Function 2 expression</label>
+      <label index="marker#x2_min">x2 minimum</label>
+      <label index="marker#x2_max">x2 maximum</label>
+      <label index="data#x1">x1 data</label>
+      <label index="data#y1">y1 data</label>
+      <label index="data#x2">x2 data</label>
+      <label index="data#y2">y2 data</label>
+    </languageKey>
+  </comments>
   
   <FuncGenerator id="1" func="cos($x)*$x" ref_func="marker#function1" >
     <E xmin="-4" xmax="4" return="data#1" ref_xmin="marker#x1_min" ref_xmax="marker#x1_max" />

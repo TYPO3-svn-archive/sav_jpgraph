@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template ledex1.xml
-<marker id="text"></marker>                 // text to display
-<marker id="color"></marker>                // Color of the leds
-<marker id="radius"></marker>               // Radius of the leds
-<file id="1"><file>                         // File name where to save the image
-   -->
-   
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="marker#radius">Radius of the leds</label>
+      <label index="marker#text">Text to display</label>
+      <label index="marker#color">Color of the leds</label>
+    </languageKey>
+  </comments>
+  
   <DigitalLED74 radius="2" ref_radius="marker#radius">
     <StrokeNumber text="0123456789. ABCDEFGHIJKLMN" color="LEDC_YELLOW" ref="file#1" ref_text="marker#text" ref_color="marker#color" />
   </DigitalLED74>

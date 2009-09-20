@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-// Add user function for help icons in flexforms for extension depending on SAV Library
+// Add a user function for the help icon
 if (!function_exists('user_helpIcon')) {
   function user_helpIcon($PA, $fobj){
     if (t3lib_div::int_from_ver(TYPO3_version) < 4002000) {
@@ -14,6 +14,11 @@ if (!function_exists('user_helpIcon')) {
       return '&nbsp;';
     }
   }
+}
+
+// Add a user function to get the overloaded attributes
+if (!function_exists('user_showOverloadedAttributes')) {
+  require_once(t3lib_extMgm::extPath($_EXTKEY).'user_showOverloadedAttributes.php');
 }
 
 // Add flexform field to plugin option

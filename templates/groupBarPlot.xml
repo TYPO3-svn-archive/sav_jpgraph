@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template groupBarPlot.xml
-<data id="x"></data>                        // x data set
-<data id="y"></data>                        // y array of data set
-<data id="legend"></data>                   // legend  data set
-<marker id="title"></marker>                // title of the graph
-<marker id="backgroundColor"></marker>      // Color of the graph background
-<marker id="width"></marker>                // width of the graph
-<marker id="height"></marker>               // height of the graph
-<marker id="marginLeft"></marker>           // Left margin for the graph
-<marker id="marginRight"></marker>          // Right for the graph
-<file id="1"><file>                         // File name where to save the image
-   -->
-
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#x">x data set</label>
+      <label index="data#y">y data set</label>
+      <label index="data#legend">Legend data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+      <label index="marker#marginLeft">Left margin for the graph</label>
+      <label index="marker#marginRight">Right margin for the graph</label>
+    </languageKey>
+  </comments>
 
   <!-- Define the data -->
   <data id="yDefault">

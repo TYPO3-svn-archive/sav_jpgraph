@@ -17,12 +17,22 @@
               <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.help</label>
               <config>
                 <type>user</type>
-                <userFunc>user_helpIcon_savlibrary</userFunc>
+                <userFunc>user_helpIcon</userFunc>
                 <filter>1</filter>
               </config>
             </TCEforms>
           </help>
-          
+          <overloadedAttributes>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.showOverloadedAttributes</label>
+              <config>
+                <type>user</type>
+                <userFunc>user_showOverloadedAttributes</userFunc>
+                <filter>1</filter>
+              </config>
+            </TCEforms>
+          </overloadedAttributes>
           <allowQueries>
             <TCEforms>
               <exclude>1</exclude>
@@ -43,10 +53,6 @@
                 <type>text</type>
                 <cols>48</cols>
                 <rows>5</rows>
-                <default>&lt;marker id="1"&gt;
-
-&lt;/marker&gt;
-                </default>
                </config>
             </TCEforms>
           </xmlMarkersConfig>
@@ -75,10 +81,6 @@
                 <type>text</type>
                 <cols>48</cols>
                 <rows>5</rows>
-                <default>&lt;data id="1"&gt;
-
-&lt;/data&gt;
-                </default>
                </config>
             </TCEforms>
           </xmlDataConfig>

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template pieex8.xml
-<data id="dataSet1"></data>                 // data for set 1
-<data id="dataSet2"></data>                 // data for set 2
-<data id="dataTitles"></data>               // Titles for the data
-<marker id="legendSet1"></marker>           // legend for set 1
-<marker id="legendSet2"></marker>           // legend for set 2
-<marker id="title"></marker>                // title of the graph
-<file id="1"><file>                         // File name where to save the image
-   -->
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#dataSet1">Data for set 1</label>
+      <label index="data#dataSet2">Data for set 2</label>
+      <label index="data#dataTitles">Titles for the data</label>
+      <label index="marker#legendSet1">Legend for set 1</label>
+      <label index="marker#legendSet2">Legend for set 2</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+    </languageKey>
+  </comments>
    
   <!-- Define the data -->
   <data id="defaultDataSet1">
@@ -36,7 +39,7 @@
   </RadarPlot>
 
   <!-- Create the basic radar graph -->
-  <RadarGraph width="350" height="200" type="auto">
+  <RadarGraph width="350" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <SetColor color="white" />
     <SetShadow />
     <SetCenter x="0.4" y="0.55" />

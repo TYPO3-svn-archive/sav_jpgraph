@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template ganttex.xml
-<data id="userBarConfig"></data>            // Gantt bar configuration
-<data id="userBarColorConfig"></data>       // Gantt bar color configuration
-<marker id="color"></marker>                // color for the pattern
-<file id="1"><file>                         // File name where to save the image
-   -->
-
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#userBarConfig">Gantt bar configuration</label>
+      <label index="data#userBarColorConfig">Gantt bar color configuration</label>
+      <label index="marker#color">Color for the pattern</label>
+    </languageKey>
+  </comments>
 
   <!-- Define the default data -->
   <data id="defaultBarConfig">

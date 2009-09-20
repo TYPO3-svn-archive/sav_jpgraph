@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template pieex8.xml
-<data id="data"></data>                     // data set
-<data id="legend"></data>                   // legend for datad
-<marker id="title"></marker>                // title of the graph
-<marker id="backgroundColor"></marker>      // Color of the graph background
-<file id="1"><file>                         // File name where to save the image
-   -->
-   
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#data">Data set</label>
+      <label index="data#legend">Legend data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#xCenter">x coordinate for the center</label>
+      <label index="marker#yCenter">y coordinate for the center</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+    </languageKey>
+  </comments>
+  
   <!-- Define the data -->
   <data id="defaultData">
     <setData value="40,60,21,33" />
@@ -20,13 +26,13 @@
 	<!-- Create the pie plot  -->
   <PiePlot3D id="1" ref="data#defaultData" ref_ref="data#data">
     <SetAngle param="20" />
-    <SetSize param="0.5" />
-    <SetCenter param="0.45" />
+    <SetSize param="0.4" />
+    <SetCenter x="0.4" ref_xCenter="marker#xCenter" y="0.52" ref_yCenter="marker#yCenter"/>
     <SetLegends ref="data#defaultLegend" ref_ref="data#legend" />
   </PiePlot3D>
 
   <!-- Set up the graph -->
-  <PieGraph width="300" height="200" type="auto">
+  <PieGraph width="300" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <SetShadow />
     <SetMarginColor color="white" ref_color="marker#backgroundColor" />
     <title>

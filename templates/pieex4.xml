@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template pieex4.xml
-<data id="data"></data>                     // data set
-<data id="legend"></data>                   // Legend data set
-<marker id="title"></marker>                // title of the graph
-<marker id="backgroundColor"></marker>      // Color of the graph background
-<marker id="xCenter"></marker>              // x coord for the center
-<marker id="yCenter"></marker>              // y coord for the center
-<marker id="width"></marker>                // Graph width
-<marker id="height"></marker>               // Graph height
-<file id="1"><file>                         // File name where to save the image
-   -->
-   
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#data">Data set</label>
+      <label index="data#legend">Legend data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#xCenter">x coordinate for the center</label>
+      <label index="marker#yCenter">y coordinate for the center</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+    </languageKey>
+  </comments>
 
   <!-- Define the data -->
   <data id="default">
@@ -30,7 +31,7 @@
       <SetFont family="FF_ARIAL" style="FS_BOLD" />
       <SetColor color="darkred" />
     </value>
-    <SetLegends ref="data#defaultLegend" ref_ref="data#legend" />
+    <SetLegends ref="data#defaultLegend" ref_ref="data#legend"/>
   </PiePlot>
 
   <!-- Set up the graph -->

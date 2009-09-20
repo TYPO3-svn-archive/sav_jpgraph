@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jpgraph>
 
-  <!-- External tags that can be used for the template bargradex1.xml
-<data id="x"></data>                        // x data set
-<data id="y"></data>                        // y data set
-<marker id="title"></marker>                // title of the graph
-<marker id="backgroundColor"></marker>      // Color of the graph background
-<file id="1"><file>                         // File name where to save the image
-   -->
-
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#x">x data set</label>
+      <label index="data#y">y data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+    </languageKey>
+  </comments>
+  
   <!-- Define the data -->
   <data id="y_default">
     <setData value="0.13,0.25,0.21,0.35,0.31,0.06" />
@@ -25,7 +29,7 @@
   </BarPlot>
 
   <!-- Set up the graph -->
-  <Graph width="400" height="200" type="auto">
+  <Graph width="300" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <img>
       <SetMargin left="60" right="20" top="30" bottom="50" />
     </img>
@@ -39,7 +43,7 @@
     </title>
     <xaxis>
       <SetFont family="FF_VERDANA" style="FS_NORMAL" size="10" />
-      <SetTickLabels ref="data#x_default" ref_ref="data#x" />
+      <SetTickLabels ref="data#x_default" ref_ref="data#x"/>
       <SetLabelAngle angle="50" />
     </xaxis>
     <yaxis>

@@ -13,6 +13,13 @@
 			<label index="help.description">SAV JpGraph</label>
 			<label index="help.details">
 
+        &lt;b&gt;&lt; comments &gt; ... &lt; /comments &gt;&lt;/b&gt;
+        Creates comments about overloaded attributes. Comments are associated with overloaded attributes and are displayed in the BE flexform.
+        
+        - &lt; languageKey index=&quot;...&quot; &gt; &lt; label index=&quot;...&quot; &gt; ... &lt; /label &gt; &lt; /languageKey &gt;
+        Defines the label associated with the overloaded attribute. Use &quot;tag#attribute&quot; for the index.
+        The language key makes it possible to have localization labels for the comments in the flexform. Use the conventional TYPO3 language keys for the index.
+
         &lt;b&gt;&lt; data [attributes] &gt; ... &lt; /data &gt;&lt;/b&gt;
         Creates a data object.
         Attribute:
