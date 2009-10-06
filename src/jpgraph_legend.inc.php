@@ -5,7 +5,7 @@
 //              names on the data series. The number of rows and columns
 //              in the legend are user specifyable.
 // Created:     2001-01-08 (Refactored to separate file 2008-08-01)
-// Ver:         $Id: jpgraph_legend.inc.php 1739 2009-07-30 21:21:15Z ljp $
+// Ver:         $Id: jpgraph_legend.inc.php 1892 2009-10-02 10:24:02Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -21,21 +21,22 @@ DEFINE('_DEFAULT_LPM_SIZE',8); // Default Legend Plot Mark size
 
 class Legend {
     public $txtcol=array();
+    public $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
     private $color=array(0,0,0); // Default fram color
     private $fill_color=array(235,235,235); // Default fill color
     private $shadow=true; // Shadow around legend "box"
     private $shadow_color='darkgray@0.5';
     private $mark_abs_hsize=_DEFAULT_LPM_SIZE,$mark_abs_vsize=_DEFAULT_LPM_SIZE;
-    private $xmargin=10,$ymargin=6,$shadow_width=2;
+    private $xmargin=10,$ymargin=4,$shadow_width=2;
     private $xlmargin=4, $ylmargin='';
     private $xpos=0.05, $ypos=0.15, $xabspos=-1, $yabspos=-1;
     private $halign="right", $valign="top";
-    private $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
     private $font_color='black';
     private $hide=false,$layout_n=1;
     private $weight=1,$frameweight=1;
     private $csimareas='';
     private $reverse = false ;
+    private $bkg_gradtype=-1, $bkg_gradfrom='lightgray', $bkg_gradto='gray';
 
     //---------------
     // CONSTRUCTOR
@@ -70,9 +71,10 @@ class Legend {
             $this->shadow_color = $aShow;
             $this->shadow=true;
         }
-        else
-        $this->shadow=$aShow;
-        $this->shadow_width=$aWidth;
+        else {
+            $this->shadow = $aShow;
+        }
+        $this->shadow_width = $aWidth;
     }
 
     function SetMarkAbsSize($aSize) {
@@ -131,10 +133,10 @@ class Legend {
         $this->valign=$aVAlign;
     }
 
-
     function Pos($aX,$aY,$aHAlign='right',$aVAlign='top') {
-        if( !($aX<1 && $aY<1) )
-        JpGraphError::RaiseL(25120);//(" Position for legend must be given as percentage in range 0-1");
+        if( !($aX<1 && $aY<1) ) {
+            JpGraphError::RaiseL(25120);//(" Position for legend must be given as percentage in range 0-1");
+        }
         $this->xpos=$aX;
         $this->ypos=$aY;
         $this->halign=$aHAlign;
@@ -157,7 +159,13 @@ class Legend {
         return $this->csimareas;
     }
 
-    function Stroke(&$aImg) {
+    function SetBackgroundGradient($aFrom='navy',$aTo='silver',$aGradType=2) {
+        $this->bkg_gradtype=$aGradType;
+        $this->bkg_gradfrom = $aFrom;
+        $this->bkg_gradto = $aTo;
+    }
+
+    function Stroke($aImg) {
         // Constant
         $fillBoxFrameWeight=1;
 
@@ -207,7 +215,7 @@ class Legend {
         // We add 1.5 y-margin to add some space at the top+bottom part of the
         // legend.
         $abs_height = max($abs_height,$this->mark_abs_vsize);
-        $abs_height += 3*$this->ymargin;
+        $abs_height += 2*$this->ymargin;
 
         // Find out the maximum width in each column
         for( $i=$numcolumns; $i < $n; ++$i ) {
@@ -215,7 +223,6 @@ class Legend {
             $aImg->GetTextWidth($this->txtcol[$i][0])+2*$this->xmargin+2*$this->mark_abs_hsize,
             $colwidth[$i % $numcolumns]);
         }
-
 
         // Get the total width
         $mtw = 0;
@@ -257,8 +264,8 @@ class Legend {
 
         if( $this->shadow ) {
         	$aImg->ShadowRectangle($xp,$yp,$xp+$abs_width+$this->shadow_width,
-        							$yp+$abs_height+$this->shadow_width,
-        							$this->fill_color,$this->shadow_width,$this->shadow_color);
+        						   $yp+$abs_height+$this->shadow_width,
+                                   $this->fill_color,$this->shadow_width,$this->shadow_color);
         }
         else {
             $aImg->SetColor($this->fill_color);
@@ -267,9 +274,17 @@ class Legend {
             $aImg->Rectangle($xp,$yp,$xp+$abs_width,$yp+$abs_height);
         }
 
+        if( $this->bkg_gradtype >= 0 ) {
+            $grad = new Gradient($aImg);
+            $grad->FilledRectangle($xp+1, $yp+1,
+                                   $xp+$abs_width-2, $yp+$abs_height-2,
+                                   $this->bkg_gradfrom, $this->bkg_gradto,
+                                   $this->bkg_gradtype);
+        }
+
         // x1,y1 is the position for the legend mark
-        $x1=$xp+round($this->mark_abs_hsize/2)+$this->xlmargin;
-        $y1=$yp + $this->ymargin;
+        $x1 = $xp + round($this->mark_abs_hsize/2) + $this->xlmargin;
+        $y1 = $yp + $this->ymargin+2;
 
         // Remember 1/2 of the font height since we need that later
         // as a minimum value for correctly position the markers
@@ -342,10 +357,7 @@ class Legend {
                 // We make boxes slightly larger to better show
                 $boxsize = max($this->mark_abs_vsize,$this->mark_abs_hsize) + 2 ;
 
-                // $y1 is the top border of the "box" we have to draw the marker
-                // and legend text in. We position the marker in the vertical center
-                // of this box
-                $ym = $y1 + round($rowheight[$row]/2)-round($this->mark_abs_vsize/2);
+                $ym = $y1 ; // Marker y-coordinate
 
                 // We either need to plot a gradient or a
                 // pattern. To differentiate we use a kludge.
@@ -380,9 +392,9 @@ class Legend {
             }
             $aImg->SetColor($this->font_color);
             $aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
-            $aImg->SetTextAlign('left','center');
+            $aImg->SetTextAlign('left','baseline');
             $aImg->StrokeText(round($x1+$this->mark_abs_hsize+$this->xmargin),
-            $y1+round($rowheight[$row]/2),$p[0]);
+                              $y1+round($rowheight[$row]/2),$p[0]);
 
             // Add CSIM for Legend if defined
             if( !empty($p[4]) ) {
@@ -404,6 +416,7 @@ class Legend {
                     $this->csimareas .= " />\n";
                 }
             }
+
             if( $i >= $this->layout_n ) {
                 $x1 = $xp+round($this->mark_abs_hsize/2)+$this->xlmargin;
                 $y1 += $rowheight[$row++];
