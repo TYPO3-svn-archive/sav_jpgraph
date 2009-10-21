@@ -1,10 +1,10 @@
 <?php // content="text/plain; charset=utf-8"
-require_once('jpgraph/jpgraph.php');
-require_once('jpgraph/jpgraph_line.php');
-require_once('jpgraph/jpgraph_utils.inc.php');
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_line.php');
+require_once ('jpgraph/jpgraph_utils.inc.php');
 
 // Get a dataset stored in $xdata and $ydata
-require_once('dataset01.inc.php');
+require_once ('dataset01.inc.php');
 
 $dateUtils = new DateScaleUtils();
 

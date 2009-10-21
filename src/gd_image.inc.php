@@ -3,7 +3,7 @@
 // File:        GD_IMAGE.INC.PHP
 // Description: PHP Graph Plotting library. Low level image drawing routines
 // Created:     2001-01-08, refactored 2008-03-29
-// Ver:         $Id: gd_image.inc.php 1895 2009-10-03 13:00:26Z ljp $
+// Ver:         $Id: gd_image.inc.php 1904 2009-10-06 18:00:06Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -851,9 +851,9 @@ class Image {
 
     function _StrokeTTF($x,$y,$txt,$dir,$paragraph_align,&$aBoundingBox,$debug=false) {
 
-        // Setupo default inter line margin for paragraphs to
-        // 25% of the font height.
-        $ConstLineSpacing = 0.25 ;
+        // Setup default inter line margin for paragraphs to be
+        // 3% of the font height.
+        $ConstLineSpacing = 0.03 ;
 
         // Remember the anchor point before adjustment
         if( $debug ) {
@@ -1005,13 +1005,16 @@ class Image {
                     $xl = $x + $w/2 - $wl/2 ;
                 }
 
-                $xl -= $bbox[0];
+                // In theory we should adjust with full pre-lead to get the lines
+                // lined up but this doesn't look good so therfore we only adjust with
+                // half th pre-lead
+                $xl -= $bbox[0]/2;
                 $yl = $y - $yadj;
-                $xl = $xl - $xadj;
-                ImageTTFText ($this->img, $this->font_size, $dir,
-                $xl, $yl-($h-$fh)+$fh*$i,
-                $this->current_color,$this->font_file,$tmp[$i]);
+                //$xl = $xl- $xadj;
+                ImageTTFText($this->img, $this->font_size, $dir, $xl, $yl-($h-$fh)+$fh*$i,
+                             $this->current_color,$this->font_file,$tmp[$i]);
 
+               // echo "xl=$xl,".$tmp[$i]." <br>";
                 if( $debug  ) {
                     // Draw the bounding rectangle around each line
                     $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,$tmp[$i]);
@@ -1394,13 +1397,28 @@ class Image {
         }
     }
 
-    function ShadowRectangle($xl,$yu,$xr,$yl,$fcolor=false,$shadow_width=3,$shadow_color=array(102,102,102)) {
+    function ShadowRectangle($xl,$yu,$xr,$yl,$fcolor=false,$shadow_width=4,$shadow_color='darkgray',$useAlpha=true) {
         // This is complicated by the fact that we must also handle the case where
         // the reactangle has no fill color
+        $xl = floor($xl);
+        $yu = floor($yu);
+        $xr = floor($xr);
+        $yl = floor($yl);
         $this->PushColor($shadow_color);
-        $this->FilledRectangle($xr-$shadow_width,$yu+$shadow_width,$xr,$yl-$shadow_width-1);
-        $this->FilledRectangle($xl+$shadow_width,$yl-$shadow_width,$xr,$yl);
-        //$this->FilledRectangle($xl+$shadow_width,$yu+$shadow_width,$xr,$yl);
+        $shadowAlpha=0;
+        $this->SetLineWeight(1);
+        $this->SetLineStyle('solid');
+        $basecolor = $this->rgb->Color($shadow_color);
+        $shadow_color = array($basecolor[0],$basecolor[1],$basecolor[2],);
+        for( $i=0; $i < $shadow_width; ++$i ) {
+            $this->SetColor($shadow_color,$shadowAlpha);
+            $this->Line($xr-$shadow_width+$i,   $yu+$shadow_width,
+                        $xr-$shadow_width+$i,   $yl-$shadow_width-1+$i);
+            $this->Line($xl+$shadow_width,   $yl-$shadow_width+$i,
+                        $xr-$shadow_width+$i,   $yl-$shadow_width+$i);
+            if( $useAlpha ) $shadowAlpha += 1.0/$shadow_width;
+        }
+
         $this->PopColor();
         if( $fcolor==false ) {
             $this->Rectangle($xl,$yu,$xr-$shadow_width-1,$yl-$shadow_width-1);

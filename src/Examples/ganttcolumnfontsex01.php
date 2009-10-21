@@ -2,8 +2,8 @@
 
 // Gantt column font array example
 
-require_once("../jpgraph.php");
-require_once("../jpgraph_gantt.php");
+require_once ('../jpgraph.php');
+require_once ('../jpgraph_gantt.php');
 
 // Setup a basic Gantt graph
 $graph = new GanttGraph();

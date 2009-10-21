@@ -3,7 +3,7 @@
 // File:        JPGRAPH.PHP
 // Description: PHP Graph Plotting library. Base module.
 // Created:     2001-01-08
-// Ver:         $Id: jpgraph.php 1897 2009-10-03 13:19:33Z ljp $
+// Ver:         $Id: jpgraph.php 1912 2009-10-10 10:26:03Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -18,7 +18,7 @@ require_once('jpgraph_legend.inc.php');
 require_once('gd_image.inc.php');
 
 // Version info
-define('JPG_VERSION','3.0.5');
+define('JPG_VERSION','3.0.6');
 
 // Minimum required PHP version
 define('MIN_PHPVERSION','5.1.0');
@@ -1002,7 +1002,7 @@ class Graph {
     }
 
     // Set the shadow around the whole image
-    function SetShadow($aShowShadow=true,$aShadowWidth=4,$aShadowColor='gray@0.3') {
+    function SetShadow($aShowShadow=true,$aShadowWidth=5,$aShadowColor='darkgray') {
         $this->doshadow = $aShowShadow;
         $this->shadow_color = $aShadowColor;
         $this->shadow_width = $aShadowWidth;
@@ -1460,13 +1460,28 @@ class Graph {
     }
 
     function GetXMinMax() {
+
         list($min,$ymin) = $this->plots[0]->Min();
         list($max,$ymax) = $this->plots[0]->Max();
+
+        $i=0;
+        // Some plots, e.g. PlotLine should not affect the scale
+        // and will return (null,null). We should ignore those
+        // values.
+        while( ($min===null || $max === null) && ($i < count($this->plots)-1) ) {
+            ++$i;
+            list($min,$ymin) = $this->plots[$i]->Min();
+            list($max,$ymax) = $this->plots[$i]->Max();
+        }
+
         foreach( $this->plots as $p ) {
             list($xmin,$ymin) = $p->Min();
             list($xmax,$ymax) = $p->Max();
-            $min = Min($xmin,$min);
-            $max = Max($xmax,$max);
+
+            if( $xmin !== null && $xmax !== null ) {
+                $min = Min($xmin,$min);
+                $max = Max($xmax,$max);
+            }
         }
 
         if( $this->y2axis != null ) {
@@ -3861,8 +3876,14 @@ class Axis extends AxisPrototype {
                     else {
                         $label=$this->scale->ticks->maj_ticks_label[$i];
                     }
-                    if( $this->scale->textscale && $this->scale->ticks->label_formfunc == '' ) {
+
+                    // We number the scale from 1 and not from 0 so increase by one
+                    if( $this->scale->textscale && 
+                        $this->scale->ticks->label_formfunc == '' &&
+                        ! $this->scale->ticks->HaveManualLabels() ) {
+
                         ++$label;
+                        
                     }
                 }
 
@@ -4118,6 +4139,10 @@ class LinearTicks extends Ticks {
         $this->iManualTickPos = $aMajPos;
         $this->iManualMinTickPos = $aMinPos;
         $this->iManualTickLabels = $aLabels;
+    }
+
+    function HaveManualLabels() {
+        return count($this->iManualTickLabels) > 0;
     }
 
     // Specify all the tick positions manually and possible also the exact labels
@@ -4671,6 +4696,11 @@ class LinearScale {
     // Calculate autoscale. Used if user hasn't given a scale and ticks
     // $maxsteps is the maximum number of major tickmarks allowed.
     function AutoScale($img,$min,$max,$maxsteps,$majend=true) {
+
+        if( !is_numeric($min) || !is_numeric($max) ) {
+            JpGraphError::Raise(25044);
+        }
+
         if( $this->intscale ) {
             $this->IntAutoScale($img,$min,$max,$maxsteps,$majend);
             return;

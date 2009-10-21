@@ -1,6 +1,6 @@
 <?php // content="text/plain; charset=utf-8"
-include "jpgraph/jpgraph.php";
-include "jpgraph/jpgraph_polar.php";
+require_once ('jpgraph/jpgraph.php');
+require_once ('jpgraph/jpgraph_polar.php');
 
 //$data = array(22,12,27,40,80,48,120,40,142,27,170,12);
 

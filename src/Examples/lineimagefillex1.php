@@ -1,6 +1,6 @@
 <?php
-include ("../jpgraph.php");
-include ("../jpgraph_line.php");
+require_once ('../jpgraph.php');
+require_once ('../jpgraph_line.php');
 
 $datay = array(0,3,5,12,15,18,22,36,37,41);
 

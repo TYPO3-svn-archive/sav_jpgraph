@@ -3,7 +3,7 @@
  // File:        JPGRAPH_BAR.PHP
  // Description: Bar plot extension for JpGraph
  // Created:     2001-01-08
- // Ver:         $Id: jpgraph_bar.php 1782 2009-08-25 09:38:45Z ljp $
+ // Ver:         $Id: jpgraph_bar.php 1905 2009-10-06 18:00:21Z ljp $
  //
  // Copyright (c) Aditus Consulting. All rights reserved.
  //========================================================================
@@ -203,7 +203,7 @@ class BarPlot extends Plot {
     }
 
     function SetFillColor($aColor) {
-        // Do an extra error check if the color is specified as an RG array triple
+        // Do an extra error check if the color is specified as an RGB array triple
         // In that case convert it to a hex string since it will otherwise be
         // interpretated as an array of colors for each individual bar.
 

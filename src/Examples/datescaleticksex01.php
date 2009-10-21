@@ -1,7 +1,7 @@
 <?php // content="text/plain; charset=utf-8"
-require_once("../jpgraph.php");
-require_once("../jpgraph_line.php");
-require_once("../jpgraph_date.php");
+require_once ('../jpgraph.php');
+require_once ('../jpgraph_line.php');
+require_once ('../jpgraph_date.php');
 
 DEFINE('INTERVAL', 5*60);
 
