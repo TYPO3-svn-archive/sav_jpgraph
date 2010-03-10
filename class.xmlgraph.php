@@ -346,6 +346,22 @@ class query {
     $this->limit();
   }
 
+
+	/**
+	 * Set the query manager
+	 *    .
+	 * @param $querySelect string
+	 *
+	 * @return none
+	 */
+  public function setQueryManager($type, $uid) {
+    $this->reference->setReferenceArray(
+      'queryManager',
+      $this->referenceId,
+      array('name' => $type, 'uid' => $uid)
+    );
+  }
+  
 	/**
 	 * Set the SELECT part of the query
 	 *    .
@@ -570,7 +586,7 @@ class template {
  */
 class xmlGraph extends Graph {
 
-  protected $referenceArray = array();
+  public $referenceArray = array();
   protected $referenceId = 0;
   protected $xml = NULL;
   private $requireArray = array(

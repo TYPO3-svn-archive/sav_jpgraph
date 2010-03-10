@@ -106,7 +106,14 @@
         
         - &lt; limit &gt; ... &lt; /limit &gt;
         Defines the LIMIT clause.
-
+        
+        - &lt; setQueryManager type=&quot;managerName&quot; uid=&quot;integer&quot; / &gt;
+        Defines an external query manager.
+        Attributes:
+         . type=”managerName”. The external query manager name is defined by means of this paramater (e.g. type=”wfqbe”)
+         . uid=”integer”. The integer is the uid of the record where the query is defined in the external query manager.
+        See the section “Defining and using an external query manager” in the tutorial.
+        
         &lt;b&gt;&lt; template [attributes] &gt; ... &lt; /template &gt;&lt;/b&gt;
         Creates a template object.
         Attributes:

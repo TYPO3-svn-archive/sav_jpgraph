@@ -60,51 +60,51 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 
-    // define the constant LOCALE for the use in the template
+    // Defines the constant LOCALE for the use in the template
     define(LOCALE, $GLOBALS['TSFE']->config['config']['locale_all']);
 
-    // define the constant CURRENT_PID for the use in the template
+    // Defines the constant CURRENT_PID for the use in the template
     define(CURRENT_PID, $GLOBALS['TSFE']->page['uid']);
 
-    // define the constant STORAGE_PID for the use in the template
+    // Defines the constant STORAGE_PID for the use in the template
     $temp = $GLOBALS['TSFE']->getStorageSiterootPids();
     define(STORAGE_PID, $temp['_STORAGE_PID']);
     
-    // Redefine the constant for TTF directory if necessary
+    // Redefines the constant for TTF directory if necessary
     $temp = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sav_jpgraph']);
     if ($temp['plugin.']['sav_jpgraph.']['ttfDir']) {
       define('TTF_DIR', $temp['plugin.']['sav_jpgraph.']['ttfDir']);
     }
 
-    // Define the main directory
+    // Defines the main directory
     define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'src/');
 
-    // Define the file name for the resulting image
+    // Defines the file name for the resulting image
     if (!is_dir('typo3temp/sav_jpgraph')) {
       mkdir('typo3temp/sav_jpgraph');
     }
     $imageFileName = 'typo3temp/sav_jpgraph/img_' .
       $this->cObj->data['uid'] . '.png';
 
-    // Delete the file if it exists
+    // Deletes the file if it exists
     if (file_exists(PATH_site . $imageFileName)) {
       unlink(PATH_site . $imageFileName);
     }
 
-    // Define the cache dir
+    // Defines the cache dir
     define('CACHE_DIR', 'typo3temp/sav_jpgraph/');
     
-    // Require the xml class
+    // Requires the xml class
     require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.typo3.php');
     require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
 
-    // Init FlexForm configuration for plugin and get the configuration fields
+    // Initializes FlexForm configuration for plugin and get the configuration fields
     $this->loadFlexform();
 
-    // Create the xlmgraph
+    // Creates the xlmgraph
     $xmlGraph = new xmlGraph();
     
-    // Set the filter if any
+    // Sets the filter if any
     $this->sessionFilterSelected = $GLOBALS['TSFE']->fe_user->getKey('ses','filterSelected');
     $this->sessionFilter = $GLOBALS['TSFE']->fe_user->getKey('ses','filter');
 
@@ -116,23 +116,23 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       $xmlGraph->setReferenceArray('filter', 'addWhere', '1');
     }
 
-    // Check if queries are allowed
+    // Checks if queries are allowed
     if ($this->conf['allowQueries']) {
 
-      // Get the object type according to the TYPO3 version
+      // Gets the object type according to the TYPO3 version
       if (t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
         $objectTypeUser = ux_tslib_cObj::OBJECTTYPE_USER;
       } else {
         $objectTypeUser = tslib_cObj::OBJECTTYPE_USER;
       }
-      // Change the plugin as a USER INT
+      // Changes the plugin as a USER INT
       if ($this->cObj->getUserObjectType() == $objectTypeUser) {
   			$this->cObj->convertToUserIntObject();
       }
       $this->pi_checkCHash = false;
   		$this->pi_USER_INT_obj = 1;
 
-      // Prepare the queries processing
+      // Prepares the queries processing
       $processQueries = '
         <typo3>
           <processQueries />
@@ -142,7 +142,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       $processQueries = '';
     }
 
-    // Set the image and add the xml markers configuration and process it
+    // Sets the image and add the xml markers configuration and process it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
         '
@@ -156,7 +156,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     );
     $xmlGraph->processXmlGraph();
 
-    // Load the xml queries configuration and process it
+    // Loads the xml queries configuration and process it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
         $this->conf['xmlQueriesConfig'] .
@@ -165,13 +165,13 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     );
     $xmlGraph->processXmlGraph();
 
-    // Load the xml data configuration and process it
+    // Loads the xml data configuration and process it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue($this->conf['xmlDataConfig'])
     );
     $xmlGraph->processXmlGraph();
 
-    // Load the xml templates configuration and process it
+    // Loads the xml templates configuration and process it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue($this->conf['xmlTemplatesConfig'])
     );
@@ -179,7 +179,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     $content = '<img class="jpgraph" src="' . $imageFileName . '" alt="" />';
 
-    // Include the default style sheet if none was provided
+    // Includes the default style sheet if none was provided
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$this->extKey])) {
 		  if (!$this->conf['fileCSS']) {
 		    if (file_exists(t3lib_extMgm::siteRelPath($this->extKey) . 'res/' . $this->extKey . '.css')) {
@@ -200,7 +200,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
 
   private function loadFlexform() {
-    // Init FlexForm configuration for plugin and get the configuration fields
+    // Initializes FlexForm configuration for plugin and get the configuration fields
     $this->pi_initPIflexForm();
     if (!isset($this->cObj->data['pi_flexform']['data'])) {
       $this->addError('error.incorrectPluginConfiguration_1', $this->extKey);
@@ -211,12 +211,12 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
   		$flexConf[$key] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $key);
     }
 
-    // Merge the flexform configuration with the plugin configuration
+    // Merges the flexform configuration with the plugin configuration
     $this->conf = array_merge($this->conf, $flexConf);
   }
 
 	/**
-	 * Add an error to the error list
+	 * Adds an error to the error list
 	 *
 	 * @errorLabel string (error label)
 	 * @addMessage string (additional message)
@@ -228,7 +228,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
   }
 
 	/**
-	 * Return the error list
+	 * Returns the error list
 	 *
 	 * @return string (the error content result)
 	 */

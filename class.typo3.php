@@ -55,36 +55,46 @@ class typo3 {
   
 
 	/**
-	 * Process query
+	 * Processes the query
 	 *
 	 * @param $id string Identifier for the query
 	 *
 	 * @return none
 	 */
   public function processQuery($id) {
-
-    // Execute the query
-    $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-      $this->reference->getReferenceArray('querySelect', $id),
-      $this->reference->getReferenceArray('queryFrom', $id),
-      $this->reference->getReferenceArray('queryWhere', $id),
-      $this->reference->getReferenceArray('queryGroupby', $id),
-      $this->reference->getReferenceArray('queryOrderby', $id),
-      $this->reference->getReferenceArray('queryLimit', $id)
-    );
-
-    // Check for errors
-    if (!is_array($rows)) {
-      $lastBuiltQuery = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
-			$lastBuiltQuery = str_replace(chr(9), '', $lastBuiltQuery);
-			$lastBuiltQuery = str_replace('  ', '', $lastBuiltQuery);
-      JpGraphError::Raise(
-        'SQL error: ' . $GLOBALS['TYPO3_DB']->sql_error() . chr(10) .
-        'In query: '. $lastBuiltQuery
-      );
+  
+    // Checks if there is a query manager
+    $queryManager = $this->reference->getReferenceArray('queryManager', $id);
+    if ($queryManager === NULL) {
+      // The default TYPO3 API is used
+      $hookObject = &$this;
+      $queryManager['uid'] = $id;
     } else {
-      $this->reference->setReferenceArray('query', $id, $rows);
+      // Unsets te configuration manager
+      $this->reference->unsetReferenceArray('queryManager', $id);
 
+      // Gets the class from the hook
+      if (is_array ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sav_jpgraph']['queryManagerClass'])) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sav_jpgraph']['queryManagerClass'] as $key => $classRef) {
+          if ($key == $queryManager['name']) {
+            $hookObject = &t3lib_div::getUserObj($classRef);
+          }
+        }
+      } else {
+        JpGraphError::Raise(
+          'A query manager must be defined by a hook for ' . $queryManager['name']
+        );
+      }
+    }
+    
+    // Executes the query
+    if (method_exists($hookObject, 'executeQuery')) {
+      $rows = $hookObject->executeQuery($queryManager['uid']);
+    }
+
+    // Sets the result if any
+    if (is_array($rows)) {
+      $this->reference->setReferenceArray('query', $id, $rows);
       // Process variable definitions and replace them in the markers
       if (is_array($rows[0])) {
         foreach($rows[0] as $key => $row) {
@@ -97,24 +107,30 @@ class typo3 {
           }
         }
       }
+    } else {
+      // Processes the error
+      if (method_exists($hookObject, 'getErrorMessage')) {
+        $errorMessage = $hookObject->getErrorMessage($queryManager['uid']);
+      }
 
-      // Unset the query definition
-      $this->reference->unsetReferenceArray('querySelect', $id);
-      $this->reference->unsetReferenceArray('queryFrom', $id);
-      $this->reference->unsetReferenceArray('queryWhere', $id);
-      $this->reference->unsetReferenceArray('queryGroupby', $id);
-      $this->reference->unsetReferenceArray('queryOrderby', $id);
-      $this->reference->unsetReferenceArray('queryLimit', $id);
+      JpGraphError::Raise($errorMessage);
     }
+    
+    // Unset the query definition
+    $this->reference->unsetReferenceArray('querySelect', $id);
+    $this->reference->unsetReferenceArray('queryFrom', $id);
+    $this->reference->unsetReferenceArray('queryWhere', $id);
+    $this->reference->unsetReferenceArray('queryGroupby', $id);
+    $this->reference->unsetReferenceArray('queryOrderby', $id);
+    $this->reference->unsetReferenceArray('queryLimit', $id);
   }
 
 	/**
-	 * Process queries
+	 * Processes queries
 	 *
 	 * @return none
 	 */
   public function processQueries() {
-  
     $querySelect = $this->reference->getReferenceArray('querySelect');
     if (is_array($querySelect)) {
       foreach($this->reference->getReferenceArray('querySelect') as $id => $value) {
@@ -123,7 +139,40 @@ class typo3 {
     }
   }
 
-  
+	/**
+	 * Executes the query
+	 *
+	 * @return array The rows
+	 */
+  private function executeQuery($id) {
+    $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+      $this->reference->getReferenceArray('querySelect', $id),
+      $this->reference->getReferenceArray('queryFrom', $id),
+      $this->reference->getReferenceArray('queryWhere', $id),
+      $this->reference->getReferenceArray('queryGroupby', $id),
+      $this->reference->getReferenceArray('queryOrderby', $id),
+      $this->reference->getReferenceArray('queryLimit', $id)
+    );
+    return $rows;
+  }
+
+	/**
+	 * Gets the error message if any
+	 *
+	 * @return string The error message
+	 */
+  private function getErrorMessage($id) {
+    $lastBuiltQuery = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+  	$lastBuiltQuery = str_replace(chr(9), '', $lastBuiltQuery);
+  	$lastBuiltQuery = str_replace('  ', '', $lastBuiltQuery);
+  	
+  	$errorMessage = 'SQL error: ' . $GLOBALS['TYPO3_DB']->sql_error() . chr(10) .
+      'In query: '. $lastBuiltQuery;
+
+    return $errorMessage;
+  }
+
+
 }
 
 
