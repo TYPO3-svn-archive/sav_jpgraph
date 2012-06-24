@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- Defines the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#x_data">Data set for the x axis</label>
+      <label index="data#y_data">Data set for the y axis</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#color">Color of the graph</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+      <label index="marker#margin">Margin</label>
+    </languageKey>
+    <languageKey index="fr">
+      <label index="data#x_data">Données pour l'axe x</label>
+      <label index="data#y_data">Données pour l'axe y</label>
+      <label index="marker#title">Titre du graphique</label>
+      <label index="marker#backgroundColor">Couleur du fond</label>
+      <label index="marker#color">Couleur du graphique</label>
+      <label index="marker#width">Largeur du graphique</label>
+      <label index="marker#height">Hauteur du graphique</label>
+      <label index="marker#margin">Marge</label>
+    </languageKey>
+  </comments>
+
+  <!-- Defines the data -->
+  <data id="x_default">
+    20,21,22,23,24,25,26,27,28,29
+  </data>
+  <data id="y_default">
+    11,3,8,12,5,1,9,13,5,7
+  </data>
+
+
+	<!-- Creates the line plot  -->
+  <LinePlot id="1" ref="data#y_default" ref_ref="data#y_data">
+    <SetColor color="blue" ref_color="marker#color" />
+    <value>
+      <SetFont family="FF_ARIAL" style="FS_BOLD" />
+      <SetColor color="darkred" />
+      <SetAlign halign="left" />
+      <Show />
+    </value>
+  </LinePlot>
+
+  <!-- Sets up the graph -->
+  <Graph id="1" width="400" ref_width="marker#width" height="250" ref_height="marker#height" type="auto">
+    <SetShadow />
+    <SetScale axisTYpe="textlin" />
+    <SetMargin left="40" right="40" top="40" bottom="40" ref_left="marker#margin" ref_right="marker#margin" />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <title>
+      <Set title="Simple curve with data" ref_title="marker#title"/>
+      <SetFont family="FF_ARIAL" style="FS_BOLD" size="14" />
+    </title>
+    <xaxis>
+      <SetTickLabels ref="data#x_default" ref_ref="data#x_data" />
+    </xaxis>
+    <Add ref="LinePlot#1" />
+    <Stroke ref="file#1" />
+  </Graph>
+  
+</jpgraph>

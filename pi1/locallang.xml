@@ -13,6 +13,8 @@
 			<label index="pi_flexform.help">Help</label>
 			<label index="pi_flexform.allowQueries">Allow queries (Admin)</label>
 			<label index="pi_flexform.showOverloadedAttributes">Overloaded attributes (doubleclick on the name to add the attribute) </label>
+			<label index="pi_flexform.xmlError">Error in the xml code. Check if tags are correctly opened and closed.</label>
+			<label index="pi_flexform.xmlErrorInTemplate">Error in the xml template. Check if tags are correctly opened and closed.</label>
 			<label index="pi_flexform.xmlMarkersConfig">Markers</label>
 			<label index="pi_flexform.xmlDataConfig">Data</label>
 			<label index="pi_flexform.xmlQueriesConfig">Queries</label>

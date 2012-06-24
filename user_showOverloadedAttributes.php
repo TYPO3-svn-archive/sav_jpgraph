@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Yolf (Laurent Foulloy) <yolf.typo3@orange.fr>
+*  (c) 2009 Laurent Foulloy <yolf.typo3@orange.fr>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,21 +30,25 @@
       return  '';
     }
 
-    // Get the template field
+    // Gets the template field
+    libxml_use_internal_errors(true);
     $xml = simplexml_load_string(html_entity_decode($PA['row']['pi_flexform']));
-
-    // Get the template
+    if ($xml === false) {
+      return ($GLOBALS['LANG']->sL('LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlError'));
+    }
+    
+    // Gets the template
     $templates = $xml->xpath('//field[@index="xmlTemplatesConfig"]/value/template');
     $tagsArray = array();
     foreach ($templates as $template) {
 
       $templateFileName = trim((string) $template);
       if (!$templateFileName) {
-        // Chek if there is a tag setTemplateDir
+        // Cheks if there is a tag setTemplateDir
         $templateDirTags = $template->xpath('//setTemplateDir[@dir]');
         $templateDir = (string) $templateDirTags[0]['dir'];
         $templateDir = (defined($templateDir) ? constant($templateDir) : $templateDir);
-        // Chek if there is a tag loaadTemplate
+        // Cheks if there is a tag loaadTemplate
         $loadTemplateTags = $template->xpath('//loadTemplate[@file]');
         $loadTemplate = (string) $loadTemplateTags[0]['file'];
         $templateFileName = $loadTemplate;
@@ -53,51 +57,67 @@
         }
       }
 
-      // Load the template
+      // Loads the template
       $templateFile = ($templateDir ? $templateDir : PATH_site) . $templateFileName;
       if (!file_exists($templateFile)) {
         return 'Template file: ' . $templateFile . ' does not exist.';
       }
       $xmlGraph = simplexml_load_file($templateFile);
-
-      // Get the comments for the current language or from the default one
-      $comments = $xmlGraph->xpath('//comments/languageKey[@index="'. $GLOBALS['LANG']->lang .'"]');
-      if(!$comments) {
-        $comments = $xmlGraph->xpath('//comments/languageKey[@index="default"]');
+      if ($xmlGraph === false) {
+        return ($GLOBALS['LANG']->sL('LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlErrorInTemplate'));
       }
-      if($comments) {
-        $labels = $comments[0]->xpath('//label[@index]');
+      
+      // Sets the language
+      $language = ($GLOBALS['LANG']->lang ? $GLOBALS['LANG']->lang : 'default');
+      
+      // Gets the labels for the current language
+      $labels = $xmlGraph->xpath('//comments/languageKey[@index="'. $language .'"]/label[@index]');
+      if($labels) {
         foreach($labels as $label) {
           $referenceAttributeValue = explode('#', (string)$label['index']);
-          $labelsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]] = (string)$label;
+          $labelsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]] = $GLOBALS['LANG']->csConvObj->utf8_decode(
+						(string)$label,
+						$GLOBALS['LANG']->charSet
+					);
         }
       }
 
-      // Get the overloaded attributes
-      $referenceAttributes = $xmlGraph->xpath('//@*[starts-with(name(),"ref_")]');
-      foreach ($referenceAttributes as $referenceAttribute) {
-        $referenceAttributeValue = explode('#', (string)$referenceAttribute);
-        if (!is_array($tagsArray[$referenceAttributeValue[0]])) {
-          $tagsArray[$referenceAttributeValue[0]]= array();
+      // Gets the overloaded nodes
+      $nodesWithReferenceAttributes = $xmlGraph->xpath('//*[@*[starts-with(name(),"ref_")]]');
+
+      foreach ($nodesWithReferenceAttributes as $node) {
+        $attributes = $node->attributes();
+        foreach($node->attributes() as $attribute) {
+          if (preg_match('/^ref_([\w]+)$/', $attribute->getName(), $match)) {
+            $referenceAttributeValue = explode('#', (string)$attribute);
+            if (!is_array($tagsArray[$referenceAttributeValue[0]])) {
+              $tagsArray[$referenceAttributeValue[0]]= array();
+            }
+            if (!in_array($referenceAttributeValue[1], $tagsArray[$referenceAttributeValue[0]])) {
+              $tagsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]]['label'] = $labelsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]];
+              $tagsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]]['default'] = $attributes[$match[1]];
+            }
+          }
         }
-        if (!in_array($referenceAttributeValue[1], $tagsArray[$referenceAttributeValue[0]]))
-        $tagsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]] = $labelsArray[$referenceAttributeValue[0]][$referenceAttributeValue[1]];
       }
     }
 
-    // Build the content
+    // Builds the content
     $content = array();
     $content[] = '<style type="text/css">';
     $content[] = '  /*<![CDATA[*/';
     $content[] = '  table.comments td.link {padding:3px;}';
     $content[] = '  table.comments td.link a {padding:3px;}';
     $content[] = '  table.comments td.link:hover {background-color: #d7dbe2;}';
+    $content[] = '  table.comments td.comment {padding:3px;}';
+    $content[] = '  table.comments td.default {padding:3px 3px 3px 5px;}';
     $content[] = '  /*]]>*/';
     $content[] = '</style>';
 
     $content[] = '<table class="comments">';
+
     foreach ($tagsArray as $keyTags => $tagArray) {
-      $content[] = '<tr colspan="2"><td><strong>Tags ' . $keyTags .':</strong><br /></td></tr>';
+      $content[] = '<tr colspan="3"><td><strong>Tags ' . $keyTags .':</strong><br /></td></tr>';
       switch ($keyTags) {
         case 'data':
           $name = 'xmlDataConfig';
@@ -110,12 +130,17 @@
       }
 
       foreach ($tagArray as $keyTag => $tag) {
-        $comment = ($tag ? $tag : '&nbsp;');
+        $comment = ($tag['label'] ? $tag['label'] : '&nbsp;');
+        $default = ($tag['default'] ? $tag['default'] : '&nbsp;');
         $onclick = 'document.editform[\'data[tt_content]['. $PA['row']['uid'] .'][pi_flexform][data][sDEF][lDEF]['. $name .'][vDEF]\'].value+=\'' .
           '<' . $keyTags . ' id=&quot;'. $keyTag .'&quot;>\n\n' .
           '</'. $keyTags . '>\n\';' .
           'if(document.editform[\'data[tt_content]['. $PA['row']['uid'] .'][pi_flexform][data][sDEF][lDEF]['. $name .'][vDEF]\'].rows >=5) document.editform[\'data[tt_content]['. $PA['row']['uid'] .'][pi_flexform][data][sDEF][lDEF]['. $name .'][vDEF]\'].rows+=3;';
-        $content[] = '<tr><td class="link">&nbsp;<a href="#" ondblclick="' . $onclick . '">' .$keyTag . '</a></td><td style="padding:3px;">' . $comment . '</td></tr>';
+        $content[] = '<tr>';
+        $content[] = '<td class="link">&nbsp;<a href="#" ondblclick="' . $onclick . '">' .$keyTag . '</a></td>';
+        $content[] = '<td class="comment">' . $comment . '</td>';
+        $content[] = '<td class="default">' . $default . '</td>';
+        $content[] = '</tr>';
       }
     }
     $content[] = '</table>';

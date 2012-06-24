@@ -10,6 +10,10 @@
       <label index="marker#backgroundColor">Color of the graph background</label>
       <label index="marker#width">Graph width</label>
       <label index="marker#height">Graph height</label>
+      <label index="marker#marginLeft">Left margin for the graph</label>
+      <label index="marker#marginRight">Right margin for the graph</label>
+      <label index="marker#marginTop">Top margin for the graph</label>
+      <label index="marker#marginBottom">Bottom margin for the graph</label>
     </languageKey>
   </comments>
   
@@ -31,7 +35,7 @@
   <!-- Set up the graph -->
   <Graph width="300" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <img>
-      <SetMargin left="60" right="20" top="30" bottom="50" />
+      <SetMargin left="60" ref_left="marker#marginLeft" right="20" ref_right="marker#marginRight" top="30" ref_top="marker#marginTop" bottom="50" ref_bottom="marker#marginBottom" />
     </img>
     <SetScale type="textlin" />
     <SetMarginColor color="lightblue" ref_color="marker#backgroundColor" />

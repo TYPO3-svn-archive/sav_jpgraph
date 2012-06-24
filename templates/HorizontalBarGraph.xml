@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- Defines the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#data_x">x data set</label>
+      <label index="data#data_y">y data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+      <label index="marker#barColor">Color of the bar</label>
+      <label index="marker#format">Data format</label>
+    </languageKey>
+    <languageKey index="fr">
+      <label index="data#data_x">Données en x</label>
+      <label index="data#data_y">Données en y</label>
+      <label index="marker#title">Titre du graphique</label>
+      <label index="marker#backgroundColor">Couleur du fond</label>
+      <label index="marker#width">Largeur du graphique</label>
+      <label index="marker#height">Hauteur du graphique</label>
+      <label index="marker#barColor">Couleur des barres</label>
+      <label index="marker#format">Format pour les données</label>
+    </languageKey>
+  </comments>
+
+  <!-- Defines the data -->
+  <data id="default_x">
+    Jan,Fev,Mar,Apr,May
+  </data>
+  <data id="default_y">
+    40,60,21,33
+  </data>
+  
+	<!-- Creates the bar plot  -->
+  <BarPlot id="1" ref="data#default_y" ref_ref="data#data_y">
+    <SetFillColor color="orange" ref_color="marker#barColor" />
+    <SetShadow />
+    <value>
+      <Show />
+      <SetFont family="FF_ARIAL" style="FS_NORMAL" size="10" />
+      <SetAlign halign="left" valign="center" />
+      <SetFormat format=" %.1f" ref_format="marker#format" />
+    </value>
+  </BarPlot>
+
+  <!-- Sets up the graph -->
+  <Graph id="1" width="300" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
+    <SetShadow />
+    <SetScale scale="textlin" />
+    <Set90AndMargin left="50" right="20" top="50" bottom="50" />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <xaxis>
+      <SetPos position="min" />
+      <SetTickLabels ref="data#default_x" ref_ref="data#data_x" />
+      <SetFont family="FF_ARIAL" style="FS_NORMAL" size="10" />
+      <SetLabelMargin margin="5" />
+      <SetLabelAlign halign="right" valign="center" />
+    </xaxis>
+    <yaxis>
+      <scale>
+        <SetGrace graceTop="20" />
+      </scale>
+      <SetPos position="max" />
+      <SetLabelAlign halign="center" valign="top" />
+      <SetFont family="FF_ARIAL" style="FS_NORMAL" size="10" />
+      <SetLabelFormat format="%d" />
+      <SetLabelSide side="SIDE_RIGHT" />
+      <SetTickSide side="SIDE_LEFT" />
+    </yaxis>
+    <title>
+      <Set title="Horizontal bar graph" ref_title="marker#title"/>
+      <SetFont family="FF_ARIAL" style="FS_BOLD" size="14" />
+    </title>
+    
+    <Add ref="BarPlot#1" />
+    <Stroke ref="file#1" delayed="1" />
+  </Graph>
+</jpgraph>

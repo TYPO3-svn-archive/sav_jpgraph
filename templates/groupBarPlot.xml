@@ -13,6 +13,8 @@
       <label index="marker#height">Graph height</label>
       <label index="marker#marginLeft">Left margin for the graph</label>
       <label index="marker#marginRight">Right margin for the graph</label>
+      <label index="marker#marginTop">Top margin for the graph</label>
+      <label index="marker#marginBottom">Bottom margin for the graph</label>
     </languageKey>
   </comments>
 
@@ -46,13 +48,13 @@
   <GroupBarPlot id="1" ref="BarPlot#1" />
 
   <!-- Set up the graph -->
-  <Graph width="400" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
+  <Graph id="1" width="400" ref_width="marker#width" height="200" ref_height="marker#height" type="auto">
     <legend>
       <SetAbsPos x="10" y="10" xpos="right" ypos="top" />
       <SetFillColor color="white" />
     </legend>
     <img>
-      <SetMargin left="40" ref_left="marker#marginLeft" right="80" ref_right="marker#marginRight" top="30" bottom="50" />
+      <SetMargin left="40" ref_left="marker#marginLeft" right="80" ref_right="marker#marginRight" top="30" ref_top="marker#marginTop" bottom="50" ref_bottom="marker#marginBottom" />
     </img>
     <SetScale type="textlin" />
     <SetMarginColor color="white" ref_color="marker#backgroundColor" />
@@ -78,7 +80,7 @@
 
     <Add ref="GroupBarPlot#1" />
 
-    <Stroke ref="file#1" />
+    <Stroke ref="file#1" delayed="1" />
   </Graph>
 
 </jpgraph>

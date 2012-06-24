@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Yolf (Laurent Foulloy) <yolf.typo3@orange.fr>
+*  (c) 2009 Laurent Foulloy <yolf.typo3@orange.fr>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,6 +48,9 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
   protected $sessionFilterSelected;
   protected $errors;                                   // Errors list
 
+  // Charset used in the flexform
+  protected $flexformCharset;
+  
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -56,7 +59,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 	 * @return	The content that is displayed on the website
 	 */
 	function main($content,$conf)	{
-		$this->conf=$conf;
+		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 
@@ -93,7 +96,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // Defines the cache dir
     define('CACHE_DIR', 'typo3temp/sav_jpgraph/');
-    
+
     // Requires the xml class
     require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.typo3.php');
     require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
@@ -142,7 +145,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       $processQueries = '';
     }
 
-    // Sets the image and add the xml markers configuration and process it
+    // Sets the image and add the xml markers configuration and processes it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
         '
@@ -150,16 +153,24 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
           <setFileDir dir="PATH_site" />
           <setFile file="' . $imageFileName . '" />
         </file>' .
-        utf8_encode($this->conf['xmlMarkersConfig']) .
+        $GLOBALS['TSFE']->csConvObj->conv(
+          $this->conf['xmlMarkersConfig'],
+          $this->flexformCharset,
+          'utf-8'
+        ) .
         $processQueries
       )
     );
     $xmlGraph->processXmlGraph();
 
-    // Loads the xml queries configuration and process it
+    // Loads the xml queries configuration and processes it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
-        $this->conf['xmlQueriesConfig'] .
+        $GLOBALS['TSFE']->csConvObj->conv(
+          $this->conf['xmlQueriesConfig'],
+          $this->flexformCharset,
+          'utf-8'
+        ) .
         $processQueries
         )
     );
@@ -167,7 +178,13 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // Loads the xml data configuration and process it
     $xmlGraph->loadXmlString(
-      $xmlGraph->addXmlPrologue($this->conf['xmlDataConfig'])
+      $xmlGraph->addXmlPrologue(
+        $GLOBALS['TSFE']->csConvObj->conv(
+          $this->conf['xmlDataConfig'],
+          $this->flexformCharset,
+          'utf-8'
+        )
+      )
     );
     $xmlGraph->processXmlGraph();
 
@@ -177,6 +194,9 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     );
     $xmlGraph->processXmlGraph();
 
+    // Processes delayed methods if any
+    $xmlGraph->processDelayedMethods();
+    
     $content = '<img class="jpgraph" src="' . $imageFileName . '" alt="" />';
 
     // Includes the default style sheet if none was provided
@@ -200,7 +220,12 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
 
   private function loadFlexform() {
-    // Initializes FlexForm configuration for plugin and get the configuration fields
+  
+    // Gets the charset in which the flexform is stored
+    preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($this->cObj->data['pi_flexform'], 0, 200), $match);
+		$this->flexformCharset = $match[1] ? $match[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+
+    // Initializes FlexForm configuration for plugin and get the configuration field
     $this->pi_initPIflexForm();
     if (!isset($this->cObj->data['pi_flexform']['data'])) {
       $this->addError('error.incorrectPluginConfiguration_1', $this->extKey);
