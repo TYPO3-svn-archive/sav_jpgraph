@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>CSH</type>
+		<csh_table></csh_table>
+		<description>Help for the others tag</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">SAV JpGraph &gt; Other tags</label>		
+			<label index=".description">Other tags</label>
+			<label index=".seeAlso">
+				xEXT_sav_jpgraph_callback:*	
+				xEXT_sav_jpgraph_comments:*
+				xEXT_sav_jpgraph_file:*								
+				xEXT_sav_jpgraph_foreach:*
+			</label>					
+
+		</languageKey>
+	</data>
+</T3locallang>

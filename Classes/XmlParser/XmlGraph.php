@@ -21,605 +21,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
-
 
 // The constant JP_maindir must be defined before calling this file
 require_once (JP_maindir . 'jpgraph.php');
-
-
-/**
- * Class data
- *
- * This class is used to define <data> </data> in xml code
- *
- */
-class data {
-  private $referenceId = 0;
-  private $reference = NULL;
-  private $data = '';
-  private $firstArray = true;
-  
-	/**
-	 * Construtor
-	 *
-	 * @param $data string
-	 *
-	 * @return none
-	 */
-  public function __construct($data = '') {
-    $this->data = trim($data);
-  }
-
-	/**
-	 * Sets the reference to the calling object
-	 *
-	 * @param $referenceId string Identifier for the object
-	 * @param $reference Object Reference to the calling object
-	 *
-	 * @return none
-	 */
-  public function setReference($referenceId, &$reference) {
-    $this->referenceId = $referenceId;
-    $this->reference = &$reference;
-    $this->setData($this->data);
-  }
-  
-	/**
-	 * Sets the data.
-	 * Data are in a comma-separated string
-	 *
-	 * @param $data string comma-separated string
-	 *
-	 * @return none
-	 */
-  public function setData($data = '') {
-    $this->reference->setReferenceArray(
-      'data',
-      $this->referenceId,
-      explode(',', $data)
-    );
-  }
-  
-	/**
-	 * Sets the data from a query
-	 * Data are in an array
-	 *
-	 * @param $rows array of fields
-	 * @param $field string Field from which data are got
-	 *
-	 * @return none
-	 */
-  public function setDataFromQuery($rows, $field) {
-    // Gets all data for the field
-    $data = array();
-    foreach($rows as $row) {
-      $data[] = $row[$field];
-    }
-
-    // Sets the data in the reference array
-    $this->reference->setReferenceArray(
-      'data',
-      $this->referenceId,
-      $data
-    );
-  }
-  
-	/**
-	 * Sets data from an array of array
-	 *
-	 * @param $dataArray array of array
-	 * @param $index string index from which data are got
-	 *
-	 * @return none
-	 */
-  public function setDataFromArray($dataArray, $index) {
-
-    // Sets the data in the reference array
-    $this->reference->setReferenceArray(
-      'data',
-      $this->referenceId,
-      $dataArray[$index]
-    );
-  }
-
-	/**
-	 * Sets an array of data
-	 *
-	 * @param $data string comma-separated string
-	 * @param $index string index to set the data
-	 * @param $asArray boolean If true, data are set in an array with the index 0
-	 *
-	 * @return none
-	 */
-  public function setArray($data = '', $index = '', $asArray = FALSE) {
-
-    // Clears the element with index 0 at the first call
-    if ($this->firstArray) {
-      $this->reference->unsetReferenceArray(
-        'data',
-        $this->referenceId,
-        0
-      );
-      $this->firstArray = false;
-    }
-    
-    // Sets the data in the reference array
-    $this->reference->setReferenceArray(
-      'data',
-      $this->referenceId,
-      ($asArray ? array(0 => explode(',', $data)) : explode(',', $data)),
-      $index
-    );
-  }
-  
-	/**
-	 * Sets the data array from a query
-	 * Data are in an array
-	 *
-	 * @param $rows array of fields
-	 *
-	 * @return none
-	 */
-  public function setArrayFromQuery($rows) {
-  
-    // Gets all data for the field
-    foreach($rows as $row) {
-      $this->setArray(implode(',', $row));
-    }
-  }
-
-	/**
-	 * Changes the data to percentage
-	 *
-	 * @param none
-	 *
-	 * @return none
-	 */
-  public function changeToPercentage() {
-    $dataArray = $this->reference->getReferenceArray('data', $this->referenceId);
-    
-    // Computes the sum
-    foreach($dataArray as $data) {
-      if (is_array($data)) {
-        $dataToProcess = $data[0];
-      } else {
-        $dataToProcess = $data;
-      }
-      foreach($dataToProcess as $key => $value) {
-        if (!isset($sum[$key])) {
-          $sum[$key] = $value;
-        } else {
-          $sum[$key] += $value;
-        }
-      }
-    }
-
-    foreach($dataArray as $dataKey => $data) {
-      if (is_array($data)) {
-        $dataToProcess = $data[0];
-      } else {
-        $dataToProcess = $data;
-      }
-      foreach($dataToProcess as $key => $value) {
-          $dataArray[$dataKey][0][$key] = $dataArray[$dataKey][0][$key] * 100 / $sum[$key];
-      }
-    }
-    
-    $this->reference->setReferenceArray(
-      'data',
-      $this->referenceId,
-      $dataArray
-    );
-  }
-
-}
-
-
-
-/**
- * Class file
- *
- * This class is used to define <file> </file> in xml code
- *
- */
-class file {
-  private $referenceId = 0;
-  private $reference = NULL;
-  private $fileDir = '';
-  private $fileName = '';
-
-	/**
-	 * Construtor
-	 *
-	 * @param $fileName string
-	 *
-	 * @return none
-	 */
-  public function __construct($fileName = '') {
-    $this->fileName = trim($fileName);
-  }
-
-  /**
-	 * Sets the reference to the calling object
-	 *
-	 * @param $referenceId string Identifier for the object
-	 * @param $reference Object Reference to the calling object
-	 *
-	 * @return none
-	 */
-   public function setReference($referenceId, &$reference) {
-    $this->referenceId = $referenceId;
-    $this->reference = &$reference;
-    $this->setFile($this->fileName);
-  }
-
-	/**
-	 * Sets the file directory
-	 *
-	 * @param $dirName string File directory (defined constant is interpreted)
-	 *
-	 * @return none
-	 */
-  public function setFileDir($dirName = '') {
-    $this->fileDir = $dirName;
-  }
-
-	/**
-	 * Sets the file name
-	 *
-	 * @param $fileName string File name
-	 *
-	 * @return none
-	 */
-  public function setFile($fileName = '') {
-    $this->fileName = $fileName;
-    $fullFileName = $this->fileDir . $fileName;
-    $this->reference->setReferenceArray(
-      'file',
-      $this->referenceId,
-      $fullFileName
-    );
-  }
-
-}
-
-
-
-/**
- * Class marker
- *
- * This class is used to define <marker> </marker> in xml code
- *
- */
-class marker {
-  private $referenceId = 0;
-  private $referenceArray = NULL;
-  private $markerValue = '';
-
-	/**
-	 * Construtor
-	 *
-	 * @param $markerValue string
-	 *
-	 * @return none
-	 */
-  public function __construct($markerValue = '') {
-    $this->markerValue = trim($markerValue);
-  }
-
-	/**
-	 * Sets the reference to the calling object
-	 *
-	 * @param $referenceId string Identifier for the object
-	 * @param $reference Object Reference to the calling object
-	 *
-	 * @return none
-	 */
-  public function setReference($referenceId, &$reference) {
-    $this->referenceId = $referenceId;
-    $this->reference = &$reference;
-    $this->setMarker($this->markerValue);
-  }
-
-	/**
-	 * Sets a marker
-	 *
-	 * @param $markerValue string Marker Value
-	 *
-	 * @return none
-	 */
-  public function setMarker($markerValue = '') {
-    $this->reference->setReferenceArray(
-      'marker',
-      $this->referenceId,
-      $this->replaceSpecialChars($markerValue)
-    );
-  }
-  
-	/**
-	 * Replaces special characters
-	 *
-	 * @param $data string
-	 *
-	 * @return string
-	 */
-  public function replaceSpecialChars($data) {
-    $data = str_replace('\r', chr(13), $data);
-    $data = str_replace('\n', chr(10), $data);
-    $data = str_replace('\t', chr(9), $data);
-
-    return $data;
-  }
-
-}
-
-
-
-/**
- * Class queries
- *
- * This class is used to define <query> </query> in xml code
- *
- */
-class query {
-  private $referenceId = 0;
-  private $reference = NULL;
-
-	/**
-	 * Sets the eference to the calling object
-	 *
-	 * @param $referenceId string Identifier for the object
-	 * @param $reference Object Reference to the calling object
-	 *
-	 * @return none
-	 */
-  public function setReference($referenceId, &$reference) {
-    $this->referenceId = $referenceId;
-    $this->reference = &$reference;
-    $this->select();
-    $this->from();
-    $this->where();
-    $this->groupby();
-    $this->orderby();
-    $this->limit();
-  }
-
-
-	/**
-	 * Sets the query manager
-	 *    .
-	 * @param $querySelect string
-	 *
-	 * @return none
-	 */
-  public function setQueryManager($type, $uid) {
-    $this->reference->setReferenceArray(
-      'queryManager',
-      $this->referenceId,
-      array('name' => $type, 'uid' => $uid)
-    );
-  }
-  
-	/**
-	 * Sets the SELECT part of the query
-	 *    .
-	 * @param $querySelect string
-	 *
-	 * @return none
-	 */
-  public function select($querySelect = '') {
-    $this->reference->setReferenceArray(
-      'querySelect',
-      $this->referenceId,
-      $querySelect
-    );
-  }
-  
-	/**
-	 * Sets the FROM part of the query
-	 *    .
-	 * @param $queryFrom string
-	 *
-	 * @return none
-	 */
-  public function from($queryFrom = '') {
-    $this->reference->setReferenceArray(
-      'queryFrom',
-      $this->referenceId,
-      $queryFrom
-    );
-  }
-  
-	/**
-	 * Sets the WHERE part of the query
-	 *    .
-	 * @param $queryWhere string
-	 *
-	 * @return none
-	 */
-  public function where($queryWhere = '') {
-    $this->reference->setReferenceArray(
-      'queryWhere',
-      $this->referenceId,
-      $this->replaceTags($queryWhere)
-    );
-  }
-
-	/**
-	 * Sets the GROUP BY part of the query
-	 *    .
-	 * @param $queryGroupby string
-	 *
-	 * @return none
-	 */
-  public function groupby($queryGroupby = '') {
-    $this->reference->setReferenceArray(
-      'queryGroupby',
-      $this->referenceId,
-      $queryGroupby
-    );
-  }
-
-	/**
-	 * Sets the ORDER BY part of the query
-	 *    .
-	 * @param $queryOrderby string
-	 *
-	 * @return none
-	 */
-  public function orderby($queryOrderby = '') {
-    $this->reference->setReferenceArray(
-      'queryOrderby',
-      $this->referenceId,
-      $queryOrderby
-    );
-  }
-
-	/**
-	 * Sets the LIMIT part of the query
-	 *    .
-	 * @param $queryLimit string
-	 *
-	 * @return none
-	 */
-  public function limit($queryLimit = '') {
-    $this->reference->setReferenceArray(
-      'queryLimit',
-      $this->referenceId,
-      $queryLimit
-    );
-  }
-
-	/**
-	 * Replaces tags in a string
-	 *    .
-	 * @param $string string
-	 *
-	 * @return string
-	 */
-  private function replaceTags($string = '') {
-
-    $out = $string;
-    
-    preg_match_all('/###([A-Za-z]+)#([0-9A-Za-z_]*)###/', $out, $matches);
-    foreach($matches[0] as $key => $match) {
-      $out = str_replace(
-        $matches[0][$key],
-        $this->reference->getReferenceArray($matches[1][$key], $matches[2][$key]),
-        $out
-      );
-    }
-    
-    return $out;
-  }
-
-}
-
-
-
-/**
- * Class template
- *
- * This class is used to define <template> </template> in xml code
- *
- */
-class template {
-  private $referenceId = 0;
-  private $reference = NULL;
-  private $templateDir = '';
-  private $fileName = '';
-  private $imageDir = '';
-  
-	/**
-	 * Construtor
-	 *
-	 * @param $markerValue string
-	 *
-	 * @return none
-	 */
-  public function __construct($fileName = '') {
-    $this->fileName = trim($fileName);
-  }
-  
-	/**
-	 * Sets the reference to the calling object
-	 *
-	 * @param $referenceId string Identifier for the object
-	 * @param $reference Object Reference to the calling object
-	 *
-	 * @return none
-	 */
-  public function setReference($referenceId, &$reference) {
-    $this->referenceId = $referenceId;
-    $this->reference = &$reference;
-    $this->setTemplateDir();
-
-    if ($this->fileName) {
-      $this->loadTemplate($this->fileName);
-    }
-  }
-  
-	/**
-	 * Sets the template directory
-	 *
-	 * @param $dirName string Template directory (defined constant is interpreted)
-	 *
-	 * @return none
-	 */
-  public function setTemplateDir($dirName = '') {
-    $this->templateDir = $dirName;
-  }
-
-	/**
-	 * Loads and processes an xml template
-	 *
-	 * @param $fileName string File name
-	 *
-	 * @return none
-	 */
-  public function loadTemplate($fileName) {
-    $fullFileName = $this->templateDir . $fileName;
-    $this->reference->setReferenceArray(
-      'template',
-      $this->referenceId,
-      $fullFileName
-    );
-    
-    // loads and processes the file
-    $this->reference->loadXmlFile($fullFileName);
-    $this->reference->processXmlGraph();
-  }
-
-	/**
-	 * Sets the image directory
-	 *
-	 * @param $dirName string Image directory (defined constant is interpreted)
-	 *
-	 * @return none
-	 */
-  public function setCopyImageDir($dirName = '') {
-    $this->imageDir = $dirName;
-  }
-  
-	/**
-	 * Copies the image in another file
-	 *
-	 * @param $fileName string File name
-	 *
-	 * @return none
-	 */
-  public function copyImageInFile($sourceFile = '', $destinationFile = '') {
-    copy($sourceFile, $this->imageDir . $destinationFile);
-  }
-  
-}
-
-
 
 /**
  * Class xmlGraph
@@ -627,8 +31,9 @@ class template {
  * This class extends the class graph to parse xml
  *
  */
-class xmlGraph extends Graph {
-
+class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
+	
+  protected static $configuration = array();
   protected $referenceArray = array();
   protected $referenceId = 0;
   protected $xml = NULL;
@@ -734,6 +139,28 @@ class xmlGraph extends Graph {
     'FuncGenerator' => 'jpgraph_utils.inc.php'
   );
 
+  /**
+	 * Injects the configuration
+	 *
+	 * @param array $configuration The configuration
+	 *
+	 * @return none
+	 */
+  public function injectConfiguration($configuration) {
+  	self::$configuration = $configuration;
+  }
+
+  /**
+	 * Gets the configuration
+	 *
+	 * @param none
+	 *
+	 * @return array The configuration
+	 */
+  public static function getConfiguration() {
+  	return self::$configuration;
+  }
+    
 	/**
 	 * Loads an xml file
 	 *
@@ -781,7 +208,6 @@ class xmlGraph extends Graph {
       );
     }
   }
-
 
 	/**
 	 * Sets the reference array
@@ -878,13 +304,16 @@ class xmlGraph extends Graph {
 	 *
 	 * @return string/boolean (return the reference or false)
 	 */
-  protected function processReference($reference) {
+  public function processReference($reference) {
     // Get the tag and the id
-    if (preg_match('/^([0-9A-Za-z]+)#([0-9A-Za-z_]*)$/', $reference, $matches)) {
+    if (preg_match('/^(\w+)#(\w+)((:)(\d+))?$/', $reference, $matches)) {
+
       if (isset($this->referenceArray[$matches[1]][$matches[2]])) {
         $referenceValue = $this->referenceArray[$matches[1]][$matches[2]];
         if(is_scalar($referenceValue)) {
           return $this->processConstant((string) $referenceValue);
+        } elseif (is_array($referenceValue) && !empty($matches[3])) {
+        	return $referenceValue[intval($matches[4])];
         } else {
           return $referenceValue;
         }
@@ -1055,31 +484,31 @@ class xmlGraph extends Graph {
   protected function createObject($className, &$parameters) {
     switch (count($parameters)) {
       case 0:
-        return new $className();
+        return t3lib_div::makeInstance($className);
       case 1:
-        return new $className(
+        return t3lib_div::makeInstance($className,
           $parameters[0]
         );
       case 2:
-        return new $className(
+        return t3lib_div::makeInstance($className,
           $parameters[0],
           $parameters[1]
         );
       case 3:
-        return new $className(
+        return t3lib_div::makeInstance($className,
           $parameters[0],
           $parameters[1],
           $parameters[2]
         );
       case 4:
-        return new $className(
+        return t3lib_div::makeInstance($className,
           $parameters[0],
           $parameters[1],
           $parameters[2],
           $parameters[3]
         );
       case 5:
-        return new $className(
+        return t3lib_div::makeInstance($className,
           $parameters[0],
           $parameters[1],
           $parameters[2],
@@ -1093,7 +522,6 @@ class xmlGraph extends Graph {
     }
   }
 
-  
 	/**
 	 * Processes a xml element
 	 *
@@ -1237,7 +665,11 @@ class xmlGraph extends Graph {
     }
 
     if (!$this->existsInReferenceArray($childName, $this->referenceId) || $this->referenceIndex !== false) {
-      $newObject = $this->createObject($childName, $attributes);
+    	$className = 'Tx_SavJpgraph_XmlParser_Xml' . ucfirst($childName) . 'Tag';
+    	if (!class_exists($className)) {
+    		$className = $childName;
+    	}
+      $newObject = $this->createObject($className, $attributes);
       $this->setReferenceArray($childName, $this->referenceId, $newObject, $this->referenceIndex);
 
       // Calls the method setReferenceId if any
@@ -1250,8 +682,6 @@ class xmlGraph extends Graph {
     // Processes the child
     $this->processElement($child, $newObject);
   }
-
-
 
 	/**
 	 * Processes the xml graph

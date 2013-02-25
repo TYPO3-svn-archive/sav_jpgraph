@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jpgraph>
+
+  <!-- Define the comments for overloading tags -->
+  <comments>
+    <languageKey index="default">
+      <label index="data#x">x data set</label>
+      <label index="data#y">y data set</label>
+      <label index="data#legend">Legend data set</label>
+      <label index="data#color">Colors for the data set</label>
+      <label index="marker#title">Title of the graph</label>
+      <label index="marker#backgroundColor">Color of the graph background</label>
+      <label index="marker#width">Graph width</label>
+      <label index="marker#height">Graph height</label>
+      <label index="marker#marginLeft">Left margin for the graph</label>
+      <label index="marker#marginRight">Right margin for the graph</label>
+      <label index="marker#marginTop">Top margin for the graph</label>
+      <label index="marker#marginBottom">Bottom margin for the graph</label>
+      <label index="marker#xLegend">x coordinate for the legend</label>
+      <label index="marker#yLegend">y coordinate for the legend</label>
+      <label index="marker#xmin">minimum in for the x-axis</label>
+      <label index="marker#xmax">maximum in for the x-axis</label>
+      <label index="marker#ymin">minimum in for the y-axis</label>
+      <label index="marker#ymax">maximum in for the y-axis</label>
+      
+    </languageKey>
+  </comments>
+
+  <!-- Define the data -->
+  <data id="x">
+    30,55,35,45,40
+  </data>
+  <data id="y">
+    30,45,50,55,20
+  </data>   
+  <data id="size">
+    10,15,10,25,20
+  </data> 
+  <data id="color">
+    green,red,green,orange,yellow
+  </data>        
+  <data id="colorLegend">
+    green,red,yellow,orange,blue
+  </data>                      
+  <data id="legend">
+    1 to 3,4 to 6,7 to 12,13 to 24,over 25
+  </data>
+  <data id="barDefault">
+    0,0,0,0,0
+  </data>  
+   
+  <!--  Defines the Bar Plots for the legend -->
+  <foreach ref="data#barDefault" >
+    <BarPlot id="1" ref="data#barDefault" >
+      <SetWidth coeff="0" />
+      <SetFillColor ref="data#colorLegend" />
+      <SetLegend ref="data#legend" />
+    </BarPlot>
+  </foreach>
+
+  <!--  Defines the Bar Group Plot -->
+  <AccBarPlot id="1" ref="BarPlot#1" />
+        
+  <!--  Defines the call back -->
+  <callback id="1">
+    <setReturn ref_size="data#size" />
+    <setReturn />
+    <setReturn ref_color="data#color"  />
+    <setReturn />    
+    <setReturn />              
+  </callback>    
+
+  <!--  Defines the Scatter Plot-->
+  <ScatterPlot id="1" ref_data_y="data#y"  ref_data_x="data#x" >
+    <mark>
+      <SetType type="MARK_FILLEDCIRCLE" />
+      <SetCallbackYX ref="callback#1" />
+    </mark>           
+  </ScatterPlot>
+  
+  <!-- Sets up the graph -->
+  <Graph id="1" width="800" ref_width="marker#width" height="700" ref_height="marker#height" type="auto">
+    <legend>
+      <SetAbsPos x="10" ref_x="marker#xLegend" y="10" ref_y="marker#yLegend" xpos="right" ypos="top" />
+      <SetFillColor color="white" />
+    </legend>  
+    <SetBackgroundImage fileName="typo3conf/ext/sav_jpgraph/Resources/Private/Templates/france.gif" />
+    <img>
+      <SetMargin left="30" ref_left="marker#marginLeft" right="100" ref_right="marker#marginRight" top="20" ref_top="marker#marginTop" bottom="30" ref_bottom="marker#marginBottom" />
+    </img>
+    <SetScale type="intlin" ymin="0" ref_ymin="marker#ymin" ymax="100" ref_ymax="marker#ymax" xmin="0" ref_xmin="marker#xmin" xmax="100" ref_xmax="marker#xmax" />
+    <SetMarginColor color="white" ref_color="marker#backgroundColor" />
+    <SetShadow />
+    <title>
+      <Set title="Map" ref_title="marker#title" />
+      <SetFont family="FF_ARIAL" style="FS_NORMAL" size="14" />
+      <SetColor color="darkred" />
+    </title>
+    <xaxis>
+      <Hide />
+    </xaxis>
+    <yaxis>
+      <Hide />
+    </yaxis>
+    
+    <Add ref="AccBarPlot#1" />      
+    <Add ref="ScatterPlot#1" />   
+     
+    <Stroke ref="file#1" delayed="1" />
+  </Graph>
+    
+</jpgraph>
+
+
+
+ 
+
+ 
+
+ 

@@ -80,8 +80,8 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     }
 
     // Defines the main directory
-    define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'src/');
-
+    define('JP_maindir', t3lib_extMgm::extPath($this->extKey) . 'Classes/JpGraph/');
+    
     // Defines the file name for the resulting image
     if (!is_dir('typo3temp/sav_jpgraph')) {
       mkdir('typo3temp/sav_jpgraph');
@@ -97,16 +97,13 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     // Defines the cache dir
     define('CACHE_DIR', 'typo3temp/sav_jpgraph/');
 
-    // Requires the xml class
-    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.typo3.php');
-    require_once(t3lib_extMgm::extPath('sav_jpgraph'). 'class.xmlgraph.php');
-
     // Initializes FlexForm configuration for plugin and get the configuration fields
     $this->loadFlexform();
 
     // Creates the xlmgraph
-    $xmlGraph = new xmlGraph();
-    
+    $xmlGraph = t3lib_div::makeInstance('Tx_SavJpgraph_XmlParser_XmlGraph');
+    $xmlGraph->injectConfiguration($this->conf);
+    	
     // Sets the filter if any
     $this->sessionFilterSelected = $GLOBALS['TSFE']->fe_user->getKey('ses','filterSelected');
     $this->sessionFilter = $GLOBALS['TSFE']->fe_user->getKey('ses','filter');
@@ -123,7 +120,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     if ($this->conf['allowQueries']) {
 
       // Gets the object type according to the TYPO3 version
-      if (t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
+      if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 4003000) {
         $objectTypeUser = ux_tslib_cObj::OBJECTTYPE_USER;
       } else {
         $objectTypeUser = tslib_cObj::OBJECTTYPE_USER;
@@ -131,6 +128,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       // Changes the plugin as a USER INT
       if ($this->cObj->getUserObjectType() == $objectTypeUser) {
   			$this->cObj->convertToUserIntObject();
+  			return;
       }
       $this->pi_checkCHash = false;
   		$this->pi_USER_INT_obj = 1;
@@ -176,7 +174,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     );
     $xmlGraph->processXmlGraph();
 
-    // Loads the xml data configuration and process it
+    // Loads the xml data configuration and processes it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
         $GLOBALS['TSFE']->csConvObj->conv(
@@ -188,9 +186,15 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     );
     $xmlGraph->processXmlGraph();
 
-    // Loads the xml templates configuration and process it
+    // Loads the xml templates configuration and processes it
     $xmlGraph->loadXmlString(
-      $xmlGraph->addXmlPrologue($this->conf['xmlTemplatesConfig'])
+      $xmlGraph->addXmlPrologue(
+        $GLOBALS['TSFE']->csConvObj->conv(
+          $this->conf['xmlTemplatesConfig'],
+          $this->flexformCharset,
+          'utf-8'
+        )
+      )
     );
     $xmlGraph->processXmlGraph();
 
@@ -202,8 +206,8 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     // Includes the default style sheet if none was provided
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$this->extKey])) {
 		  if (!$this->conf['fileCSS']) {
-		    if (file_exists(t3lib_extMgm::siteRelPath($this->extKey) . 'res/' . $this->extKey . '.css')) {
-          $css = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::siteRelPath($this->extKey) . 'res/' . $this->extKey . '.css" />';
+		    if (file_exists(t3lib_extMgm::siteRelPath($this->extKey) . 'Resources/Private/Styles/' . $this->extKey . '.css')) {
+          $css = '<link rel="stylesheet" type="text/css" href="' . t3lib_extMgm::siteRelPath($this->extKey) . 'Resources/Private/Styles/' . $this->extKey . '.css" />';
         }
       } elseif (file_exists($this->conf['fileCSS'])) {
         $css = '<link rel="stylesheet" type="text/css" href="' . $this->conf['fileCSS'] . '" />';
@@ -271,8 +275,8 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/pi1/class.tx_savjpgraph_pi1.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/pi1/class.tx_savjpgraph_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/Classes/class.tx_savjpgraph_pi1.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/Classes/class.tx_savjpgraph_pi1.php']);
 }
 
 ?>

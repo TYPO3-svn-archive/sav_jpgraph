@@ -21,38 +21,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
-
-
 
 /**
  * Class data
  *
- * This class is used to defined <data> </data> in xml code
+ * This class is used to defined <typo3> </typo3> in xml code
  *
  */
-class typo3 {
-  
-  private $referenceId = 0;
-  private $reference = NULL;
-
-	/**
-	 * Set Reference to the calling object
-	 *
-	 * @param $referenceId string Identifier for the object
-	 * @param $reference Object Reference to the calling object
-	 *
-	 * @return none
-	 */
-  public function setReference($referenceId, &$reference) {
-    $this->referenceId = $referenceId;
-    $this->reference = &$reference;
-  }
-  
+class Tx_SavJpgraph_XmlParser_XmlTypo3Tag extends Tx_SavJpgraph_XmlParser_AbstractXmlTag {
 
 	/**
 	 * Processes the query
@@ -65,6 +41,7 @@ class typo3 {
   
     // Checks if there is a query manager
     $queryManager = $this->reference->getReferenceArray('queryManager', $id);
+
     if ($queryManager === NULL) {
       // The default TYPO3 API is used
       $hookObject = &$this;
@@ -74,18 +51,27 @@ class typo3 {
       $this->reference->unsetReferenceArray('queryManager', $id);
 
       // Gets the class from the hook
+			$hookFound = false;      
       if (is_array ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sav_jpgraph']['queryManagerClass'])) {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sav_jpgraph']['queryManagerClass'] as $key => $classRef) {
           if ($key == $queryManager['name']) {
             $hookObject = &t3lib_div::getUserObj($classRef);
+            $hookFound = true;
           }
-        }
-      } else {
+        } 
+      } 
+      
+      if ($hookFound === false) {
         JpGraphError::Raise(
           'A query manager must be defined by a hook for ' . $queryManager['name']
         );
       }
     }
+
+    // Executes the query
+    if (method_exists($hookObject, 'injectMarkers')) {
+      $hookObject->injectMarkers($queryManager['markers']);
+    }    
     
     // Executes the query
     if (method_exists($hookObject, 'executeQuery')) {
@@ -93,7 +79,7 @@ class typo3 {
     }
 
     // Sets the result if any
-    if (is_array($rows)) {
+    if (!empty($rows) && is_array($rows)) {
       $this->reference->setReferenceArray('query', $id, $rows);
       // Process variable definitions and replace them in the markers
       if (is_array($rows[0])) {
@@ -172,8 +158,6 @@ class typo3 {
     return $errorMessage;
   }
 
-
 }
-
 
 ?>

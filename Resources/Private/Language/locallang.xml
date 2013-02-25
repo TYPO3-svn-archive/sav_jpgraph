@@ -6,6 +6,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="pi1_title">SAV JpGraph</label>
+			<label index="pi1_plus_wiz_description">Generation of JpGraph using XML template</label>		
 			<label index="error.incorrectPluginConfiguration_1">Incorrect configuration of the plugin: %s.</label>
 			<label index="error.incorrectPluginConfiguration_2">Edit and save the plugin configuration to take the flexform parameters into consideration.</label>
 			<label index="error.incorrectCSS">Unknown CSS file: %s.</label>

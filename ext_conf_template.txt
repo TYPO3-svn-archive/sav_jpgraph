@@ -24,7 +24,7 @@
 /**
  * Default TS constants - Extension 'SAV JpGraph'
  *
- * @author		Yolf (Laurent Foulloy) <yolf.typo3@orange.fr>
+ * @author		Laurent Foulloy (Laurent Foulloy) <yolf.typo3@orange.fr>
  * @version		0.0
  */
 

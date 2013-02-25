@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>CSH</type>
+		<csh_table></csh_table>
+		<description>Help for the comments tag</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">SAV JpGraph &gt; Query</label>		
+			<label index=".description">Query object</label>
+			<label index="query.alttitle">&lt;query [attribute]&gt; ... &lt;/query&gt;</label>
+			<label index="query.description">Creates a query object.</label>	
+			<label index="query.details">	
+        Creates a query object.
+        Attribute:
+           .  id="myQuery";.  Optional attribute but it is requested when using reference to this object. The reference will be "myQuery".
+        
+        The following tags are allowed inside the data tag
+      </label>         
+			<label index="select.alttitle">&lt;select&gt;... &lt;/select&gt;</label>
+			<label index="select.description">
+        Defines the SELECT clause. See the tutorial for an example.
+      </label>          
+			<label index="from.alttitle">&lt;from&gt; ...  &lt;/from&gt;</label>
+			<label index="from.description">
+        Defines the FROM clause. See the tutorial for an example.
+      </label>          
+			<label index="where.alttitle">&lt;where&gt; ...  &lt;/where&gt;</label>
+			<label index="where.description">        
+        Defines the WHERE clause. See the tutorial for an example.
+        You can use reference in &lt; where &gt;. For example, ###marker#myMarker### will be replaced by the marker whose "id" is "myMarker".
+      </label>          
+			<label index="groupby.alttitle">&lt;groupby&gt; ... &lt;/groupby&gt;</label>
+			<label index="groupby.description">            
+        Defines the GROUP BY clause. See the tutorial for an example.
+      </label>          
+			<label index="orderby.alttitle">&lt;orderby&gt; ... &lt;/orderby&gt;</label>
+			<label index="orderby.description">             
+        Defines the ORDER BY clause.
+      </label>          
+			<label index="limit.alttitle">&lt;limit&gt; ... &lt;/limit&gt;</label>
+			<label index="limit.description">        
+        Defines the LIMIT clause.
+      </label>          
+			<label index="setQueryManager.alttitle">&lt;setQueryManager type="managerName" uid="integer"  [marker1="definition" … markerN="definition"]/&gt;</label>
+			<label index="setQueryManager.description">          
+        Defines an external query manager.
+        Attributes:
+         . type="managerName". The external query manager name is defined by means of this paramater (e.g. type="wfqbe")
+         . uid="integer". The integer is the uid of the record where the query is defined in the external query manager.
+         . marker1 to markerN are optional attributes which can be used for marker subsitution in a query defined with the query manager. 
+         The definition can either be a reference to an existing maker, e.g. "marker#myMarker" or a direct definition, e.g. "myMarker#3". 
+         In the former case, the query marker ###myMarker### will be replaced by the marker  whose "id" is "MyMarker" while in the latter case it will be replaced by 3.        
+        
+        See the section "Defining and using an external query manager" in the tutorial.        
+			</label>	
+		</languageKey>
+	</data>
+</T3locallang>

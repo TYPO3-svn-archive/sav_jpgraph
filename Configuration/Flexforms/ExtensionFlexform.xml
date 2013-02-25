@@ -6,26 +6,27 @@
     <sDEF>
       <ROOT>
         <TCEforms>
-          <sheetTitle>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.sheetTitle.sDEF</sheetTitle>
-					<cshFile>LLL:EXT:sav_jpgraph/res/locallang_csh_flexform.xml</cshFile>
+          <sheetTitle>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.sheetTitle.sDEF</sheetTitle>
         </TCEforms>
         <type>array</type>
         <el>
           <help>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.help</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.help</label>
               <config>
-                <type>user</type>
-                <userFunc>user_helpIcon</userFunc>
-                <filter>1</filter>
+                <type>user</type>              
+                <userFunc>user_savJpgraphHelp</userFunc>
+                <userFuncParameters>
+									<cshTag>helpGeneral</cshTag>  
+								</userFuncParameters>  
               </config>
             </TCEforms>
           </help>
           <overloadedAttributes>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.showOverloadedAttributes</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.showOverloadedAttributes</label>
               <config>
                 <type>user</type>
                 <userFunc>user_showOverloadedAttributes</userFunc>
@@ -37,7 +38,7 @@
             <TCEforms>
               <exclude>1</exclude>
               <displayCond>HIDE_FOR_NON_ADMINS</displayCond>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.allowQueries</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.allowQueries</label>
               <config>
                 <type>check</type>
                 <default>0</default>
@@ -48,7 +49,7 @@
           <xmlMarkersConfig>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlMarkersConfig</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.xmlMarkersConfig</label>
               <config>
                 <type>text</type>
                 <cols>48</cols>
@@ -60,7 +61,7 @@
           <xmlQueriesConfig>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlQueriesConfig</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.xmlQueriesConfig</label>
               <config>
                 <type>text</type>
                 <cols>48</cols>
@@ -76,7 +77,7 @@
           <xmlDataConfig>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlDataConfig</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.xmlDataConfig</label>
               <config>
                 <type>text</type>
                 <cols>48</cols>
@@ -88,7 +89,7 @@
           <xmlTemplatesConfig>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:sav_jpgraph/pi1/locallang.xml:pi_flexform.xmlTemplatesConfig</label>
+              <label>LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.xmlTemplatesConfig</label>
               <config>
                 <type>text</type>
                 <cols>48</cols>

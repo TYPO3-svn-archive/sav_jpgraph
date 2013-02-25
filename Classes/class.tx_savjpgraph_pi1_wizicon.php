@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Yolf (Laurent Foulloy) <yolf.typo3@orange.fr>
+*  (c) 2009 Laurent Foulloy <yolf.typo3@orange.fr>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,19 +21,11 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
-
-
-
 
 /**
  * Class that adds the wizard icon.
  *
- * @author	Yolf <yolf.typo3@orange.fr>
+ * @author	Laurent Foulloy <yolf.typo3@orange.fr>
  * @package	TYPO3
  * @subpackage	tx_savjpgraph
  */
@@ -51,7 +43,7 @@ class tx_savjpgraph_pi1_wizicon {
 						$LL = $this->includeLocalLang();
 
 						$wizardItems['plugins_tx_savjpgraph_pi1'] = array(
-							'icon'=>t3lib_extMgm::extRelPath('sav_jpgraph').'pi1/ce_wiz.gif',
+							'icon'=>t3lib_extMgm::extRelPath('sav_jpgraph').'Resources/Private/Icons/ce_wiz.gif',
 							'title'=>$LANG->getLLL('pi1_title',$LL),
 							'description'=>$LANG->getLLL('pi1_plus_wiz_description',$LL),
 							'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=sav_jpgraph_pi1'
@@ -66,7 +58,7 @@ class tx_savjpgraph_pi1_wizicon {
 					 * @return	The array with language labels
 					 */
 					function includeLocalLang()	{
-						$llFile = t3lib_extMgm::extPath('sav_jpgraph').'locallang.xml';
+						$llFile = t3lib_extMgm::extPath('sav_jpgraph').'Resources/Private/Language/locallang.xml';
 						$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 						
 						return $LOCAL_LANG;
@@ -75,8 +67,8 @@ class tx_savjpgraph_pi1_wizicon {
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/pi1/class.tx_savjpgraph_pi1_wizicon.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/pi1/class.tx_savjpgraph_pi1_wizicon.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/Classes/class.tx_savjpgraph_pi1_wizicon.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/sav_jpgraph/Classes/class.tx_savjpgraph_pi1_wizicon.php']);
 }
 
 ?>

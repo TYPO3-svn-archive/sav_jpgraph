@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>CSH</type>
+		<csh_table>sav_jpgraph</csh_table>
+		<description>Context sensitive help for the extension SAV JpGraph</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">SAV JpGraph</label>		
+			<label index=".description">SAV JpGraph</label>
+			<label index=".seeAlso">
+				xEXT_sav_jpgraph_marker:*
+				xEXT_sav_jpgraph_query:*								
+				xEXT_sav_jpgraph_data:*
+				xEXT_sav_jpgraph_template:*
+				xEXT_sav_jpgraph_otherTags:*			
+			</label>						
+		</languageKey>
+	</data>
+</T3locallang>

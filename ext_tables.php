@@ -3,44 +3,57 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-// Add a user function for the help icon
-if (!function_exists('user_helpIcon')) {
-  function user_helpIcon($PA, $fobj){
-    if (t3lib_div::int_from_ver(TYPO3_version) < 4002000) {
-      $ext = str_replace('_pi1','',$PA['row']['list_type']);
-      $helpItem = 'help';
-      return '<a href="#" style="padding:3px;" onclick="vHWin=window.open(\''.'view_help.php?tfID='.$ext.'.'.$helpItem.'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img src="'.'sysext/t3skin/icons/gfx/helpbubble.gif" width="16" height="16" hspace="2" border="0" class="typo3-csh-icon" alt="'.'help'.'" /></a>';
-    } else {
-      return '&nbsp;';
-    }
+// Adds a user function for help in flexforms
+if (!function_exists('user_savJpgraphHelp')) {
+  function user_savJpgraphHelp($PA, $fobj){
+
+		$message = $fobj->sL('LLL:EXT:sav_jpgraph/Resources/Private/Language/locallang.xml:pi_flexform.help');	
+		$cshTag = $PA['fieldConf']['config']['userFuncParameters']['cshTag'];
+		$skinnedIcon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/helpbubble.gif', '');
+		$icon = '<img'.$skinnedIcon.' class="typo3-csh-icon" alt="' . t3lib_div::lcfirst($cshTag) . '" />';
+		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)	< 6000000) {
+			$helpUrl = 'view_help.php?';
+		}	else {
+			$helpUrl = 'mod.php?M=help_cshmanual&';			
+		}
+    return '<a href="#" onclick="vHWin=window.open(\'' . $helpUrl . 'tfID=xEXT_sav_jpgraph_' .
+    	 t3lib_div::lcfirst($cshTag) .
+    	 '.*\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">' . 
+    	 $icon . ' '. $message . '</a>';     
   }
 }
 
-// Add a user function to get the overloaded attributes
+// Adds a user function to get the overloaded attributes
 if (!function_exists('user_showOverloadedAttributes')) {
-  require_once(t3lib_extMgm::extPath($_EXTKEY).'user_showOverloadedAttributes.php');
+  require_once(t3lib_extMgm::extPath($_EXTKEY).'Configuration/Flexforms/user_showOverloadedAttributes.php');
 }
 
-// Add flexform field to plugin option
-$TCA["tt_content"]["types"]["list"]["subtypes_addlist"][$_EXTKEY."_pi1"]="pi_flexform";
+// Adds flexform fields to the plugin option
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1'] = 'pi_flexform';
 
-// Add flexform DataStructure
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY."_pi1", "FILE:EXT:".$_EXTKEY."/flexform_ds_pi1.xml");
+// Adds the flexform DataStructure
+t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:' . $_EXTKEY . '/Configuration/Flexforms/ExtensionFlexform.xml');
 
-// Adding context sensitive help (CSH)
-if (t3lib_div::int_from_ver(TYPO3_version) < 4002000) {
-  t3lib_extMgm::addLLrefForTCAdescr($_EXTKEY,'EXT:' . $_EXTKEY . '/res/locallang_csh_flexform.xml');
-}
-
+// Adds the context sensitive help (CSH)
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_helpGeneral', 'EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_helpGeneral.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_marker','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_marker.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_query','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_query.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_data','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_data.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_template','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_template.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_otherTags','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_otherTags.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_comments','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_comments.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_file','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_file.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_foreach','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_foreach.xml');
+t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_callback','EXT:' . $_EXTKEY . '/Resources/Private/Language/ContextSensitiveHelp/locallang_csh_callback.xml');
 
 t3lib_extMgm::addPlugin(array(
-	'LLL:EXT:sav_jpgraph/locallang_db.xml:tt_content.list_type_pi1',
+	'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
 	$_EXTKEY . '_pi1',
 	''
 ),'list_type');
 
 
 if (TYPO3_MODE == 'BE') {
-	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_savjpgraph_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_savjpgraph_pi1_wizicon.php';
+	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_savjpgraph_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'Classes/class.tx_savjpgraph_pi1_wizicon.php';
 }
 ?>
