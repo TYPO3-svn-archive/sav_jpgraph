@@ -52,7 +52,7 @@ class Tx_SavJpgraph_XmlParser_XmlTemplateTag extends Tx_SavJpgraph_XmlParser_Abs
 	 *
 	 * @return none
 	 */
-  protected function defaultMethod() {
+  public function defaultMethod() {
     $this->setTemplateDir();
 
     if ($this->fileName) {
@@ -85,7 +85,7 @@ class Tx_SavJpgraph_XmlParser_XmlTemplateTag extends Tx_SavJpgraph_XmlParser_Abs
       $this->referenceId,
       $fullFileName
     );
-    
+
     // loads and processes the file
     $this->reference->loadXmlFile($fullFileName);
     $this->reference->processXmlGraph();

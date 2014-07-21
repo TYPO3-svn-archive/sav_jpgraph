@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T15:52:38Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>SAV JpGraph &gt; Data</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>Data object</source>
+			</trans-unit>
+			<trans-unit id="data.alttitle" xml:space="preserve">
+				<source>&lt;data [attribute]&gt; ... &lt;/data&gt;</source>
+			</trans-unit>
+			<trans-unit id="data.description" xml:space="preserve">
+				<source>Creates a data object.</source>
+			</trans-unit>
+			<trans-unit id="data.details" xml:space="preserve">
+				<source>Attribute:
+. id=&quot;myData&quot;. Optional attribute but it is requested when using reference to this object. The reference will be &quot;myData&quot;.
+
+The following tags are allowed inside the data tag</source>
+			</trans-unit>
+			<trans-unit id="setData.alttitle" xml:space="preserve">
+				<source>&lt;setData&gt; ... &lt;/setData&gt;</source>
+			</trans-unit>
+			<trans-unit id="setData.description" xml:space="preserve">
+				<source>Defines the data.
+Attribute:
+. value=&quot;5,6,7&quot;. Use a comma-separated list of values.</source>
+			</trans-unit>
+			<trans-unit id="setDataFromQuery.alttitle" xml:space="preserve">
+				<source>&lt;setDataFromQuery attribute1 attribute2 [attribute3]/&gt;</source>
+			</trans-unit>
+			<trans-unit id="setDataFromQuery.description" xml:space="preserve">
+				<source>Defines the data from a query.
+Attributes:
+. ref=&quot;query#1&quot;. An array is expected, in general it is the reference to a query.
+. field=&quot;date&quot;. Field which will be used as the index of the array to get the data.
+Several fields can be used. In this case, they must be separated by a comma, e.g. field=“date,count”.
+. default=&quot;0,1,2&quot;. Optional attribute which can be used to set default values for the array.</source>
+			</trans-unit>
+			<trans-unit id="setDataFromQueryRow.alttitle" xml:space="preserve">
+				<source>&lt;setDataFromQueryRow attribute1 attribute2 [attribute3]/&gt;</source>
+			</trans-unit>
+			<trans-unit id="setDataFromQueryRow.description" xml:space="preserve">
+				<source>Defines the data from a query row.
+Attributes:
+. ref=“query#1”. An array is expected, in general it is the reference to a query.
+. fieldList=“datecount”. Fields which will be used as the index of the first row of the query to set the data.
+. default=“0,1,2”. Optional attribute which can be used to set default values for the array.</source>
+			</trans-unit>
+			<trans-unit id="setDataFromQueryWithGroup.alttitle" xml:space="preserve">
+				<source>&lt;setDataFromQueryWithGroup attribute1 attribute2 attribute3 attribute4 [attribute5]/&gt;</source>
+			</trans-unit>
+			<trans-unit id="setDataFromQueryWithGroup.description" xml:space="preserve">
+				<source>Defines the data from a query which has a GROUP BY clause.
+Attributes:
+. ref=“query#1”. An array is expected, in general it is the reference to a query.
+. field=“date”. Field which will be used as the index of the row to get the data.
+. groupData. Data which are possible value for the group.
+. groupField. Field of the GROUP BY clause.
+. default=“0,1,2”. Optional attribute which can be used to set default values for the array.</source>
+			</trans-unit>
+			<trans-unit id="setDataFromArray.alttitle" xml:space="preserve">
+				<source>&lt;setDataFromArray attribute1 [attribute2] /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setDataFromArray.description" xml:space="preserve">
+				<source>Defines the data from an array.
+Attributes:
+. ref=&quot;data#result&quot;. An array is expected, in general it is the reference to a another data set.
+. index=&quot;2&quot;. optional index which will be used to get the data.</source>
+			</trans-unit>
+			<trans-unit id="setArray.alttitle" xml:space="preserve">
+				<source>&lt;setArray attribute1 [attribute2] [attribute3] /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setArray.description" xml:space="preserve">
+				<source>Defines an array of data.
+Attributes:
+. value=&quot;5,6,7&quot;. Use a comma-separated list of values.
+. index=&quot;2&quot;. Optional index which will be used to set the data otherwise data are inserted in the array starting with the index equal to 0.
+. asAarray=&quot;1&quot;. Optional attribute. If set, the data are put into an array.</source>
+			</trans-unit>
+			<trans-unit id="insertArray.alttitle" xml:space="preserve">
+				<source>&lt;insertArray attribute1 /&gt;</source>
+			</trans-unit>
+			<trans-unit id="insertArray.description" xml:space="preserve">
+				<source>Defines an array of data from a reference.
+Attribute:
+. ref=“data#myData”. An array is expected. In general, it is used with accBarPlot or groupBarPlot to insert data which are obtained from queries.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

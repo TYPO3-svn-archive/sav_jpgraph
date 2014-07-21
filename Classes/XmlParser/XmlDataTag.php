@@ -53,7 +53,7 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
 	 *
 	 * @return none
 	 */
-  protected function defaultMethod() {
+  public function defaultMethod() {
     $this->setData($this->data);  	
   }  
   
@@ -66,10 +66,11 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
 	 * @return none
 	 */
   public function setData($data = '') {
+
     $this->reference->setReferenceArray(
       'data',
       $this->referenceId,
-      explode(',', $data)
+      explode(',', Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($data))
     );
   }
   
@@ -83,6 +84,7 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
 	 * @return none
 	 */
   public function setDataFromQuery($rows, $field, $default = '') {
+  	
 		$configuration = Tx_SavJpgraph_XmlParser_xmlGraph::getConfiguration();
 		if (empty($configuration['allowQueries'])) {
 			JpGraphError::Raise(
@@ -94,7 +96,7 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
 		$data = array();
 		 	
   	// Uses default values if any and rows are empty
-  	if (empty($rows) && !empty($default)) {
+  	if (empty($rows) && $default != '') {
   		$defaultValues = explode (',', $default);
   		$rows = array();
   		foreach($defaultValues as $value) {
@@ -103,15 +105,19 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
   	}
 	
 		// Gets all data for the field
-		$fieldList =  explode(',', $field);
+		if (is_array($field)) {
+			$fieldList = $field;
+		} else {
+			$fieldList =  explode(',', $field);
+		}
 
 		foreach($rows as $row) {
 			if(count($fieldList) == 1) {
-				$data[] = $row[$fieldList[0]];
+				$data[] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($row[$fieldList[0]]);
 			} else {
 				$dataArray =array();
 				foreach ($fieldList as $field) {
-					$dataArray[] = $row[$field];
+					$dataArray[] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($row[$field]);
 				}
 				$data[] = array($dataArray);
 			}
@@ -134,30 +140,45 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
 	 * @param $groupData Data which are possible values for the group
 	 * @param string $groupField The field used in the GROUP BY clause
 	 * @param string $default The default values as a comma-seprated string
-	 *
+	 * @param boolean $asArray If true, data are set in an array of arrays with the index 0 according to the group Data
+	 * 
 	 * @return none
 	 */
-  public function setDataFromQueryWithGroup($rows, $field, $groupData, $groupField, $default = '') {
+  public function setDataFromQueryWithGroup($rows, $field, $groupData, $groupField, $default = '', $asArray = false) {
+
   	$configuration = Tx_SavJpgraph_XmlParser_xmlGraph::getConfiguration();
 		if (empty($configuration['allowQueries'])) {
 			JpGraphError::Raise(
           'Queries must be allowed to use setDataFromQueryWithGroup'
         );
 		}
-  	
+ 
 		// Initializes data
 		$data = array();
 		
 		// Gets all data for the field
 		reset($rows);
-		foreach ($groupData as $value) {
-			$row = current($rows);
-			if ($row[$groupField] == $value) {
-				$data[] = $row[$field];
-				next($rows);
-			} else {
-				$data[] = $default;
-			}	
+		$hasRows = true;
+		$counter = 0;
+		while ($hasRows !== false) {
+			foreach ($groupData as $value) {
+				$row = current($rows);
+				if ($row[$groupField] == $value) {
+					if($asArray) {
+						$data[$counter][0][] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($row[$field]);
+					} else {
+						$data[] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($row[$field]);
+					}
+					$hasRows = next($rows);
+				} else {
+					if ($asArray) {
+						$data[$counter][0][] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($default);
+					} else {
+						$data[] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($default);
+					}
+				}	
+			}
+			$counter++;
 		}
 
     // Sets the data in the reference array
@@ -166,6 +187,7 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
       $this->referenceId,
       $data
     );
+
   }  
   
 	/**
@@ -198,7 +220,7 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
   	  	
 		// Gets all data for the field
 		foreach($fieldsArray as $field) {
-			$data[] = $row[0][$field];
+			$data[] = Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($row[0][$field]);
 		}
 
     // Sets the data in the reference array
@@ -217,14 +239,14 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
 	 *
 	 * @return none
 	 */
-  public function setDataFromArray($dataArray, $index) {
- 	
+  public function setDataFromArray($dataArray, $index = NULL) {
+
     // Sets the data in the reference array
     $this->reference->setReferenceArray(
       'data',
       $this->referenceId,
-      $dataArray[$index]
-    );
+      ($index === NULL ? $dataArray : $dataArray[$index])
+    ); 
   }
 
 	/**
@@ -328,8 +350,149 @@ class Tx_SavJpgraph_XmlParser_XmlDataTag extends Tx_SavJpgraph_XmlParser_Abstrac
       $this->referenceId,
       $dataArray
     );
+  }  
+  
+ 	/**
+	 * Merges arrays
+	 *
+	 * @param vararg $arrays
+	 *
+	 * @return none
+	 */ 
+  public function mergeArray($arrays) {
+ 
+    $dataArray = array(); 
+    
+		$arguments = func_get_args();     
+    foreach($arguments[0] as $key => $value) {
+    	$arrayToInsert = array();
+      foreach ($arguments as $argument) {
+				$arrayToInsert[] = $argument[$key];
+			}    	
+
+      $dataArray[$key] = array(
+      	0 => $arrayToInsert
+      );
+    } 
+ 
+    $this->reference->setReferenceArray(
+      'data',
+      $this->referenceId,
+      $dataArray
+    );     
   }
 
+ 	/**
+	 * Combines arrays
+	 *
+	 * @param vararg $arrays
+	 *
+	 * @return none
+	 */ 
+  public function combineArrayByKeys($arrays) {
+ 
+    $dataArray = array(); 
+    
+    // Gets the arguments
+		$arguments = func_get_args();  
+		
+		// Gets the first argument as the key array
+		$keys = $arguments[0];
+		unset($arguments[0]);
+
+		// Checks if the last argument is not an array. It will be taken as the default value
+		$count = count($arguments);
+		if (is_array($arguments[$count - 1])) {
+			$default = 0;
+		} else {
+			$default = $arguments[$count - 1];
+			unset($arguments[$count - 1]);
+		}
+
+ 		// Builds the array to insert
+    $arrayToInsert = array();    
+		foreach ($keys as $key => $value) {
+			foreach ($arguments as $argumentKey => $argument) {					
+			  if (is_array($argument)) {
+			  	$found = FALSE;
+    			foreach ($argument as $item) {
+						if ($item[0][0] == $value) {
+							$arrayToInsert[$key][$argumentKey-1] = $item[0][1];
+							$found =  TRUE;
+				      break;
+						}
+    			}
+    			// Sets the item to the default value if not found
+    			if (!$found) {
+    				$arrayToInsert[$key][$argumentKey-1] = $default;
+    			}
+    		}				
+			}
+		}
+		
+ 		// Builds the data array	
+		foreach($arrayToInsert as $key => $value) {
+			$dataArray[$key] = array(
+      	0 => $value
+      );
+		}
+
+    $this->reference->setReferenceArray(
+      'data',
+      $this->referenceId,
+      $dataArray
+    );    
+  }  
+  
+  /**
+	 * Utf8 decode a data array
+	 *
+	 * @param array $dataArray
+	 *
+	 * @return none
+	 */ 
+  public function utf8Decode($dataArray) {
+  	$data = implode(',', $dataArray);
+  	$data = utf8_decode($data);
+  	$dataArray = explode(',', $data);
+    $this->reference->setReferenceArray(
+      'data',
+      $this->referenceId,
+      $dataArray
+    );     	
+  }
+
+  /**
+	 * Fills missing data in an array
+	 *
+	 * @param array $dataArray
+	 *
+	 * @return none
+	 */ 
+  public function fillMissingData($default=0) {
+    $dataArray = $this->reference->getReferenceArray(
+      'data',
+      $this->referenceId
+    );  
+
+    $sizeMax = 0;
+    foreach ($dataArray as $data) {
+			$sizeMax = max($sizeMax, count($data[0]));    	
+    }
+  	foreach ($dataArray as $dataKey => $data) {
+			for($j = 0; $j < $sizeMax; $j++) {
+				if(!isset($dataArray[$dataKey][0][$j])) {
+					$dataArray[$dataKey][0][$j] = $default;
+				}
+			}  	
+    }
+    $this->reference->setReferenceArray(
+      'data',
+      $this->referenceId,
+      $dataArray
+    );   
+  }  
+  
 }
 
 ?>

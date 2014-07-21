@@ -21,18 +21,11 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
 
-
-require_once(PATH_tslib . 'class.tslib_pibase.php');
 /**
  * Plugin 'SAV JpGraph' for the 'sav_jpgraph' extension.
  *
- * @author	Yolf <yolf.typo3@orange.fr>
+ * @author	Laurent Foulloy <yolf.typo3@orange.fr>
  * @package	TYPO3
  * @subpackage	tx_savjpgraph
  */
@@ -41,7 +34,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_savjpgraph_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_savjpgraph_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'sav_jpgraph';	// The extension key.
-  var $pi_checkCHash = true;
+  var $pi_checkCHash = TRUE;
 
   // Session variables from SAV Filter
   protected $sessionFilter;
@@ -87,13 +80,12 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       mkdir('typo3temp/sav_jpgraph');
     }
     $imageFileName = 'typo3temp/sav_jpgraph/img_' .
-      $this->cObj->data['uid'] . '.png';
-
-    // Deletes the file if it exists
-    if (file_exists(PATH_site . $imageFileName)) {
-      unlink(PATH_site . $imageFileName);
-    }
-
+      $this->cObj->data['uid'] . '.png';  
+      
+  	// Sets the csv file name
+    $csvFileName = 'typo3temp/sav_jpgraph/img_' .
+      $this->cObj->data['uid'] . '.csv';        
+    
     // Defines the cache dir
     define('CACHE_DIR', 'typo3temp/sav_jpgraph/');
 
@@ -103,10 +95,10 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     // Creates the xlmgraph
     $xmlGraph = t3lib_div::makeInstance('Tx_SavJpgraph_XmlParser_XmlGraph');
     $xmlGraph->injectConfiguration($this->conf);
-    	
+        	
     // Sets the filter if any
-    $this->sessionFilterSelected = $GLOBALS['TSFE']->fe_user->getKey('ses','filterSelected');
-    $this->sessionFilter = $GLOBALS['TSFE']->fe_user->getKey('ses','filter');
+    $this->sessionFilterSelected = $GLOBALS['TSFE']->fe_user->getKey('ses', 'filterSelected');
+    $this->sessionFilter = $GLOBALS['TSFE']->fe_user->getKey('ses', 'filter');
 
     if ($this->sessionFilterSelected && is_array($this->sessionFilter[$this->sessionFilterSelected])) {
       foreach($this->sessionFilter[$this->sessionFilterSelected] as $key => $filter) {
@@ -115,7 +107,34 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     } else {
       $xmlGraph->setReferenceArray('filter', 'addWhere', '1');
     }
+    
+    // Uses the cache if possible
+    if ($this->conf['cache']) {  
+			// Checks if the cache time is over
+			$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				/* SELECT   */	'*, UNIX_TIMESTAMP(NOW()) AS time',
+				/* FROM     */	'tx_savjpgraph_cache',
+	 			/* WHERE    */	'cid = ' . intval($this->cObj->data['uid'])
+			);			 
 
+			// Gets the cache information
+    	$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource);    	
+    	// Returns the image it it exists and the cahe is not over
+    	if (!empty($row) && file_exists(PATH_site . $imageFileName) && $row['time'] < $row['cache_timeout']) {
+    		$content = '<img class="jpgraph" src="' . $imageFileName . '" alt="" />';
+    		if ($row['csv']) {
+	    		$content .= '<a href="' . $csvFileName . '" ><img class="jpgraph" src="' . 
+		    		t3lib_extMgm::siteRelPath($this->extKey) . 'Resources/Private/Icons/csv.gif' . '" alt="" /></a>'; 
+    		}	    		
+ 				return $this->pi_wrapInBaseClass($content);   		
+    	}
+    }
+
+	  // Deletes the file if it exists
+    if (file_exists(PATH_site . $imageFileName)) {
+      unlink(PATH_site . $imageFileName);
+    }
+    
     // Checks if queries are allowed
     if ($this->conf['allowQueries']) {
 
@@ -130,7 +149,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
   			$this->cObj->convertToUserIntObject();
   			return;
       }
-      $this->pi_checkCHash = false;
+      $this->pi_checkCHash = FALSE;
   		$this->pi_USER_INT_obj = 1;
 
       // Prepares the queries processing
@@ -161,6 +180,14 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
     );
     $xmlGraph->processXmlGraph();
 
+    // Changes the markers values by Typoscript if any
+    $markers = $this->conf['marker.'];
+    if (is_array($markers)) {
+	    foreach($markers as $markerKey => $marker) {
+	    	$xmlGraph->setReferenceArray('marker', $markerKey, $marker);
+	    }
+    }
+    
     // Loads the xml queries configuration and processes it
     $xmlGraph->loadXmlString(
       $xmlGraph->addXmlPrologue(
@@ -200,9 +227,21 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 
     // Processes delayed methods if any
     $xmlGraph->processDelayedMethods();
-    
-    $content = '<img class="jpgraph" src="' . $imageFileName . '" alt="" />';
 
+ 		// Prepares the output content
+    $content = '<img class="jpgraph" src="' . $imageFileName . '" alt="" />';
+     		
+  	// Checks if a csv output is set for file#1
+  	$csv = $xmlGraph->getReferenceArray('csv', 1);
+  	if (!empty($csv)) { 	 		
+  		$fileHandle = fopen(PATH_site . $csvFileName, 'w');
+  		fwrite($fileHandle, $csv);
+  		fclose($fileHandle);
+
+    	$content .= '<a href="' . $csvFileName . '" ><img class="jpgraph" src="' . 
+    		t3lib_extMgm::siteRelPath($this->extKey) . 'Resources/Private/Icons/csv.gif' . '" alt="" /></a>';  		
+  	}
+    
     // Includes the default style sheet if none was provided
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$this->extKey])) {
 		  if (!$this->conf['fileCSS']) {
@@ -219,16 +258,57 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
       $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = $css;
 		}
 
+	  // Sets the cache
+    if ($this->conf['cache']) { 
+
+			// Defines the interval c&che timeout
+    	$intervalCacheTimeout = array('', '+1 hour', '+1 day', '+1 week', '+1 month');
+    	
+    	// Updates or inserts the record
+    	if (!empty($row)) {
+				$resource = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					/* TABLE   	*/	'tx_savjpgraph_cache',
+		 			/* WHERE    */	'cid = ' . intval($this->cObj->data['uid']),				
+					/* FIELDS   */	array(
+						'tstamp' => time(), 
+						'cache_timeout' => strtotime($intervalCacheTimeout[$this->conf['cache']]),
+						'csv' => !empty($csv),				
+					)
+				);		
+    	} else {
+				$resource = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+					/* TABLE   	*/	'tx_savjpgraph_cache',		
+					/* FIELDS   */	array(
+						'pid' => $this->cObj->data['pid'],
+						'tstamp' => time(), 
+						'cid' => $this->cObj->data['uid'],
+						'cache_timeout' => strtotime($intervalCacheTimeout[$this->conf['cache']]),
+						'csv' => !empty($csv),
+					)
+				);		    		    		
+    	}
+    }		
+
 		return $this->pi_wrapInBaseClass($content);
 	}
 
-
+	/**
+	 * Loads the flexform
+	 *
+	 * @param none
+	 *
+	 * @return none
+	 */
   private function loadFlexform() {
   
     // Gets the charset in which the flexform is stored
-    preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($this->cObj->data['pi_flexform'], 0, 200), $match);
-		$this->flexformCharset = $match[1] ? $match[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+    $this->flexformCharset = ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1');
 
+		if (is_string($this->cObj->data['pi_flexform'])) {
+	    preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($this->cObj->data['pi_flexform'], 0, 200), $match);
+			$this->flexformCharset = $match[1] ? $match[1] : $this->flexformCharset;
+		} 
+		
     // Initializes FlexForm configuration for plugin and get the configuration field
     $this->pi_initPIflexForm();
     if (!isset($this->cObj->data['pi_flexform']['data'])) {
@@ -250,7 +330,7 @@ class tx_savjpgraph_pi1 extends tslib_pibase {
 	 * @errorLabel string (error label)
 	 * @addMessage string (additional message)
 	 *
-	 * @return void
+	 * @return none
 	 */
 	protected function addError($errorLabel, $addMessage='') {
     $this->errors[] = sprintf($this->pi_getLL($errorLabel), $addMessage);

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T22:44:32Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>SAV JpGraph &gt; Marker</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>Marker object</source>
+			</trans-unit>
+			<trans-unit id="marker.alttitle" xml:space="preserve">
+				<source>&lt;marker [attribute]&gt; ... &lt;/marker&gt;</source>
+			</trans-unit>
+			<trans-unit id="marker.description" xml:space="preserve">
+				<source>Creates a marker object.</source>
+			</trans-unit>
+			<trans-unit id="marker.details" xml:space="preserve">
+				<source>Attribute:
+. id=&quot;myMarker&quot;. Optional attribute but it is requested when using reference to this object. The reference will be &quot;myMarker&quot;.
+
+The following tags are allowed inside the marker tag.</source>
+			</trans-unit>
+			<trans-unit id="setMarker.alttitle" xml:space="preserve">
+				<source>&lt;setMarker attribute /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setMarker.description" xml:space="preserve">
+				<source>Defines the marker.
+Attribute:
+. value=&quot;Number of pages created per year&quot;.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

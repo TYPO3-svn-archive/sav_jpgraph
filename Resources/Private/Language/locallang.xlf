@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-02-27T15:14:31Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id="pi1_title" xml:space="preserve">
+				<source>SAV JpGraph</source>
+			</trans-unit>
+			<trans-unit id="pi1_plus_wiz_description" xml:space="preserve">
+				<source>Generation of JpGraph using XML template</source>
+			</trans-unit>
+			<trans-unit id="error.incorrectPluginConfiguration_1" xml:space="preserve">
+				<source>Incorrect configuration of the plugin: %s.</source>
+			</trans-unit>
+			<trans-unit id="error.incorrectPluginConfiguration_2" xml:space="preserve">
+				<source>Edit and save the plugin configuration to take the flexform parameters into consideration.</source>
+			</trans-unit>
+			<trans-unit id="error.incorrectCSS" xml:space="preserve">
+				<source>Unknown CSS file: %s.</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.sheetTitle.sDEF" xml:space="preserve">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.help" xml:space="preserve">
+				<source>Help</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.allowQueries" xml:space="preserve">
+				<source>Allow queries (Admin)</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.cache" xml:space="preserve">
+				<source>Cache</source>
+			</trans-unit>			
+			<trans-unit id="pi_flexform.cache.I.0" xml:space="preserve">
+				<source>Default</source>
+			</trans-unit>	
+			<trans-unit id="pi_flexform.cache.I.1" xml:space="preserve">
+				<source>1 hour</source>
+			</trans-unit>	
+			<trans-unit id="pi_flexform.cache.I.2" xml:space="preserve">
+				<source>1 day</source>
+			</trans-unit>				
+			<trans-unit id="pi_flexform.cache.I.3" xml:space="preserve">
+				<source>1 week</source>
+			</trans-unit>				
+			<trans-unit id="pi_flexform.cache.I.4" xml:space="preserve">
+				<source>1 month</source>
+			</trans-unit>											
+			<trans-unit id="pi_flexform.showOverloadedAttributes" xml:space="preserve">
+				<source>Overloaded attributes (doubleclick on the name to add the attribute) </source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.xmlError" xml:space="preserve">
+				<source>Error in the xml code. Check if tags are correctly opened and closed.</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.xmlErrorInTemplate" xml:space="preserve">
+				<source>Error in the xml template. Check if tags are correctly opened and closed.</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.xmlMarkersConfig" xml:space="preserve">
+				<source>Markers</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.xmlDataConfig" xml:space="preserve">
+				<source>Data</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.xmlQueriesConfig" xml:space="preserve">
+				<source>Queries</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.xmlTemplatesConfig" xml:space="preserve">
+				<source>Templates</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

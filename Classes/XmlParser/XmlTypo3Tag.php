@@ -77,9 +77,21 @@ class Tx_SavJpgraph_XmlParser_XmlTypo3Tag extends Tx_SavJpgraph_XmlParser_Abstra
     if (method_exists($hookObject, 'executeQuery')) {
       $rows = $hookObject->executeQuery($queryManager['uid']);
     }
+    
+    // Processes the error if any
+    if (method_exists($hookObject, 'checkError')) {
+    	if($hookObject->checkError($queryManager['uid'])) {
+      	if (method_exists($hookObject, 'getErrorMessage')) {
+        	$errorMessage = $hookObject->getErrorMessage($queryManager['uid']);
+      	} else {
+      		$errorMessage = 'Error in query';
+      	}
+				JpGraphError::Raise($errorMessage);    		
+    	}
+    }    
 
     // Sets the result if any
-    if (!empty($rows) && is_array($rows)) {
+    if (is_array($rows)) {
       $this->reference->setReferenceArray('query', $id, $rows);
       // Process variable definitions and replace them in the markers
       if (is_array($rows[0])) {
@@ -93,14 +105,7 @@ class Tx_SavJpgraph_XmlParser_XmlTypo3Tag extends Tx_SavJpgraph_XmlParser_Abstra
           }
         }
       }
-    } else {
-      // Processes the error
-      if (method_exists($hookObject, 'getErrorMessage')) {
-        $errorMessage = $hookObject->getErrorMessage($queryManager['uid']);
-      }
-
-      JpGraphError::Raise($errorMessage);
-    }
+    } 
     
     // Unsets the query definition
     $this->reference->unsetReferenceArray('querySelect', $id);
@@ -143,13 +148,23 @@ class Tx_SavJpgraph_XmlParser_XmlTypo3Tag extends Tx_SavJpgraph_XmlParser_Abstra
   }
 
 	/**
+	 * Checks if there is an error message
+	 *
+	 * @return boolean
+	 */
+  private function checkError($id) {
+    $error = $GLOBALS['TYPO3_DB']->sql_error();
+ 	 	return !empty($error);
+  }   
+  
+	/**
 	 * Gets the error message if any
 	 *
 	 * @return string The error message
 	 */
   private function getErrorMessage($id) {
     $lastBuiltQuery = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
-  	$lastBuiltQuery = str_replace(chr(9), '', $lastBuiltQuery);
+ 	 	$lastBuiltQuery = str_replace(chr(9), '', $lastBuiltQuery);
   	$lastBuiltQuery = str_replace('  ', '', $lastBuiltQuery);
   	
   	$errorMessage = 'SQL error: ' . $GLOBALS['TYPO3_DB']->sql_error() . chr(10) .
@@ -157,7 +172,7 @@ class Tx_SavJpgraph_XmlParser_XmlTypo3Tag extends Tx_SavJpgraph_XmlParser_Abstra
 
     return $errorMessage;
   }
-
+  
 }
 
 ?>

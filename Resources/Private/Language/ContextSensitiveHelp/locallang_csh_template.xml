@@ -11,38 +11,27 @@
 			<label index=".description">Templates object</label>	
 			<label index="template.alttitle">&lt;template [attribute]&gt; ... &lt;/template&gt;</label>							
 			<label index="template.description">Creates a template object.</label>			
-			<label index="template.details">	
-        Creates a template object.
-        Attribute:
-         .  id="myTemplate".  Optional attribute but it is requested when using reference to this object. The reference will be "myTemplate".
-       
-        The following tags are allowed inside the template tag
-			</label>			
+			<label index="template.details">Attribute:
+. id="myTemplate". Optional attribute but it is requested when using reference to this object. The reference will be "myTemplate".
+
+The following tags are allowed inside the template tag.</label>			
 			<label index="setTemplateDir.alttitle">&lt;setTemplateDir attribute /&gt;</label>					
-			<label index="setTemplateDir.description">
-        Defines the root directory for the template.
-        Attribute:
-         . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
- 			</label>					
+			<label index="setTemplateDir.description">Defines the root directory for the template.
+Attribute:
+. dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.</label>					
 			<label index="loadTemplate.alttitle">&lt;loadTemplate attribute /&gt;</label>					
-			<label index="loadTemplate.description">
-        Loads the template file name.
-        Attribute:
-         . file="typo3conf/ext/sav_jpgraph/templates/polarex0.xml".
-			</label>
+			<label index="loadTemplate.description">Loads the template file name.
+Attribute:
+. file="typo3conf/ext/sav_jpgraph/templates/polarex0.xml".</label>
 			<label index="setCopyImageDir.alttitle">&lt;setCopyImageDir attribute /&gt;</label>					
-			<label index="setCopyImageDir.description">
-        Defines the root directory for the copy of the image.
-        Attribute:
-        . dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.
-			</label>
+			<label index="setCopyImageDir.description">Defines the root directory for the copy of the image.
+Attribute:
+. dir="PATH_site". Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.</label>
 			<label index="copyImageInFile.alttitle">&lt;copyImageInFile attributes /&gt;</label>					
-			<label index="copyImageInFile.description">
-        Copies the resulting image in a given file.
-        Attributes:
-         . ref="file#1". Sets the root directory. A string is expected, in general it is the reference to a file.
-         . file="fileadmin/test.png". Destination file.
-      </label>
+			<label index="copyImageInFile.description">Copies the resulting image in a given file.
+Attributes:
+. ref="file#1". Sets the root directory. A string is expected, in general it is the reference to a file.
+. file="fileadmin/test.png". Destination file.</label>
 		</languageKey>
 	</data>
 </T3locallang>

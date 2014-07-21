@@ -11,19 +11,14 @@
 			<label index=".description">Marker object</label>		
 			<label index="marker.alttitle">&lt;marker [attribute]&gt; ... &lt;/marker&gt;</label>						
 			<label index="marker.description">Creates a marker object.</label>	
-			<label index="marker.details">	
-        Creates a marker object.
-        Attribute:
-         . id="myMarker".  Optional attribute but it is requested when using reference to this object. The reference will be "myMarker".
-        
-        The following tags are allowed inside the marker tag
-			</label>			
+			<label index="marker.details">Attribute:
+. id="myMarker". Optional attribute but it is requested when using reference to this object. The reference will be "myMarker".
+
+The following tags are allowed inside the marker tag.</label>			
 			<label index="setMarker.alttitle">&lt;setMarker attribute /&gt;</label>					
-			<label index="setMarker.description">
-        Defines the marker.
-        Attribute:
-         . value="Number of pages created per year".
- 			</label>    
+			<label index="setMarker.description">Defines the marker.
+Attribute:
+. value="Number of pages created per year".</label>    
 		</languageKey>
 	</data>
 </T3locallang>

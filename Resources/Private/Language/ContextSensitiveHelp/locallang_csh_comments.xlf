@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T14:49:30Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>SAV JpGraph &gt; Other tags &gt; Comments</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>Comments object</source>
+			</trans-unit>
+			<trans-unit id="comments.alttitle" xml:space="preserve">
+				<source>&lt;comments&gt; ... &lt;/comments&gt;</source>
+			</trans-unit>
+			<trans-unit id="comments.description" xml:space="preserve">
+				<source>Creates comments about overloaded attributes.</source>
+			</trans-unit>
+			<trans-unit id="comments.details" xml:space="preserve">
+				<source>Comments are associated with overloaded attributes and are displayed in the BE flexform.</source>
+			</trans-unit>
+			<trans-unit id="languageKey.alttitle" xml:space="preserve">
+				<source>&lt;languageKey index=&quot;...&quot; &gt; &lt;label index=&quot;...&quot; &gt; ... &lt;/label&gt; &lt;/languageKey&gt;</source>
+			</trans-unit>
+			<trans-unit id="languageKey.description" xml:space="preserve">
+				<source>Defines the label associated with the overloaded attribute. Use &quot;tag#attribute&quot; for the index.
+The language key makes it possible to have localization labels for the comments in the flexform. Use the conventional TYPO3 language keys for the index.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

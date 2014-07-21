@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T22:58:15Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>SAV JpGraph &gt; Template</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>Templates object</source>
+			</trans-unit>
+			<trans-unit id="template.alttitle" xml:space="preserve">
+				<source>&lt;template [attribute]&gt; ... &lt;/template&gt;</source>
+			</trans-unit>
+			<trans-unit id="template.description" xml:space="preserve">
+				<source>Creates a template object.</source>
+			</trans-unit>
+			<trans-unit id="template.details" xml:space="preserve">
+				<source>Attribute:
+. id=&quot;myTemplate&quot;. Optional attribute but it is requested when using reference to this object. The reference will be &quot;myTemplate&quot;.
+
+The following tags are allowed inside the template tag.</source>
+			</trans-unit>
+			<trans-unit id="setTemplateDir.alttitle" xml:space="preserve">
+				<source>&lt;setTemplateDir attribute /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setTemplateDir.description" xml:space="preserve">
+				<source>Defines the root directory for the template.
+Attribute:
+. dir=&quot;PATH_site&quot;. Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.</source>
+			</trans-unit>
+			<trans-unit id="loadTemplate.alttitle" xml:space="preserve">
+				<source>&lt;loadTemplate attribute /&gt;</source>
+			</trans-unit>
+			<trans-unit id="loadTemplate.description" xml:space="preserve">
+				<source>Loads the template file name.
+Attribute:
+. file=&quot;typo3conf/ext/sav_jpgraph/templates/polarex0.xml&quot;.</source>
+			</trans-unit>
+			<trans-unit id="setCopyImageDir.alttitle" xml:space="preserve">
+				<source>&lt;setCopyImageDir attribute /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setCopyImageDir.description" xml:space="preserve">
+				<source>Defines the root directory for the copy of the image.
+Attribute:
+. dir=&quot;PATH_site&quot;. Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.</source>
+			</trans-unit>
+			<trans-unit id="copyImageInFile.alttitle" xml:space="preserve">
+				<source>&lt;copyImageInFile attributes /&gt;</source>
+			</trans-unit>
+			<trans-unit id="copyImageInFile.description" xml:space="preserve">
+				<source>Copies the resulting image in a given file.
+Attributes:
+. ref=&quot;file#1&quot;. Sets the root directory. A string is expected, in general it is the reference to a file.
+. file=&quot;fileadmin/test.png&quot;. Destination file.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

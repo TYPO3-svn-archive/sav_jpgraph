@@ -42,6 +42,9 @@ class Legend {
     private $csimareas='';
     private $reverse = false ;
     private $bkg_gradtype=-1, $bkg_gradfrom='lightgray', $bkg_gradto='gray';
+    
+    // Added by Laurent Foulloy
+    private $clearLegend = true;
 
     //---------------
     // CONSTRUCTOR
@@ -49,7 +52,13 @@ class Legend {
         // Empty
     }
     //---------------
-    // PUBLIC METHODS
+    // PUBLIC METHODS ADDED BY Laurent Foulloy    
+		function DoNotClearLegend() {
+			$this->clearLegend = false;
+		}   
+		 
+    //---------------
+    // PUBLIC METHODS    
     function Hide($aHide=true) {
         $this->hide=$aHide;
     }
@@ -153,10 +162,13 @@ class Legend {
     }
 
     function Clear() {
-        $this->txtcol = array();
+				// Test added by Laurent Foulloy
+				if ($this->clearLegend) {
+        	$this->txtcol = array();
+				}
     }
 
-    function Add($aTxt,$aColor,$aPlotmark='',$aLinestyle=0,$csimtarget='',$csimalt='',$csimwintarget='') {
+    function Add($aTxt,$aColor,$aPlotmark='',$aLinestyle=0,$csimtarget='',$csimalt='',$csimwintarget='') {    	
         $this->txtcol[]=array($aTxt,$aColor,$aPlotmark,$aLinestyle,$csimtarget,$csimalt,$csimwintarget);
     }
 
@@ -182,7 +194,7 @@ class Legend {
             $this->txtcol = array_reverse($this->txtcol);
         }
 
-        $n=count($this->txtcol);
+        $n=count($this->txtcol);       
         if( $n == 0 ) return;
 
         // Find out the max width and height of each column to be able

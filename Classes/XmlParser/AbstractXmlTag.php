@@ -43,7 +43,6 @@ abstract class Tx_SavJpgraph_XmlParser_AbstractXmlTag {
   public function setReference($referenceId, $reference) {
     $this->referenceId = $referenceId;
     $this->reference = $reference;
-    $this->defaultMethod();
   }
 
 	/**
@@ -53,9 +52,9 @@ abstract class Tx_SavJpgraph_XmlParser_AbstractXmlTag {
 	 *
 	 * @return none
 	 */
-  protected function defaultMethod() {
+  public function defaultMethod() {
   }  
-  
+ 
 }
 
 ?>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-02-27T15:14:08Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>SAV JpGraph &gt; Other tags</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>Other tags</source>
+			</trans-unit>
+			<trans-unit id=".seeAlso" xml:space="preserve">
+				<source>xEXT_sav_jpgraph_callback:*
+xEXT_sav_jpgraph_comments:*
+xEXT_sav_jpgraph_file:*
+xEXT_sav_jpgraph_foreach:*</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

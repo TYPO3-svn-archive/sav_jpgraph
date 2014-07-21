@@ -60,7 +60,7 @@ class Tx_SavJpgraph_XmlParser_XmlCallbackTag extends Tx_SavJpgraph_XmlParser_Abs
 	 *
 	 * @return none
 	 */
-  protected function defaultMethod() {
+  public function defaultMethod() {
     $this->setCallback($this->functionName, $this->className);	
   }    
 

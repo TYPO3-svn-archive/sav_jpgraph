@@ -10,13 +10,10 @@
 			<label index=".alttitle">SAV JpGraph &gt; Other tags &gt; Foreach</label>		
 			<label index=".description">Foreach tag</label>
 			<label index="foreach.alttitle">&lt;foreach [attribute] ref="myData" &gt; ... &lt;/foreach&gt;</label>									
-			<label index="foreach.description">
-        The tag &lt;foreach&gt; is not related with a class. It is a special tag which was introduced to process arrays. 
-        It makes it possible to repeat the sequence inside the tag. The number of repetitions is the size of the reference attribute.
-
-        Attribute:
-         .  id="myForeach".  Optional attribute but it is requested when using reference to this object. The reference will be "myForeach".
-			</label>			
+			<label index="foreach.description">The tag &lt;foreach&gt; is not related with a class. It is a special tag which was introduced to process arrays. 
+It makes it possible to repeat the sequence inside the tag. The number of repetitions is the size of the reference attribute.
+Attribute:
+. id="myForeach". Optional attribute but it is requested when using reference to this object. The reference will be "myForeach".</label>			
 		</languageKey>
 	</data>
 </T3locallang>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T15:05:31Z" product-name="sav_jpgraph">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>SAV JpGraph &gt; Other tags &gt; File</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>File object</source>
+			</trans-unit>
+			<trans-unit id="file.alttitle" xml:space="preserve">
+				<source>&lt;file [attribute]&gt; ... &lt;/file&gt;</source>
+			</trans-unit>
+			<trans-unit id="file.description" xml:space="preserve">
+				<source>Creates a file object.</source>
+			</trans-unit>
+			<trans-unit id="file.details" xml:space="preserve">
+				<source>Attributes:
+. id=&quot;myFile&quot;. Optional attribute but it is requested when using reference to this object. The reference will be &quot;myFile&quot;.
+Note: id=&quot;1&quot; defines the file used by default for saving the resulting image in the &quot;typo3temp/sav_jpgraph&quot; folder. The file name is &quot;img_xxx&quot; where &quot;xxx&quot; is the id of the content object.
+
+The following tags are allowed inside the file tag.</source>
+			</trans-unit>
+			<trans-unit id="setFile.alttitle" xml:space="preserve">
+				<source>&lt;setFile attribute /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setFile.description" xml:space="preserve">
+				<source>Defines the fileName.
+Attribute:
+. value=&quot;fileadmin/test.png&quot;.</source>
+			</trans-unit>
+			<trans-unit id="setFileDir.alttitle" xml:space="preserve">
+				<source>&lt;setFileDir attribute /&gt;</source>
+			</trans-unit>
+			<trans-unit id="setFileDir.description" xml:space="preserve">
+				<source>Defines the root directory.
+Attribute:
+. dir=&quot;PATH_site&quot;. Sets the root directory. Any defined php constant, in particular all TYPO3 path constants, will be interpreted.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

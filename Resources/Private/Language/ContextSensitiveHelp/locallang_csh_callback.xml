@@ -11,25 +11,18 @@
 			<label index=".description">Callback object</label>
 			<label index="callback.alttitle">&lt;callback [attribute]&gt; ... &lt;/callback&gt;</label>									
 			<label index="callback.description">Creates a callback object.</label>			
-			<label index="callback.details">	
-				Creates a callback object. 
-				Attribute:
-			   .  id="myCallback".  Optional attribute but it is requested when using reference to this object. The reference will be "myCallback". 
+			<label index="callback.details">Attribute:
+. id="myCallback". Optional attribute but it is requested when using reference to this object. The reference will be "myCallback". 
 
-        The following tags are allowed inside the data tag
-			</label>				
+The following tags are allowed inside the callback tag.</label>				
 			<label index="setCallback.alttitle">&lt;setCallback attribute1 attribute2 /&gt;</label>		
-			<label index="setCallback.description">
-				Sets the callback method:
-			   .  functionName="myFunction". 
-			   .  className="myClass". 
-				Default callback method is provided, therefore calling this method is not required in general.
-      </label>  
+			<label index="setCallback.description">Sets the callback method:
+. functionName="myFunction". 
+. className="myClass". 
+Default callback method is provided, therefore calling this tag is not required in general.</label>  
 			<label index="setReturn.alttitle">&lt;setReturn attribute1 /&gt;</label>		
-			<label index="setReturn.description">				
-				Sets the return data array:
-			   .  ref="data#myData". Reference to the data array which will be used for returning values for the callback.  
-      </label> 			           
+			<label index="setReturn.description">Sets the return data array:
+. ref="data#myData". Reference to the data array which will be used for returning values for the callback.</label> 			           
 		</languageKey>
 	</data>
 </T3locallang>

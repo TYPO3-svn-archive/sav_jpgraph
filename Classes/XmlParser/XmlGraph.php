@@ -149,7 +149,7 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
   public function injectConfiguration($configuration) {
   	self::$configuration = $configuration;
   }
-
+  
   /**
 	 * Gets the configuration
 	 *
@@ -221,14 +221,14 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
   public function setReferenceArray($name, $id, $value, $index = false) {
     if ($index === false ) {
       $this->referenceArray[$name][$id] = $value;
-    } elseif ($index) {
+    } elseif (is_integer($index)) {
       $this->referenceArray[$name][$id][$index] = $value;
     } else {
       $index = count($this->referenceArray[$name][$id]);
       $this->referenceArray[$name][$id][$index] = $value;
     }
   }
-
+  
 	/**
 	 * Unsets the reference array
 	 *
@@ -244,7 +244,7 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
       unset ($this->referenceArray[$name][$id][$index]);
     }
   }
-
+  
 	/**
 	 * Gets the reference array
 	 *
@@ -254,8 +254,10 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
 	 *
 	 * @return none
 	 */
-  public function getReferenceArray($name, $id = false, $index = false) {
-    if ($id === false) {
+  public function getReferenceArray($name = '', $id = false, $index = false) {
+  	if ($name == '') {
+			return $this->referenceArray;  		
+  	} elseif ($id === false) {
       return $this->referenceArray[$name];
     } elseif ($index === false) {
       return $this->referenceArray[$name][$id];
@@ -306,14 +308,22 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
 	 */
   public function processReference($reference) {
     // Get the tag and the id
-    if (preg_match('/^(\w+)#(\w+)((:)(\d+))?$/', $reference, $matches)) {
+    if (preg_match('/^(\w+)#(\w+)((:)(?:(\d+)|(each)#(\w+)))?((:)(?:(\d+)))?$/', $reference, $matches)) {
 
       if (isset($this->referenceArray[$matches[1]][$matches[2]])) {
         $referenceValue = $this->referenceArray[$matches[1]][$matches[2]];
         if(is_scalar($referenceValue)) {
           return $this->processConstant((string) $referenceValue);
         } elseif (is_array($referenceValue) && !empty($matches[3])) {
-        	return $referenceValue[intval($matches[4])];
+        	if(!empty($matches[5]) || $matches[5] === '0') {
+        		return $referenceValue[intval($matches[5])];
+        	} elseif ($matches[6] == 'each') {
+   					if (!empty($matches[9])) {
+        			return $referenceValue[$this->referenceArray['each'][$matches[7]]][intval($matches[10])];   						
+   					} else {     		
+        			return $referenceValue[$this->referenceArray['each'][$matches[7]]];   						
+   					}
+        	}
         } else {
           return $referenceValue;
         }
@@ -354,11 +364,13 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
         case 'return':
           $this->referenceArray['return'][0] = (string) $value;
           break;
+        case 'ref_for':
+          $temp[$name] = $this->processReference($value);       
+          break;          
         case 'ref':
           if ($this->referenceIndex !== false) {
             $referenceArray = $this->processReference($value);
             $reference = $referenceArray[$this->referenceIndex];
-
             if (is_array($reference)) {
               $temp = $reference;
             } else {
@@ -366,7 +378,7 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
             }
           } else {
             $temp[$name] = $this->processReference($value);
-          }
+          }         
           break;
         case 'id':
           // It's an id. Sets the reference id
@@ -466,9 +478,18 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
           $parameters[3],
           $parameters[4]
         );
+      case 6:
+        return call_user_func($method,
+          $parameters[0],
+          $parameters[1],
+          $parameters[2],
+          $parameters[3],
+          $parameters[4],
+          $parameters[5]
+        );        
       default:
         JpGraphError::Raise(
-          'Too many parameters in the method "' . $method[0] . '"'
+          'Too many parameters in the method "' . $method[1] . '"'
         );
     }
   }
@@ -514,7 +535,7 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
           $parameters[2],
           $parameters[3],
           $parameters[4]
-        );
+        );      
       default:
         JpGraphError::Raise(
           'Too many parameters when creating the object "' . $className . '"'
@@ -588,7 +609,7 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
           // Processes the attributes
           if (is_array($attributes[0])) {
             foreach ($attributes[0] as $key => $attribute) {
-              $this->setReferenceArray($childJpGraphObject, $this->referenceId, $attribute);
+              $this->setReferenceArray($childJpGraphObject, $this->referenceId, $attributes[0]);
               $this->referenceIndex = $key;
               $this->processElement($child, $JpGraphObject);
             }
@@ -640,12 +661,13 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
 
           // Processes the attributes
           if (is_array($attributes[0])) {
-            foreach ($attributes[0] as $key => $attribute) {
-              $this->setreferenceArray($childName, $this->referenceId, $attribute);
-              $this->referenceIndex = $key;
-              if ((string) $child->children()) {
-                $this->processChild($child->children());
-              }
+            $this->setreferenceArray($childName, $this->referenceId, $attributes[0]);                   	
+          	foreach ($attributes[0] as $key => $attribute) {
+              $this->setreferenceArray('each', $this->referenceId, $key);         
+              $this->referenceIndex = $key;                         
+              foreach($child->children() as $subChild){            	
+                $this->processChild($subChild);
+              }                       
             }
           }
           
@@ -663,8 +685,8 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
         require_once(JP_maindir . $requiredFile);
       }
     }
-
-    if (!$this->existsInReferenceArray($childName, $this->referenceId) || $this->referenceIndex !== false) {
+  
+    if (!$this->existsInReferenceArray($childName, $this->referenceId) || $this->referenceIndex !== false) {	
     	$className = 'Tx_SavJpgraph_XmlParser_Xml' . ucfirst($childName) . 'Tag';
     	if (!class_exists($className)) {
     		$className = $childName;
@@ -675,10 +697,28 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
       // Calls the method setReferenceId if any
       if (method_exists($newObject, 'setReference')) {
         $newObject->setReference($this->referenceId, $this);
+        $newObject->defaultMethod();
       }
     } else {
-      $newObject = $this->getReferenceArray($childName, $this->referenceId);
+    	 switch($childName) {    	
+        case 'marker':
+        case 'data':
+        case 'file':
+        case 'template':
+		    	$className = 'Tx_SavJpgraph_XmlParser_Xml' . ucfirst($childName) . 'Tag';
+		    	if (!class_exists($className)) {
+		    		$className = $childName;
+		    	}
+		      $newObject = $this->createObject($className, $attributes);
+		    	if (method_exists($newObject, 'setReference')) {
+		        $newObject->setReference($this->referenceId, $this);
+		      }      
+		      break;
+      default:
+      	  $newObject = $this->getReferenceArray($childName, $this->referenceId);
+    	 }        	    	
     }
+
     // Processes the child
     $this->processElement($child, $newObject);
   }
@@ -695,7 +735,7 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
 		foreach ($this->xml->children() as $child) {
       $this->referenceIndex = false;
       $this->processChild($child);
-		}
+		}		
   }
 
 	/**
@@ -706,10 +746,12 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
 	 * @return none
 	 */
 	public function processDelayedMethods() {
-
-		foreach ($this->referenceArray['delayedMethods'] as $delayedMethod) {
-      $this->processMethod($delayedMethod['method'], $delayedMethod['attributes']);
-    }
+		$delayedMethods = $this->referenceArray['delayedMethods'];
+		if (is_array($delayedMethods)) {
+			foreach ($delayedMethods as $delayedMethod) {
+	      $this->processMethod($delayedMethod['method'], $delayedMethod['attributes']);
+	    }
+		}
   }
 
 	/**
@@ -729,6 +771,21 @@ class Tx_SavJpgraph_XmlParser_xmlGraph extends Graph {
     return $out;
   }
 
+	/**
+	 * Replaces special characters
+	 *
+	 * @param string $data
+	 *
+	 * @return string
+	 */
+  public static function replaceSpecialChars($data) {
+    $data = str_replace('\r', chr(13), $data);
+    $data = str_replace('\n', chr(10), $data);
+    $data = str_replace('\t', chr(9), $data);
+
+    return $data;
+  }
+  
 }
 
 ?>

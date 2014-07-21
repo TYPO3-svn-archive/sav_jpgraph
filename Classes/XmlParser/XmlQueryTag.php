@@ -37,7 +37,7 @@ class Tx_SavJpgraph_XmlParser_XmlQueryTag extends Tx_SavJpgraph_XmlParser_Abstra
 	 *
 	 * @return none
 	 */
-  protected function defaultMethod() {
+  public function defaultMethod() {
     $this->select();
     $this->from();
     $this->where();
@@ -61,6 +61,8 @@ class Tx_SavJpgraph_XmlParser_XmlQueryTag extends Tx_SavJpgraph_XmlParser_Abstra
 		for ($i=2; $i < func_num_args(); $i++) {
 			if (preg_match('/^marker#(\w*)$/', $arguments[$i], $match)) {
 				$markers[$match[1]] = $this->reference->processReference($arguments[$i]);
+			} elseif (preg_match('/^(\w+)#(data|marker)#(\w+)((:)(?:(\d+)))?$/', $arguments[$i], $match)) {
+    	  $markers[$match[1]] = $this->reference->getReferenceArray($match[2], $match[3], ($match[6] ? $match[6] : 0));    
 			} elseif (preg_match('/^(\w+)#(.*)$/', $arguments[$i], $match)) {			
 				$markers[$match[1]] = $match[2];
 			}

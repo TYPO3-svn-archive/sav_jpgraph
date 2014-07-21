@@ -50,7 +50,7 @@ class Tx_SavJpgraph_XmlParser_XmlMarkerTag extends Tx_SavJpgraph_XmlParser_Abstr
 	 *
 	 * @return none
 	 */
-  protected function defaultMethod() {
+  public function defaultMethod() {
     $this->setMarker($this->markerValue);
   }      
 
@@ -65,8 +65,8 @@ class Tx_SavJpgraph_XmlParser_XmlMarkerTag extends Tx_SavJpgraph_XmlParser_Abstr
     $this->reference->setReferenceArray(
       'marker',
       $this->referenceId,
-      $this->replaceSpecialChars($markerValue)
-    );
+      Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($markerValue)
+    );   
   }
 
 	/**
@@ -82,31 +82,16 @@ class Tx_SavJpgraph_XmlParser_XmlMarkerTag extends Tx_SavJpgraph_XmlParser_Abstr
 		$markers = '';
 		$arguments = func_get_args();
 		foreach ($arguments as $argument) {
-			$markers .= $this->replaceSpecialChars($argument);
+			$markers .= $argument;
 		}
 		  	
     $this->reference->setReferenceArray(
       'marker',
       $this->referenceId,
-      $markers
+      Tx_SavJpgraph_XmlParser_xmlGraph::replaceSpecialChars($markers)
     );
   }
-    
-	/**
-	 * Replaces special characters
-	 *
-	 * @param $data string
-	 *
-	 * @return string
-	 */
-  public function replaceSpecialChars($data) {
-    $data = str_replace('\r', chr(13), $data);
-    $data = str_replace('\n', chr(10), $data);
-    $data = str_replace('\t', chr(9), $data);
-
-    return $data;
-  }
-
+ 
 }
 
 ?>

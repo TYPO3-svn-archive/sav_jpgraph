@@ -11,14 +11,10 @@
 			<label index=".description">Comments object</label>
 			<label index="comments.alttitle">&lt;comments&gt; ... &lt;/comments&gt;</label>									
 			<label index="comments.description">Creates comments about overloaded attributes.</label>			
-			<label index="comments.details">	
-				Comments are associated with overloaded attributes and are displayed in the BE flexform.		
-			</label>				
+			<label index="comments.details">Comments are associated with overloaded attributes and are displayed in the BE flexform.</label>				
 			<label index="languageKey.alttitle">&lt;languageKey index="..." &gt; &lt;label index="..." &gt; ... &lt;/label&gt; &lt;/languageKey&gt;</label>		
-			<label index="languageKey.description">
-        Defines the label associated with the overloaded attribute. Use "tag#attribute" for the index.
-        The language key makes it possible to have localization labels for the comments in the flexform. Use the conventional TYPO3 language keys for the index.
-      </label>     
+			<label index="languageKey.description">Defines the label associated with the overloaded attribute. Use "tag#attribute" for the index.
+The language key makes it possible to have localization labels for the comments in the flexform. Use the conventional TYPO3 language keys for the index.</label>     
 		</languageKey>
 	</data>
 </T3locallang>
